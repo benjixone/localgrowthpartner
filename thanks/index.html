@@ -48,18 +48,28 @@
     <div class="st"><div class="n">1</div><div><b>We run your scan</b><span>What ChatGPT and Google say about you, and who beats you.</span></div></div>
     <div class="st"><div class="n">2</div><div><b>You book your call</b><span>15 minutes. We show you everything live, and what we would fix first.</span></div></div>
     <div class="st"><div class="n">3</div><div><b>You keep the report</b><span>Yours either way. If you are not a fit, we say so.</span></div></div>
-    <!-- GHL CALENDAR SLOT: swap the div below for the GHL calendar embed -->
-    <div class="cal">Your booking link arrives by text in a few minutes.<br>Keep your phone close.</div>
+    <div style="margin-top:16px;border-radius:12px;overflow:hidden;background:#fff">
+      <iframe id="calframe" src="https://cal.com/goldenclients/scan?embed=true&theme=light" style="width:100%;height:620px;border:0" loading="lazy"></iframe>
+    </div>
   </div>
 </div>
 
 <footer><a href="/">localgrowthpartner.com</a> &middot; <a href="/privacy.html">Privacy</a></footer>
 
 <script>
+  var lead={};
+  try { lead=JSON.parse(localStorage.getItem('lgp_lead')||'{}'); } catch(e) {}
   var p=new URLSearchParams(location.search);
-  var city=p.get('city'), name=p.get('name');
+  var city=p.get('city')||lead.city, name=p.get('name')||lead.name;
   if(city){ document.getElementById('checking').textContent='Checking if '+city+' is still open'; }
-  if(name){ document.getElementById('hl').innerHTML=name.split(' ')[0]+', you\'re in. <em>One more step.</em>'; }
+  if(name){ document.getElementById('hl').innerHTML=name.split(' ')[0]+", you're in. <em>One more step.</em>"; }
+  var q=[];
+  if(lead.name) q.push('name='+encodeURIComponent(lead.name));
+  if(lead.email) q.push('email='+encodeURIComponent(lead.email));
+  if(lead.phone) q.push('attendeePhoneNumber='+encodeURIComponent(lead.phone));
+  if(lead.business) q.push('business='+encodeURIComponent(lead.business));
+  if(lead.city) q.push('city='+encodeURIComponent(lead.city));
+  if(q.length){ var cf=document.getElementById('calframe'); cf.src='https://cal.com/goldenclients/scan?embed=true&theme=light&'+q.join('&'); }
 </script>
 </body>
 </html>

@@ -128,6 +128,7 @@
 </footer>
 
 <script>
+  var SIB_URL = "https://4b8d96bf.sibforms.com/serve/MUIFAGfHGZHzu1FcvSvsoIzXGi4IINazStI42dREJ8NpZDb2l7fOooXQlumIYbYE92iwrHNcjG0zmYhhpcCe8n7Zf1ixfme03XUwTvT6eDmBRCfJQNjvxarNBwLHCh9eBJCRYeUnJO0-0pYI4IOpqOvghIOcSL9JmmsWFRRyNHPFiAT3BfcZVlg2Vvl0dlzaxwGVst6osKhfPh8bXA==";
   var s1=document.getElementById('s1'), s2=document.getElementById('s2');
   document.getElementById('next').addEventListener('click', function(){
     var b=document.getElementById('f-biz'), c=document.getElementById('f-city');
@@ -140,15 +141,24 @@
   });
   document.getElementById('f').addEventListener('submit', function(ev){
     ev.preventDefault();
-    var g=function(id){ return document.getElementById(id).value; };
-    /* GHL WIRING SLOT: replace the mailto below with the GHL form/webhook POST when the PIT token is connected */
-    var body='Business: '+g('f-biz')+'\nCity: '+g('f-city')+'\nName: '+g('f-name')+'\nPhone: '+g('f-phone')+'\nEmail: '+g('f-email');
-    var m=document.createElement('a');
-    m.href='mailto:ben@benjix.com?subject='+encodeURIComponent('Free scan: '+g('f-biz')+' ('+g('f-city')+')')+'&body='+encodeURIComponent(body);
-    m.click();
-    setTimeout(function(){
-      location.href='/thanks/?city='+encodeURIComponent(g('f-city'))+'&name='+encodeURIComponent(g('f-name'));
-    }, 400);
+    var g=function(id){ return document.getElementById(id).value.trim(); };
+    var lead={ business:g('f-biz'), city:g('f-city'), name:g('f-name'), phone:g('f-phone'), email:g('f-email') };
+    try { localStorage.setItem('lgp_lead', JSON.stringify(lead)); } catch(e) {}
+    /* instant lead alert to Ben (fire and forget) */
+    try {
+      fetch('https://formsubmit.co/ajax/ben@goldenpartners.co', {
+        method:'POST', headers:{'Content-Type':'application/json'},
+        body: JSON.stringify({ _subject:'SCAN LEAD: '+lead.business+' ('+lead.city+')',
+          business:lead.business, city:lead.city, name:lead.name, phone:lead.phone, email:lead.email })
+      });
+    } catch(e) {}
+    /* capture into Brevo list via classic POST; Brevo redirects to /thanks/ */
+    var f=document.createElement('form');
+    f.method='POST'; f.action=SIB_URL; f.style.display='none';
+    var add=function(n,v){ var i=document.createElement('input'); i.name=n; i.value=v; f.appendChild(i); };
+    add('EMAIL', lead.email); add('email_address_check',''); add('locale','en'); add('html_type','simple');
+    document.body.appendChild(f);
+    f.submit();
   });
 </script>
 </body>
