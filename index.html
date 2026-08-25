@@ -265,6 +265,7 @@
   .tst .q { font-family: 'Cormorant', serif; font-size: 23px; line-height: 1.42; color: #EDF1F6; font-weight: 400; }
   .tst .who { margin-top: 20px; display: flex; align-items: center; gap: 12px; }
   .tst .av { width: 46px; height: 46px; border-radius: 50%; object-fit: cover; display: block; }
+  .tst .av.ini { display: flex; align-items: center; justify-content: center; background: #1E2B3D; color: #FF8A45; font-weight: 700; font-size: 15px; letter-spacing: .5px; flex: 0 0 46px; }
   .tst .who b { display: block; color: #fff; font-size: 14px; font-weight: 600; }
   .tst .who span { color: #6B7A8D; font-size: 12.5px; }
   .wall { margin-top: 56px; text-align: center; }
@@ -407,7 +408,7 @@
 </head>
 <body>
 
-<div class="announce"><b>3 spots open</b> this fall. One business per trade, per city.</div>
+<div class="announce"><b>Now onboarding</b> med spas, roofers and movers. One business per trade, per city.</div>
 
 <nav>
   <div class="nav-in">
@@ -541,12 +542,12 @@
         <div class="bd"><h3>Med spas &amp; wellness</h3><p>They check who's best before they book. Be that name.</p></div>
       </div>
       <div class="card">
-        <div class="ph"><img src="img/dental.jpg" alt="Dental clinic"></div>
-        <div class="bd"><h3>Dentists &amp; clinics</h3><p>New patients search every day. Be the one they call.</p></div>
+        <div class="ph"><svg role="img" aria-label="Roofing" viewBox="0 0 300 210" preserveAspectRatio="xMidYMid slice" width="100%" height="100%"><rect width="300" height="210" fill="#F1EBDF"/><rect x="96" y="112" width="108" height="62" fill="#FFFFFF" stroke="#D8CDB8" stroke-width="2"/><rect x="138" y="136" width="24" height="38" fill="#101B2B"/><path d="M96 116 L150 73 L204 116 Z" fill="#FF8A45"/><circle cx="150" cy="100" r="7" fill="#FFFFFF"/><path d="M82 116 L150 62 L218 116" stroke="#FF6B1A" stroke-width="14" fill="none" stroke-linecap="round" stroke-linejoin="round"/><g stroke="#9AA7B8" stroke-width="4" stroke-linecap="round"><path d="M64 40 l-6 14 M84 32 l-6 14 M244 44 l-6 14 M228 30 l-6 14"/></g></svg></div>
+        <div class="bd"><h3>Roofing companies</h3><p>When the roof leaks, they ask who's best. Be the answer.</p></div>
       </div>
       <div class="card">
-        <div class="ph"><img src="img/hvac.jpg" alt="Home services"></div>
-        <div class="bd"><h3>Home services</h3><p>The AC dies. They call the first name they see.</p></div>
+        <div class="ph"><svg role="img" aria-label="Moving companies" viewBox="0 0 300 210" preserveAspectRatio="xMidYMid slice" width="100%" height="100%"><rect width="300" height="210" fill="#F1EBDF"/><rect x="58" y="76" width="128" height="70" rx="6" fill="#FFFFFF" stroke="#D8CDB8" stroke-width="2"/><path d="M186 96 h34 l22 24 v26 h-56 Z" fill="#FF6B1A"/><rect x="196" y="102" width="20" height="16" rx="3" fill="#FFF3E8"/><rect x="106" y="96" width="30" height="24" fill="#FF8A45"/><path d="M106 108 h30 M121 96 v24" stroke="#FFFFFF" stroke-width="2.5"/><circle cx="92" cy="150" r="13" fill="#101B2B"/><circle cx="92" cy="150" r="5.5" fill="#F1EBDF"/><circle cx="216" cy="150" r="13" fill="#101B2B"/><circle cx="216" cy="150" r="5.5" fill="#F1EBDF"/><g stroke="#9AA7B8" stroke-width="5" stroke-linecap="round"><path d="M34 96 h16 M26 112 h24 M34 128 h16"/></g></svg></div>
+        <div class="bd"><h3>Moving companies</h3><p>Every move starts with a search. Be the company AI recommends.</p></div>
       </div>
     </div>
   </div>
@@ -605,15 +606,13 @@
     <div class="tsts">
       <div class="tst rv">
         <p class="q">"We were able to see a tangible difference in 2 weeks."</p>
-        <div class="who"><img class="av" src="img/founder1.jpg" alt=""><div><b>Daniel Hack</b><span>Owner, The Mad Beet &middot; San Diego</span></div></div>
+        <div class="who"><span class="av ini" aria-hidden="true">DH</span><div><b>Daniel Hack</b><span>Owner, The Mad Beet &middot; San Diego</span></div></div>
       </div>
       <div class="tst rv">
         <p class="q">"We actually have people coming in stating that they found us with a Google Search."</p>
-        <div class="who"><img class="av" src="img/founder2.jpg" alt=""><div><b>Mark Hrubant</b><span>Franchise Owner, YogaSix &middot; Trophy Club</span></div></div>
+        <div class="who"><span class="av ini" aria-hidden="true">MH</span><div><b>Mark Hrubant</b><span>Franchise Owner, YogaSix &middot; Trophy Club</span></div></div>
       </div>
     </div>
-
-    <p class="cap" style="margin-top:18px">Portraits are illustrative placeholders, not the actual owners.</p>
 
     <div class="wall rv">
       <div class="lbl">A few of the 150+ local businesses we've grown</div>
@@ -823,7 +822,7 @@
       </div>
     </div>
     <p class="f-fine">
-      Local Growth Partner is the local visibility practice of Golden Partners. Case results and client quotes are documented accounts from businesses on the ranking technology we run for clients, and are not a promise of your results; every business and city is different. The 90-day show-up-or-refund guarantee applies to the Single Location plan on any billing option, with full terms set out in your service agreement. Interface examples, ranking illustrations, notification screens, portrait placeholders and photography on this page are illustrations, not client records. We are not affiliated with, endorsed by, or partnered with OpenAI, Google, Apple, Anthropic, Perplexity or Yelp; those names refer only to the places we work to get you found.<br><br>
+      Local Growth Partner is the local visibility practice of Golden Partners. Case results and client quotes are documented accounts from businesses on the ranking technology we run for clients, and are not a promise of your results; every business and city is different. The 90-day show-up-or-refund guarantee applies to the Single Location plan on any billing option, with full terms set out in your service agreement. Interface examples, ranking illustrations, notification screens and photography on this page are illustrations, not client records. We are not affiliated with, endorsed by, or partnered with OpenAI, Google, Apple, Anthropic, Perplexity or Yelp; those names refer only to the places we work to get you found.<br><br>
       &copy; 2026 Golden Partners. All rights reserved. Local Growth Partner is a MikeNBen LLC company.
     </p>
   </div>
@@ -872,12 +871,25 @@
     document.getElementById('b1').textContent = m.b;
   });
 
+  var SIB_URL = "https://4b8d96bf.sibforms.com/serve/MUIFAGfHGZHzu1FcvSvsoIzXGi4IINazStI42dREJ8NpZDb2l7fOooXQlumIYbYE92iwrHNcjG0zmYhhpcCe8n7Zf1ixfme03XUwTvT6eDmBRCfJQNjvxarNBwLHCh9eBJCRYeUnJO0-0pYI4IOpqOvghIOcSL9JmmsWFRRyNHPFiAT3BfcZVlg2Vvl0dlzaxwGVst6osKhfPh8bXA==";
   document.getElementById('f').addEventListener('submit', function (ev) {
     ev.preventDefault();
-    var g = function (id) { return encodeURIComponent(document.getElementById(id).value); };
-    location.href = 'mailto:ben@benjix.com?subject=' + encodeURIComponent('Free visibility scan') +
-      '&body=Business:%20' + g('f-biz') + '%0ACity:%20' + g('f-city') +
-      '%0APhone:%20' + g('f-phone') + '%0AEmail:%20' + g('f-email');
+    var g = function (id) { return document.getElementById(id).value.trim(); };
+    var lead = { business: g('f-biz'), city: g('f-city'), phone: g('f-phone'), email: g('f-email') };
+    try { localStorage.setItem('lgp_lead', JSON.stringify(lead)); } catch (e) {}
+    try {
+      fetch('https://formsubmit.co/ajax/ben@goldenpartners.co', {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ _subject: 'SCAN LEAD (home): ' + lead.business + ' (' + lead.city + ')',
+          business: lead.business, city: lead.city, phone: lead.phone, email: lead.email })
+      });
+    } catch (e) {}
+    var f = document.createElement('form');
+    f.method = 'POST'; f.action = SIB_URL; f.style.display = 'none';
+    var add = function (n, v) { var i = document.createElement('input'); i.name = n; i.value = v; f.appendChild(i); };
+    add('EMAIL', lead.email); add('email_address_check', ''); add('locale', 'en'); add('html_type', 'simple');
+    document.body.appendChild(f);
+    f.submit();
   });
 </script>
 
