@@ -99,12 +99,26 @@ y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);})(window, documen
   if(lead.city) cfg.city = lead.city;
   Cal.ns.scan("inline", { elementOrSelector:"#cal-inline", calLink:"goldenclients/scan", config: cfg });
   Cal.ns.scan("ui", {theme:"light", hideEventTypeDetails:false});
-  Cal.ns.scan("on", { action:"bookingSuccessful", callback:function(){
+  Cal.ns.scan("on", { action:"bookingSuccessful", callback:function(ev){
     try {
       if (!localStorage.getItem('lgp_booked_fired')) {
         fbq('track','Schedule');
         localStorage.setItem('lgp_booked_fired','1');
       }
+    } catch(e) {}
+    /* unmissable confirmation: where the call happens + where the link lives */
+    try {
+      var link='';
+      try { var bd=(ev&&ev.detail&&ev.detail.data)||{}; var b=bd.booking||bd;
+        link=(b.metadata&&b.metadata.videoCallUrl)||b.meetingUrl||(typeof b.location==='string'&&b.location.indexOf('http')===0?b.location:''); } catch(_e){}
+      var el=document.createElement('div');
+      el.style.cssText='background:#12240F;border:1px solid #1EA75955;border-radius:12px;padding:16px 18px;margin:0 0 16px;color:#D7E5D3;font-size:14.5px;text-align:left;line-height:1.55';
+      el.innerHTML='<b style="color:#35D07F">You are booked. The call happens on Google Meet.</b><br>'
+        +'We just emailed you a calendar invite with the Google Meet link inside. Open it, hit Add to calendar, and click that link at call time.'
+        +(link?'<br>Or save the direct link now: <a style="color:#FF8A45" href="'+link+'">'+link+'</a>':'')
+        +'<br><span style="color:#8A99AC;font-size:13px">No email in 2 minutes? Check spam, it is from Cal.com.</span>';
+      var host=document.querySelector('.next'); if(host) host.insertBefore(el, host.firstChild);
+      el.scrollIntoView({behavior:'smooth', block:'center'});
     } catch(e) {}
   }});
   /* fallback link if the embed script cannot load */
