@@ -31,6 +31,12 @@
   .step { background:var(--sand); border-radius:12px; padding:14px 16px; font-size:13.5px; color:var(--ink); margin-top:16px; }
   .micro { font-size:12px; color:var(--steel); text-align:center; margin-top:12px; }
 </style>
+<!-- Microsoft Clarity -->
+<script type="text/javascript">
+(function(c,l,a,r,i,t,y){c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);})(window, document, "clarity", "script", "y8giyd42rx");
+</script>
 </head>
 <body>
 <div class="top"><a class="brand" href="/"><svg viewBox="0 0 48 48"><path d="M24 3 C14.6 3 7.2 10.3 7.2 19.6 C7.2 31.5 24 45.5 24 45.5 C24 45.5 40.8 31.5 40.8 19.6 C40.8 10.3 33.4 3 24 3 Z" fill="#FF6B1A"/><path d="M16 25 L21 19.5 L24.5 22.5 L32 14 M32 14 L26.8 14 M32 14 L32 19.2" stroke="#fff" stroke-width="3.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Local Growth Partner</span></a></div>
@@ -43,24 +49,26 @@
     <form action="https://formsubmit.co/ben@goldenpartners.co" method="POST">
       <input type="hidden" name="_subject" value="CLIENT ONBOARDING">
       <input type="hidden" name="_next" value="https://localgrowthpartner.com/thanks/">
-      <label>Business name (exactly as it should appear on Google)</label>
-      <input name="business_name" required>
+      <label>Business name <span>(we prefilled what you gave us, fix anything wrong)</span></label>
+      <input name="business_name" id="ob-biz" required>
       <label>Your name</label>
-      <input name="owner_name" required>
+      <input name="owner_name" id="ob-name" required>
       <label>Best phone</label>
-      <input name="phone" type="tel" required>
-      <label>Billing email</label>
-      <input name="email" type="email" required>
+      <input name="phone" id="ob-phone" type="tel" required>
+      <label>Billing email <span>(if different from the one you used)</span></label>
+      <input name="email" id="ob-email" type="email" required>
       <label>Your trade</label>
       <input name="trade" placeholder="e.g. roofing, med spa, moving" required>
       <label>Google Maps listing link <span>(if you have one; leave empty if we're creating it)</span></label>
-      <input name="gmb_url" type="url">
+      <input name="gmb_url" id="ob-gmb" type="url">
       <label>Cities you serve <span>(main city first)</span></label>
       <input name="service_area" required>
       <label>Your 3 most profitable services</label>
       <input name="top_services" required>
       <label>Your biggest local competitor <span>(the one to beat)</span></label>
       <input name="competitor">
+      <label>Keywords you want to own <span>(optional. If you know the exact searches that bring your best jobs, list them. We research and propose the keyword set either way, and you get the final edit.)</span></label>
+      <textarea name="target_keywords" rows="2" placeholder="e.g. roof replacement oneonta, emergency roof repair"></textarea>
       <label>Who at your business asks customers for reviews? <span>(name, role)</span></label>
       <input name="review_contact">
       <div class="step"><b>The one technical step:</b> on Google, open your Business Profile, three dots, Business Profile settings, People and access, Add, and invite <b>ben@goldenpartners.co</b> as Manager. No passwords, ever. We do this together on the call.</div>
@@ -71,5 +79,12 @@
     </form>
   </div>
 </div>
+<script>
+try {
+  var l = JSON.parse(localStorage.getItem('lgp_lead')||'{}');
+  var set = function(id, v){ var el=document.getElementById(id); if(el && v && !el.value) el.value=v; };
+  set('ob-biz', l.business); set('ob-name', l.name); set('ob-phone', l.phone); set('ob-email', l.email); set('ob-gmb', l.gmb);
+} catch(e) {}
+</script>
 </body>
 </html>
