@@ -136,8 +136,9 @@ y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);})(window, documen
             <input id="f-name" type="text" placeholder="Your name" required>
             <input id="f-phone" type="tel" placeholder="Phone" required>
             <input id="f-email" type="email" placeholder="Email" required>
-            <input id="f-gmb" type="url" placeholder="Your Google Maps listing link (for the scan)">
-            <div style="font-size:11.5px;color:#9AA7B8;margin-top:-4px">Optional. On Google Maps, find your business, tap Share, paste the link. If you skip it, we find your listing from your business name.</div>
+            <input id="f-gmb" type="url" placeholder="Your Google Maps listing link (for the scan)" required>
+            <div style="font-size:11.5px;color:#9AA7B8;margin-top:-4px">On Google Maps, find your business, tap Share, paste the link here.</div>
+            <label style="display:flex;gap:8px;align-items:flex-start;font-size:12.5px;color:#64748B;margin-top:2px;font-weight:400"><input id="f-nogmb" type="checkbox" style="width:auto;margin-top:2px">I don't have a Google listing (or can't find it)</label>
           </div>
           <button class="btn" type="submit">Send me my free scan &#8594;</button>
           <div class="micro">We only use this to run your scan and reach you. <a href="/privacy.html">Privacy</a></div>
@@ -183,7 +184,23 @@ y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);})(window, documen
 
 <script>
   var SIB_URL = "https://4b8d96bf.sibforms.com/serve/MUIFAGfHGZHzu1FcvSvsoIzXGi4IINazStI42dREJ8NpZDb2l7fOooXQlumIYbYE92iwrHNcjG0zmYhhpcCe8n7Zf1ixfme03XUwTvT6eDmBRCfJQNjvxarNBwLHCh9eBJCRYeUnJO0-0pYI4IOpqOvghIOcSL9JmmsWFRRyNHPFiAT3BfcZVlg2Vvl0dlzaxwGVst6osKhfPh8bXA==";
+  function validUSPhone(p){
+    var d=(p||'').replace(/\D/g,'');
+    if(d.length===11 && d.charAt(0)==='1') d=d.slice(1);
+    if(d.length!==10) return false;
+    if(/^(\d)\1{9}$/.test(d)) return false;
+    var ac=d.slice(0,3), ex=d.slice(3,6), ln=d.slice(6);
+    if(ac.charAt(0)==='0'||ac.charAt(0)==='1'||ex.charAt(0)==='0'||ex.charAt(0)==='1') return false;
+    if(ex==='555' && ln>='0100' && ln<='0199') return false;
+    if(ac==='000'||ac==='999') return false;
+    return true;
+  }
   var s1=document.getElementById('s1'), s2=document.getElementById('s2');
+  var gmbEl=document.getElementById('f-gmb'), noGmb=document.getElementById('f-nogmb');
+  if(noGmb){ noGmb.addEventListener('change', function(){
+    gmbEl.required = !noGmb.checked; gmbEl.disabled = noGmb.checked;
+    if(noGmb.checked) gmbEl.value='';
+  }); }
   document.getElementById('next').addEventListener('click', function(){
     var b=document.getElementById('f-biz'), c=document.getElementById('f-city');
     if(!b.value.trim()){ b.focus(); return; }
@@ -196,7 +213,14 @@ y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);})(window, documen
   document.getElementById('f').addEventListener('submit', function(ev){
     ev.preventDefault();
     var g=function(id){ return document.getElementById(id).value.trim(); };
-    var lead={ business:g('f-biz'), city:g('f-city'), name:g('f-name'), phone:g('f-phone'), email:g('f-email'), gmb:g('f-gmb') };
+    var ph=document.getElementById('f-phone');
+    if(!validUSPhone(ph.value)){
+      ph.style.borderColor='#DC2626'; ph.focus();
+      ph.setCustomValidity("That phone number doesn't look right. We call you with your scan results, so make sure it works.");
+      ph.reportValidity(); setTimeout(function(){ph.setCustomValidity('');},2500);
+      return;
+    }
+    var lead={ business:g('f-biz'), city:g('f-city'), name:g('f-name'), phone:g('f-phone'), email:g('f-email'), gmb:(noGmb&&noGmb.checked)?'declared: no listing':g('f-gmb') };
     try { localStorage.setItem('lgp_lead', JSON.stringify(lead)); } catch(e) {}
     /* store full details as Brevo contact attributes (client-side identify) */
     try {
