@@ -17,6 +17,10 @@ try {
 } catch(e) {}
 </script>
 <noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=1046611924904183&ev=PageView&noscript=1"/></noscript>
+<!-- Brevo tracker + identify retry (safety net if the submit-time call raced navigation) -->
+<script>window.sib={equeue:[],client_key:"okp6o1fyavx5g31wu4r1y4on"};window.sendinblue={};for(var j=['track','identify','trackLink','page'],i=0;i<j.length;i++){(function(k){window.sendinblue[k]=function(){var arg=Array.prototype.slice.call(arguments);(window.sib[k]||function(){var t={};t[k]=arg;window.sib.equeue.push(t)})(arg[0],arg[1],arg[2],arg[3])};})(j[i])}var sbn=document.createElement("script"),sbs=document.getElementsByTagName("script")[0];sbn.type="text/javascript",sbn.id="sendinblue-js",sbn.async=!0,sbn.src="https://sibautomation.com/sa.js?key="+window.sib.client_key,sbs.parentNode.insertBefore(sbn,sbs),window.sendinblue.page();
+try { var _l=JSON.parse(localStorage.getItem('lgp_lead')||'{}'); if(_l.email){ var _p=(_l.name||'').split(' ');
+  sendinblue.identify(_l.email, { FIRSTNAME:_p[0]||'', LASTNAME:_p.slice(1).join(' '), BUSINESS:_l.business||'', CITY:_l.city||'', GMB_URL:_l.gmb||'', PHONE_TXT:_l.phone||'' }); } } catch(e) {}</script>
 <link rel="canonical" href="https://localgrowthpartner.com/thanks/">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%23070D16'/%3E%3Cpath d='M32 8 C21.5 8 13.5 16 13.5 26 C13.5 39 32 56 32 56 C32 56 50.5 39 50.5 26 C50.5 16 42.5 8 32 8 Z' fill='%23FF6B1A'/%3E%3Cpath d='M22 32 L28 25 L32 28.5 L41 18.5 M41 18.5 L34.5 18.5 M41 18.5 L41 25' stroke='white' stroke-width='4' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">

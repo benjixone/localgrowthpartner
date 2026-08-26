@@ -12,6 +12,8 @@ fbq('track','PageView');
 fbq('track','ViewContent',{content_name:'scan-lander'});
 </script>
 <noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=1046611924904183&ev=PageView&noscript=1"/></noscript>
+<!-- Brevo tracker: identifies leads so their details land as contact attributes -->
+<script>window.sib={equeue:[],client_key:"okp6o1fyavx5g31wu4r1y4on"};window.sendinblue={};for(var j=['track','identify','trackLink','page'],i=0;i<j.length;i++){(function(k){window.sendinblue[k]=function(){var arg=Array.prototype.slice.call(arguments);(window.sib[k]||function(){var t={};t[k]=arg;window.sib.equeue.push(t)})(arg[0],arg[1],arg[2],arg[3])};})(j[i])}var sbn=document.createElement("script"),sbs=document.getElementsByTagName("script")[0];sbn.type="text/javascript",sbn.id="sendinblue-js",sbn.async=!0,sbn.src="https://sibautomation.com/sa.js?key="+window.sib.client_key,sbs.parentNode.insertBefore(sbn,sbs),window.sendinblue.page();</script>
 <meta name="description" content="See what ChatGPT and Google say about your business. Free scan, one business per trade, per city.">
 <link rel="canonical" href="https://localgrowthpartner.com/scan/">
 <meta property="og:type" content="website">
@@ -128,6 +130,8 @@ fbq('track','ViewContent',{content_name:'scan-lander'});
             <input id="f-name" type="text" placeholder="Your name" required>
             <input id="f-phone" type="tel" placeholder="Phone" required>
             <input id="f-email" type="email" placeholder="Email" required>
+            <input id="f-gmb" type="url" placeholder="Your Google Maps listing link (for the scan)">
+            <div style="font-size:11.5px;color:#9AA7B8;margin-top:-4px">Optional. On Google Maps, find your business, tap Share, paste the link. If you skip it, we find your listing from your business name.</div>
           </div>
           <button class="btn" type="submit">Send me my free scan &#8594;</button>
           <div class="micro">We only use this to run your scan and reach you. <a href="/privacy.html">Privacy</a></div>
@@ -186,14 +190,23 @@ fbq('track','ViewContent',{content_name:'scan-lander'});
   document.getElementById('f').addEventListener('submit', function(ev){
     ev.preventDefault();
     var g=function(id){ return document.getElementById(id).value.trim(); };
-    var lead={ business:g('f-biz'), city:g('f-city'), name:g('f-name'), phone:g('f-phone'), email:g('f-email') };
+    var lead={ business:g('f-biz'), city:g('f-city'), name:g('f-name'), phone:g('f-phone'), email:g('f-email'), gmb:g('f-gmb') };
     try { localStorage.setItem('lgp_lead', JSON.stringify(lead)); } catch(e) {}
+    /* store full details as Brevo contact attributes (client-side identify) */
+    try {
+      if (window.sendinblue && lead.email) {
+        var parts=(lead.name||'').split(' ');
+        sendinblue.identify(lead.email, { FIRSTNAME:parts[0]||'', LASTNAME:parts.slice(1).join(' '),
+          BUSINESS:lead.business||'', CITY:lead.city||'', GMB_URL:lead.gmb||'', PHONE_TXT:lead.phone||'',
+          LEADSOURCE:(new URLSearchParams(location.search).get('utm_content'))||'direct' });
+      }
+    } catch(e) {}
     /* instant lead alert to Ben (fire and forget) */
     try {
       fetch('https://formsubmit.co/ajax/ben@goldenpartners.co', {
         method:'POST', headers:{'Content-Type':'application/json'},
         body: JSON.stringify({ _subject:'SCAN LEAD: '+lead.business+' ('+lead.city+')',
-          business:lead.business, city:lead.city, name:lead.name, phone:lead.phone, email:lead.email })
+          business:lead.business, city:lead.city, name:lead.name, phone:lead.phone, email:lead.email, gmb_link:lead.gmb||'not provided' })
       });
     } catch(e) {}
     /* capture into Brevo list via classic POST; Brevo redirects to /thanks/ */
@@ -202,7 +215,7 @@ fbq('track','ViewContent',{content_name:'scan-lander'});
     var add=function(n,v){ var i=document.createElement('input'); i.name=n; i.value=v; f.appendChild(i); };
     add('EMAIL', lead.email); add('email_address_check',''); add('locale','en'); add('html_type','simple');
     document.body.appendChild(f);
-    f.submit();
+    setTimeout(function(){ f.submit(); }, 450);
   });
 </script>
 </body>

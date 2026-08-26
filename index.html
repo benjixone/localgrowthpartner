@@ -11,6 +11,8 @@ fbq('init','1046611924904183');
 fbq('track','PageView');
 </script>
 <noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=1046611924904183&ev=PageView&noscript=1"/></noscript>
+<!-- Brevo tracker -->
+<script>window.sib={equeue:[],client_key:"okp6o1fyavx5g31wu4r1y4on"};window.sendinblue={};for(var j=['track','identify','trackLink','page'],i=0;i<j.length;i++){(function(k){window.sendinblue[k]=function(){var arg=Array.prototype.slice.call(arguments);(window.sib[k]||function(){var t={};t[k]=arg;window.sib.equeue.push(t)})(arg[0],arg[1],arg[2],arg[3])};})(j[i])}var sbn=document.createElement("script"),sbs=document.getElementsByTagName("script")[0];sbn.type="text/javascript",sbn.id="sendinblue-js",sbn.async=!0,sbn.src="https://sibautomation.com/sa.js?key="+window.sib.client_key,sbs.parentNode.insertBefore(sbn,sbs),window.sendinblue.page();</script>
 <title>Local Growth Partner | Be the Business AI Recommends</title>
 <meta name="description" content="AI visibility and lead generation for local businesses. When people near you ask ChatGPT, Google or Maps who is best, your name comes up first. 90 days, or you pay nothing.">
 <link rel="canonical" href="https://localgrowthpartner.com/">
@@ -905,6 +907,12 @@ fbq('track','PageView');
     var lead = { business: g('f-biz'), city: g('f-city'), phone: g('f-phone'), email: g('f-email') };
     try { localStorage.setItem('lgp_lead', JSON.stringify(lead)); } catch (e) {}
     try {
+      if (window.sendinblue && lead.email) {
+        sendinblue.identify(lead.email, { BUSINESS: lead.business || '', CITY: lead.city || '',
+          PHONE_TXT: lead.phone || '', LEADSOURCE: 'home-form' });
+      }
+    } catch (e) {}
+    try {
       fetch('https://formsubmit.co/ajax/ben@goldenpartners.co', {
         method: 'POST', headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ _subject: 'SCAN LEAD (home): ' + lead.business + ' (' + lead.city + ')',
@@ -916,7 +924,7 @@ fbq('track','PageView');
     var add = function (n, v) { var i = document.createElement('input'); i.name = n; i.value = v; f.appendChild(i); };
     add('EMAIL', lead.email); add('email_address_check', ''); add('locale', 'en'); add('html_type', 'simple');
     document.body.appendChild(f);
-    f.submit();
+    setTimeout(function(){ f.submit(); }, 450);
   });
 </script>
 
