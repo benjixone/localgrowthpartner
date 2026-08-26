@@ -136,6 +136,7 @@ y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);})(window, documen
             <input id="f-name" type="text" placeholder="Your name" required>
             <input id="f-phone" type="tel" placeholder="Phone" required>
             <input id="f-email" type="email" placeholder="Email" required>
+            <div id="f-email-sug" style="display:none;font-size:12.5px;color:#D97706;margin-top:-4px"></div>
             <input id="f-gmb" type="url" placeholder="Your Google Maps listing link (for the scan)" required>
             <div style="font-size:11.5px;color:#9AA7B8;margin-top:-4px">On Google Maps, find your business, tap Share, paste the link here.</div>
             <label style="display:flex;gap:8px;align-items:flex-start;font-size:12.5px;color:#64748B;margin-top:2px;font-weight:400"><input id="f-nogmb" type="checkbox" style="width:auto;margin-top:2px">I don't have a Google listing (or can't find it)</label>
@@ -184,6 +185,30 @@ y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);})(window, documen
 
 <script>
   var SIB_URL = "https://4b8d96bf.sibforms.com/serve/MUIFAGfHGZHzu1FcvSvsoIzXGi4IINazStI42dREJ8NpZDb2l7fOooXQlumIYbYE92iwrHNcjG0zmYhhpcCe8n7Zf1ixfme03XUwTvT6eDmBRCfJQNjvxarNBwLHCh9eBJCRYeUnJO0-0pYI4IOpqOvghIOcSL9JmmsWFRRyNHPFiAT3BfcZVlg2Vvl0dlzaxwGVst6osKhfPh8bXA==";
+  function emailFix(v){
+    var m=(v||'').toLowerCase().trim().match(/^([^@\s]+)@([^@\s]+\.[^@\s]+)$/); if(!m) return null;
+    var lp=m[1], dom=m[2], orig=dom;
+    var doms={'gamil.com':'gmail.com','gmial.com':'gmail.com','gmali.com':'gmail.com','gmaill.com':'gmail.com','gnail.com':'gmail.com','gmai.com':'gmail.com','gemail.com':'gmail.com','yaho.com':'yahoo.com','yahooo.com':'yahoo.com','hotmial.com':'hotmail.com','hotmal.com':'hotmail.com','hotmali.com':'hotmail.com','outlok.com':'outlook.com','outloo.com':'outlook.com','iclod.com':'icloud.com','icoud.com':'icloud.com','aoll.com':'aol.com'};
+    if(doms[dom]) dom=doms[dom];
+    var parts=dom.split('.'); var last=parts[parts.length-1];
+    var tld={'con':'com','cmo':'com','vom':'com','ocm':'com','cpm':'com','cim':'com','comm':'com','coom':'com','cm':'com'};
+    if(tld[last]){ parts[parts.length-1]=tld[last]; dom=parts.join('.'); }
+    return dom!==orig ? lp+'@'+dom : null;
+  }
+  function emailGate(emailEl, sugEl){
+    var v=emailEl.value.trim(); var fix=emailFix(v);
+    var hardBad=/\.(con|cmo|vom|ocm|cpm|cim|comm|coom)$/.test(v.toLowerCase());
+    if(fix && (hardBad || emailEl.dataset.sug!==fix)){
+      emailEl.dataset.sug=fix;
+      sugEl.style.display='block';
+      sugEl.innerHTML='Did you mean <b style="cursor:pointer;text-decoration:underline">'+fix+'</b>? Tap to fix.';
+      sugEl.querySelector('b').onclick=function(){ emailEl.value=fix; sugEl.style.display='none'; emailEl.dataset.sug=''; };
+      emailEl.style.borderColor='#D97706'; emailEl.focus();
+      return false;
+    }
+    sugEl.style.display='none';
+    return true;
+  }
   function validUSPhone(p){
     var d=(p||'').replace(/\D/g,'');
     if(d.length===11 && d.charAt(0)==='1') d=d.slice(1);
@@ -213,6 +238,7 @@ y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);})(window, documen
   document.getElementById('f').addEventListener('submit', function(ev){
     ev.preventDefault();
     var g=function(id){ return document.getElementById(id).value.trim(); };
+    if(!emailGate(document.getElementById('f-email'), document.getElementById('f-email-sug'))) return;
     var ph=document.getElementById('f-phone');
     if(!validUSPhone(ph.value)){
       ph.style.borderColor='#DC2626'; ph.focus();
