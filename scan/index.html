@@ -54,10 +54,13 @@ fbq('track','ViewContent',{content_name:'scan-lander'});
   h1 em { color:var(--accent); font-style:italic; }
   .sub { color:var(--mist); font-size:16.5px; margin:16px auto 0; max-width:520px; }
   .vsl { margin:34px auto 0; max-width:760px; border-radius:16px; overflow:hidden; box-shadow:0 40px 90px rgba(0,0,0,0.55); background:#000; position:relative; aspect-ratio:16/9; }
-  /* VSL EMBED SLOT: replace this block with the video embed (YouTube/Vimeo iframe or <video>) */
+  /* The video is served from our own domain. Nobody has to sign in to anything to watch it. */
+  .vsl video, .vsl iframe { position:absolute; inset:0; width:100%; height:100%; border:0; background:#000; display:block; }
   .vsl .ph { position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:14px;
-    background:linear-gradient(160deg,#101D30,#070D16); }
-  .vsl .play { width:74px; height:74px; border-radius:50%; background:var(--accent); display:flex; align-items:center; justify-content:center; box-shadow:0 12px 40px rgba(255,107,26,0.45); }
+    background:linear-gradient(160deg,#101D30,#070D16); cursor:pointer; border:0; width:100%; font-family:inherit; }
+  .vsl .play { width:74px; height:74px; border-radius:50%; background:var(--accent); display:flex; align-items:center; justify-content:center; box-shadow:0 12px 40px rgba(255,107,26,0.45); transition:transform .2s, background .2s; }
+  .vsl .ph:hover .play { transform:scale(1.06); background:var(--accent-dk); }
+  .vsl .ph:focus-visible { outline:3px solid var(--accent-soft); outline-offset:-3px; }
   .vsl .play svg { width:26px; height:26px; fill:#fff; margin-left:4px; }
   .vsl .t { color:#C9D2DE; font-size:14px; }
   .card { background:#fff; color:var(--ink); border-radius:18px; max-width:560px; margin:40px auto 0; padding:30px 30px 34px; text-align:left; box-shadow:0 40px 90px rgba(0,0,0,0.5); }
@@ -115,8 +118,11 @@ y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);})(window, documen
     <h1>What does <em>ChatGPT</em> say<br>about your business?</h1>
     <p class="sub">Watch this short video. Then get your free scan. We show you everything on a free 15 minute call.</p>
 
-    <div class="vsl">
-      <iframe src="https://www.youtube-nocookie.com/embed/dvFuz6aPVig?rel=0&amp;modestbranding=1&amp;playsinline=1" title="Local Growth Partner: what AI says about your business" style="position:absolute;inset:0;width:100%;height:100%;border:0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+    <div class="vsl" id="vsl">
+      <button class="ph" id="vsl-ph" type="button" aria-label="Play the video">
+        <span class="play"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg></span>
+        <span class="t">Watch the short video</span>
+      </button>
     </div>
 
     <div class="card" id="form-card">
@@ -184,6 +190,62 @@ y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);})(window, documen
 </footer>
 
 <script>
+  /* VSL player. The mp4 is served from this domain, so no viewer is ever asked to
+     sign in or prove they are not a bot. YouTube stays wired as a silent fallback and
+     is only touched if the mp4 is missing. Swap VSL_SRC for a CDN URL to move hosts. */
+  var VSL_SRC = '/video/vsl.mp4';
+  var VSL_YT  = 'https://www.youtube-nocookie.com/embed/dvFuz6aPVig?rel=0&modestbranding=1&playsinline=1&autoplay=1';
+  (function(){
+    var box=document.getElementById('vsl'), ph=document.getElementById('vsl-ph');
+    if(!box||!ph) return;
+    var selfHosted=null, started=false, seen={};
+
+    /* ask once, up front, whether the file is there, so the click lands on the right player */
+    try { fetch(VSL_SRC,{method:'HEAD'}).then(function(r){ selfHosted=r.ok; },function(){ selfHosted=false; }); }
+    catch(e) { selfHosted=null; }
+
+    function mark(ev,data){
+      try { if(window.fbq) fbq('trackCustom', ev, data||{}); } catch(e){}
+      try { if(window.clarity) clarity('set','vsl', ev); } catch(e){}
+    }
+    function youtube(){
+      var f=document.createElement('iframe');
+      f.src=VSL_YT;
+      f.title='Local Growth Partner: what AI says about your business';
+      f.setAttribute('allow','accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share');
+      f.setAttribute('referrerpolicy','strict-origin-when-cross-origin');
+      f.allowFullscreen=true;
+      box.appendChild(f);
+      mark('VSLPlay',{player:'youtube'});
+    }
+    function native(){
+      var v=document.createElement('video');
+      v.src=VSL_SRC; v.controls=true; v.preload='auto';
+      v.playsInline=true; v.setAttribute('playsinline',''); v.setAttribute('webkit-playsinline','');
+      v.addEventListener('error', function(){
+        /* file not there or codec refused: hand the viewer over to YouTube rather than a black box */
+        if(v.parentNode) v.parentNode.removeChild(v);
+        youtube();
+      });
+      /* watch-through milestones, so drop-off stays measurable without YouTube */
+      v.addEventListener('timeupdate', function(){
+        if(!v.duration) return;
+        var pct=v.currentTime/v.duration*100, marks=[25,50,75,95];
+        for(var i=0;i<marks.length;i++){
+          if(pct>=marks[i] && !seen[marks[i]]){ seen[marks[i]]=1; mark('VSLProgress',{pct:marks[i]}); }
+        }
+      });
+      box.appendChild(v);
+      mark('VSLPlay',{player:'self'});
+      var pr=v.play(); if(pr && pr.catch) pr.catch(function(){});
+    }
+    ph.addEventListener('click', function(){
+      if(started) return; started=true;
+      ph.style.display='none';
+      if(selfHosted===false) youtube(); else native();
+    });
+  })();
+
   var SIB_URL = "https://4b8d96bf.sibforms.com/serve/MUIFAGfHGZHzu1FcvSvsoIzXGi4IINazStI42dREJ8NpZDb2l7fOooXQlumIYbYE92iwrHNcjG0zmYhhpcCe8n7Zf1ixfme03XUwTvT6eDmBRCfJQNjvxarNBwLHCh9eBJCRYeUnJO0-0pYI4IOpqOvghIOcSL9JmmsWFRRyNHPFiAT3BfcZVlg2Vvl0dlzaxwGVst6osKhfPh8bXA==";
   function emailFix(v){
     var m=(v||'').toLowerCase().trim().match(/^([^@\s]+)@([^@\s]+\.[^@\s]+)$/); if(!m) return null;
