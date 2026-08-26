@@ -62,7 +62,8 @@ try {
     <div class="st"><div class="n">2</div><div><b>You book your call</b><span>15 minutes. We show you everything live, and what we would fix first.</span></div></div>
     <div class="st"><div class="n">3</div><div><b>You keep the report</b><span>Yours either way. If you are not a fit, we say so.</span></div></div>
     <div style="margin-top:16px;border-radius:12px;overflow:hidden;background:#fff">
-      <iframe id="calframe" src="https://cal.com/goldenclients/scan?embed=true&theme=light" style="width:100%;height:620px;border:0" loading="lazy"></iframe>
+      <div id="cal-inline" style="width:100%;min-height:620px;overflow:auto"></div>
+      <div id="cal-fallback" style="display:none;padding:26px;text-align:center;font-size:15px"><a href="https://cal.com/goldenclients/scan" rel="noopener" style="color:#E85A0C;font-weight:600">Open the booking calendar &#8594;</a></div>
     </div>
   </div>
 </div>
@@ -76,13 +77,31 @@ try {
   var city=p.get('city')||lead.city, name=p.get('name')||lead.name;
   if(city){ document.getElementById('checking').textContent='Checking if '+city+' is still open'; }
   if(name){ document.getElementById('hl').innerHTML=name.split(' ')[0]+", you're in. <em>One more step.</em>"; }
-  var q=[];
-  if(lead.name) q.push('name='+encodeURIComponent(lead.name));
-  if(lead.email) q.push('email='+encodeURIComponent(lead.email));
-  if(lead.phone) q.push('attendeePhoneNumber='+encodeURIComponent(lead.phone));
-  if(lead.business) q.push('business='+encodeURIComponent(lead.business));
-  if(lead.city) q.push('city='+encodeURIComponent(lead.city));
-  if(q.length){ var cf=document.getElementById('calframe'); cf.src='https://cal.com/goldenclients/scan?embed=true&theme=light&'+q.join('&'); }
+
+  /* Cal.com official embed; bookingSuccessful feeds the pixel as Schedule */
+  (function (C, A, L) { let pfn = function (a, ar) { a.q.push(ar); }; let d = C.document; C.Cal = C.Cal || function () { let cal = C.Cal; let ar = arguments; if (!cal.loaded) { cal.ns = {}; cal.q = cal.q || []; d.head.appendChild(d.createElement("script")).src = A; cal.loaded = true; } if (ar[0] === L) { const api = function () { pfn(api, arguments); }; const namespace = ar[1]; api.q = api.q || []; if (typeof namespace === "string") { cal.ns[namespace] = cal.ns[namespace] || api; pfn(cal.ns[namespace], ar); pfn(cal, ["initNamespace", namespace]); } else pfn(cal, ar); return; } pfn(cal, ar); }; })(window, "https://app.cal.com/embed/embed.js", "init");
+  Cal("init", "scan", {origin:"https://cal.com"});
+  var cfg = {layout:"month_view", theme:"light"};
+  if(lead.name) cfg.name = lead.name;
+  if(lead.email) cfg.email = lead.email;
+  if(lead.phone) cfg.attendeePhoneNumber = lead.phone;
+  if(lead.business) cfg.business = lead.business;
+  if(lead.city) cfg.city = lead.city;
+  Cal.ns.scan("inline", { elementOrSelector:"#cal-inline", calLink:"goldenclients/scan", config: cfg });
+  Cal.ns.scan("ui", {theme:"light", hideEventTypeDetails:false});
+  Cal.ns.scan("on", { action:"bookingSuccessful", callback:function(){
+    try {
+      if (!localStorage.getItem('lgp_booked_fired')) {
+        fbq('track','Schedule');
+        localStorage.setItem('lgp_booked_fired','1');
+      }
+    } catch(e) {}
+  }});
+  /* fallback link if the embed script cannot load */
+  setTimeout(function(){
+    var el = document.getElementById('cal-inline');
+    if (el && el.childElementCount === 0) { document.getElementById('cal-fallback').style.display='block'; }
+  }, 6000);
 </script>
 </body>
 </html>
