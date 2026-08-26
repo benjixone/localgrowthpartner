@@ -346,6 +346,8 @@ fbq('track','PageView');
   .toggle button.on { background: var(--navy); color: #fff; }
   .toggle button em { font-style: normal; font-size: 11px; font-weight: 700; color: var(--accent); background: rgba(255,107,26,0.1); border-radius: 100px; padding: 2px 8px; }
   .toggle button.on em { background: rgba(255,255,255,0.14); color: var(--accent-soft); }
+  .pay-alt { display: block; margin-top: 12px; font-size: 13px; color: var(--steel); text-decoration: underline; text-underline-offset: 3px; }
+  .pay-alt:hover { color: var(--ink); }
   .prices { display: grid; grid-template-columns: minmax(0, 440px); justify-content: center; margin-top: 46px; }
   .pr { border: 1px solid var(--line-l); border-radius: 18px; padding: 34px 30px; display: flex; flex-direction: column; background: #fff; text-align: left; }
   .pr.hi { border: 2px solid var(--accent); box-shadow: 0 24px 60px rgba(255,107,26,0.14); position: relative; }
@@ -770,6 +772,7 @@ fbq('track','PageView');
         <div class="bill" id="b1">Billed every 3 months</div>
         <ul><li>Show up on Google, Maps and ChatGPT</li><li>See your progress every week</li><li>90-day refund guarantee</li></ul>
         <a class="btn" href="/scan/">Get my free scan</a>
+        <a class="pay-alt" id="s1" href="https://buy.stripe.com/bJe14p0PO05c8r05XYdfG01" target="_blank" rel="noopener">Ready to start now? Pay by card</a>
       </div>
     
     </div>
@@ -886,9 +889,9 @@ fbq('track','PageView');
   mq.innerHTML += mq.innerHTML;
 
   var plans = {
-    monthly:   { p: '$1,500', b: 'Billed every 4 weeks' },
-    quarterly: { p: '$1,200', b: 'Billed every 3 months' },
-    yearly:    { p: '$900',   b: 'Billed once a year' }
+    monthly:   { p: '$1,500', b: 'Billed every 4 weeks',  s: 'https://buy.stripe.com/fZu6oJcywbNU5eO4TUdfG00' },
+    quarterly: { p: '$1,200', b: 'Billed every 3 months', s: 'https://buy.stripe.com/bJe14p0PO05c8r05XYdfG01' },
+    yearly:    { p: '$900',   b: 'Billed once a year',    s: 'https://buy.stripe.com/28E5kFbus5pw0YybiidfG02' }
   };
   document.getElementById('toggle').addEventListener('click', function (ev) {
     var btn = ev.target.closest('button');
@@ -898,6 +901,7 @@ fbq('track','PageView');
     var m = plans[btn.dataset.mode];
     document.getElementById('p1').textContent = m.p;
     document.getElementById('b1').textContent = m.b;
+    document.getElementById('s1').href = m.s;
   });
 
   var SIB_URL = "https://4b8d96bf.sibforms.com/serve/MUIFAGfHGZHzu1FcvSvsoIzXGi4IINazStI42dREJ8NpZDb2l7fOooXQlumIYbYE92iwrHNcjG0zmYhhpcCe8n7Zf1ixfme03XUwTvT6eDmBRCfJQNjvxarNBwLHCh9eBJCRYeUnJO0-0pYI4IOpqOvghIOcSL9JmmsWFRRyNHPFiAT3BfcZVlg2Vvl0dlzaxwGVst6osKhfPh8bXA==";
