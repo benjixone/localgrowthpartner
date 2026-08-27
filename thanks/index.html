@@ -100,17 +100,52 @@ y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);})(window, documen
   Cal.ns.scan("inline", { elementOrSelector:"#cal-inline", calLink:"goldenclients/scan", config: cfg });
   Cal.ns.scan("ui", {theme:"light", hideEventTypeDetails:false});
   Cal.ns.scan("on", { action:"bookingSuccessful", callback:function(ev){
+    /* Unwrap the booking once: the pixel, the Brevo write and the on-screen
+       confirmation below all read from it. */
+    var b={};
+    try { var bd=(ev&&ev.detail&&ev.detail.data)||{}; b=bd.booking||bd||{}; } catch(_e){}
+
     try {
       if (!localStorage.getItem('lgp_booked_fired')) {
         fbq('track','Schedule');
         localStorage.setItem('lgp_booked_fired','1');
       }
     } catch(e) {}
+
+    /* Tell Brevo they booked. Without this a booked lead and a ghost are the
+       same record, so the chase sequence keeps emailing people who already
+       have a call on the calendar. scripts/sync-booked.mjs re-syncs from
+       Cal.com every 15 minutes and is the backstop for anyone who books on
+       another device, books later from a link, or cancels. */
+    try {
+      var attendees = Array.isArray(b.attendees) ? b.attendees : [];
+      var bookedEmail = (attendees[0] && attendees[0].email)
+        || (b.responses && b.responses.email)
+        || b.email || '';
+      var attrs = { BOOKED:'yes', BOOKING_STATUS:'upcoming' };
+      var startAt = new Date(b.startTime || b.start || '');
+      if (!isNaN(startAt.getTime())) {
+        /* Normalised exactly like the sync job writes it, so the next run sees
+           the contact as already correct instead of re-stamping it. */
+        attrs.BOOKING_START = startAt.toISOString();
+        attrs.BOOKED_AT = startAt.toISOString().slice(0,10); /* Brevo dates: YYYY-MM-DD */
+      }
+      /* Tag the address the sequence actually runs on (what they typed into the
+         form) and, if they booked under a different one, that address too. */
+      var targets = [];
+      if (lead.email) targets.push(lead.email);
+      if (bookedEmail && bookedEmail.toLowerCase() !== String(lead.email||'').toLowerCase()) {
+        targets.push(bookedEmail);
+      }
+      if (window.sendinblue) {
+        for (var ti=0; ti<targets.length; ti++) sendinblue.identify(targets[ti], attrs);
+      }
+    } catch(e) {}
+
     /* unmissable confirmation: where the call happens + where the link lives */
     try {
       var link='';
-      try { var bd=(ev&&ev.detail&&ev.detail.data)||{}; var b=bd.booking||bd;
-        link=(b.metadata&&b.metadata.videoCallUrl)||b.meetingUrl||(typeof b.location==='string'&&b.location.indexOf('http')===0?b.location:''); } catch(_e){}
+      try { link=(b.metadata&&b.metadata.videoCallUrl)||b.meetingUrl||(typeof b.location==='string'&&b.location.indexOf('http')===0?b.location:''); } catch(_e){}
       var el=document.createElement('div');
       el.style.cssText='background:#12240F;border:1px solid #1EA75955;border-radius:12px;padding:16px 18px;margin:0 0 16px;color:#D7E5D3;font-size:14.5px;text-align:left;line-height:1.55';
       el.innerHTML='<b style="color:#35D07F">You are booked. The call happens on Google Meet.</b><br>'
