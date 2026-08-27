@@ -1,0 +1,94 @@
+name: Dashboard refresh
+
+# Pulls Brevo / Cal.com / Stripe, re-encrypts dash/data.enc.json and commits it
+# only when something actually changed. The dashboard polls that file, so a
+# commit here is what makes /dash/ move.
+#
+# Note: GitHub only runs `schedule` on the repository's default branch, so this
+# starts refreshing once the branch is merged. Use "Run workflow" to test it
+# from a branch in the meantime.
+
+on:
+  schedule:
+    - cron: "*/15 * * * *"
+  workflow_dispatch:
+    inputs:
+      force:
+        description: "Write the data file even if nothing changed"
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+
+# Never let two refreshes race for the same commit.
+concurrency:
+  group: dashboard-refresh
+  cancel-in-progress: false
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          # Full history: the push-retry below rebases, which is unreliable on a
+          # shallow clone.
+          fetch-depth: 0
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Check the dashboard password is configured
+        id: guard
+        env:
+          DASH_PASSWORD: ${{ secrets.DASH_PASSWORD }}
+        run: |
+          if [ -z "$DASH_PASSWORD" ]; then
+            echo "ready=false" >> "$GITHUB_OUTPUT"
+            echo "::warning::DASH_PASSWORD is not set, so the dashboard cannot be refreshed. Add it under Settings -> Secrets and variables -> Actions, using the same password that unlocks /dash/."
+          else
+            echo "ready=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Refresh dashboard data
+        if: steps.guard.outputs.ready == 'true'
+        env:
+          DASH_PASSWORD: ${{ secrets.DASH_PASSWORD }}
+          BREVO_API_KEY: ${{ secrets.BREVO_API_KEY }}
+          CALCOM_API_KEY: ${{ secrets.CALCOM_API_KEY }}
+          STRIPE_API_KEY: ${{ secrets.STRIPE_API_KEY }}
+        run: |
+          {
+            echo '### Dashboard refresh'
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
+          node scripts/refresh-dashboard.mjs ${{ inputs.force && '--force' || '' }} 2>&1 | tee -a "$GITHUB_STEP_SUMMARY"
+          echo '```' >> "$GITHUB_STEP_SUMMARY"
+        shell: bash
+
+      - name: Commit if the data changed
+        if: steps.guard.outputs.ready == 'true'
+        run: |
+          # --porcelain, not `git diff`: on the very first run the data file is
+          # untracked, and `git diff` reports untracked files as no change.
+          if [ -z "$(git status --porcelain -- dash/data.enc.json)" ]; then
+            echo "Nothing changed — no commit."
+            exit 0
+          fi
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add dash/data.enc.json
+          git commit -m "dashboard data refresh"
+          # A scheduled run and a human push can collide; rebase and retry.
+          for attempt in 1 2 3; do
+            if git push origin "HEAD:${GITHUB_REF_NAME}"; then
+              exit 0
+            fi
+            echo "Push failed (attempt $attempt) — rebasing onto the latest branch tip."
+            git pull --rebase origin "${GITHUB_REF_NAME}" || true
+            sleep $((attempt * 3))
+          done
+          echo "::error::Could not push the refreshed dashboard data after 3 attempts."
+          exit 1
