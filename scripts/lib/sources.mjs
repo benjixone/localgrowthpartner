@@ -69,6 +69,8 @@ export async function fetchBrevo(env) {
         business: a.BUSINESS || a.COMPANY || "",
         city: a.CITY || "",
         phone: a.PHONE_TXT || a.SMS || "",
+        // The scan form posts the Google Business Profile as GMB_URL.
+        gbp: a.GMB_URL || a.GBP || "",
         source: a.LEADSOURCE || "",
         name: [a.FIRSTNAME, a.LASTNAME].filter(Boolean).join(" "),
         createdAt: c.createdAt || null,
@@ -260,4 +262,125 @@ export async function fetchStripe(env) {
   }
 }
 
-export const ALL_SOURCES = [fetchBrevo, fetchCalcom, fetchStripe];
+/* -------------------------------------------------------------- Meta ads -- */
+
+const num = (v) => {
+  const n = Number(v);
+  return Number.isFinite(n) ? n : 0;
+};
+
+/**
+ * Ad spend and per-ad performance for the live campaign.
+ *
+ * Needs both a token and an account id; a token alone cannot tell us which
+ * account to read, so treat a half-configured feed as not configured rather
+ * than guessing an account.
+ */
+export async function fetchMetaAds(env) {
+  const token = env.META_ACCESS_TOKEN;
+  const account = (env.META_AD_ACCOUNT_ID || "").replace(/^act_/, "");
+  if (!token || !account) {
+    return notConfigured("meta", "Meta — ads", "META_ACCESS_TOKEN + META_AD_ACCOUNT_ID");
+  }
+
+  const base = `https://graph.facebook.com/v21.0/act_${encodeURIComponent(account)}/insights`;
+  const params = new URLSearchParams({
+    fields: "ad_id,ad_name,spend,impressions,clicks,ctr,cpc",
+    level: "ad",
+    // Must match FUNNEL_WINDOW_DAYS in refresh-dashboard.mjs. Ad spend over one
+    // period divided by leads over another produces a ratio that means nothing.
+    date_preset: "last_30d",
+    limit: "100",
+    access_token: token,
+  });
+
+  try {
+    const json = await getJSON(`${base}?${params}`);
+    const rows = Array.isArray(json.data) ? json.data : [];
+
+    const ads = rows.map((r) => ({
+      id: r.ad_id || "",
+      name: r.ad_name || "Ad",
+      spend: num(r.spend),
+      impressions: num(r.impressions),
+      clicks: num(r.clicks),
+      ctr: num(r.ctr),
+      cpc: num(r.cpc),
+    }));
+    ads.sort((a, b) => b.spend - a.spend);
+
+    const totals = ads.reduce(
+      (acc, a) => ({
+        spend: acc.spend + a.spend,
+        impressions: acc.impressions + a.impressions,
+        clicks: acc.clicks + a.clicks,
+      }),
+      { spend: 0, impressions: 0, clicks: 0 }
+    );
+    // Recompute rather than averaging the per-ad rates, which would weight a
+    // £0 ad the same as the one carrying the campaign.
+    totals.ctr = totals.impressions ? (totals.clicks / totals.impressions) * 100 : 0;
+    totals.cpc = totals.clicks ? totals.spend / totals.clicks : 0;
+
+    return {
+      id: "meta",
+      label: "Meta — ads",
+      configured: true,
+      ok: true,
+      detail: `${ads.length} ads · $${totals.spend.toFixed(2)} spent`,
+      error: null,
+      data: { ads, totals },
+    };
+  } catch (err) {
+    return failed("meta", "Meta — ads", err);
+  }
+}
+
+/* ----------------------------------------------------------- Brevo email -- */
+
+/**
+ * Transactional/drip email health. Separate from the leads call because it uses
+ * a different endpoint and can fail on its own without costing us the leads.
+ */
+export async function fetchBrevoEmail(env) {
+  const key = env.BREVO_API_KEY;
+  if (!key) return notConfigured("email", "Brevo — email", "BREVO_API_KEY");
+
+  try {
+    const json = await getJSON("https://api.brevo.com/v3/smtp/statistics/aggregatedReport?days=30", {
+      headers: { "api-key": key, accept: "application/json" },
+    });
+
+    const delivered = num(json.delivered);
+    const uniqueOpens = num(json.uniqueOpens);
+
+    return {
+      id: "email",
+      label: "Brevo — email",
+      configured: true,
+      ok: true,
+      detail: `${delivered} delivered (30d)`,
+      error: null,
+      data: {
+        delivered,
+        requests: num(json.requests),
+        uniqueOpens,
+        opens: num(json.opens),
+        clicks: num(json.clicks),
+        hardBounces: num(json.hardBounces),
+        softBounces: num(json.softBounces),
+        // Unique opens over delivered. This can legitimately exceed 100%: the
+        // window bounds opens, not deliveries, so mail sent before it opens
+        // inside it. That is where the old dashboard's 125% came from. We
+        // report the true ratio and flag it rather than clamping, so a real
+        // anomaly stays visible instead of being rounded away.
+        openRate: delivered ? (uniqueOpens / delivered) * 100 : 0,
+        openRateSuspect: uniqueOpens > delivered,
+      },
+    };
+  } catch (err) {
+    return failed("email", "Brevo — email", err);
+  }
+}
+
+export const ALL_SOURCES = [fetchBrevo, fetchCalcom, fetchStripe, fetchMetaAds, fetchBrevoEmail];
