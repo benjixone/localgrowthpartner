@@ -463,16 +463,20 @@
     }).join("");
   }
 
+  var REPO = "https://github.com/benjixone/localgrowthpartner";
+
   var SETUP_HTML =
-    '<div class="notice"><h2>Waiting for the first refresh</h2>' +
-    "<p>The dashboard is wired for live data, but <code>dash/data.enc.json</code> " +
-    "does not exist yet. It appears as soon as the refresher runs once:</p><ol>" +
-    "<li>Add repository secrets under <b>Settings &rarr; Secrets and variables &rarr; Actions</b>: " +
-    "<code>DASH_PASSWORD</code> (this password), plus <code>BREVO_API_KEY</code>, " +
-    "<code>CALCOM_API_KEY</code> and <code>STRIPE_API_KEY</code> for whichever feeds you want.</li>" +
-    "<li>Open the <b>Actions</b> tab, pick <b>Dashboard refresh</b>, and hit <b>Run workflow</b>.</li>" +
-    "<li>This page picks the data up within a minute — no reload needed.</li>" +
-    "</ol><p>After that it refreshes itself every 15 minutes.</p></div>";
+    '<div class="notice"><h2>Two steps left</h2>' +
+    "<p>The refresher is installed and running on schedule, but it has no credentials yet, " +
+    "so it has nothing to publish. Both steps need a GitHub login — they cannot be done from here.</p><ol>" +
+    '<li><a href="' + REPO + '/settings/secrets/actions/new" target="_blank" rel="noopener">' +
+    "<b>Add the secrets</b></a> — <code>DASH_PASSWORD</code> (the password you just typed) is required. " +
+    "Then <code>BREVO_API_KEY</code> for leads, <code>CALCOM_API_KEY</code> for booked calls, " +
+    "<code>STRIPE_API_KEY</code> for revenue. Add only the feeds you want; the rest show as not connected.</li>" +
+    '<li><a href="' + REPO + '/actions/workflows/dashboard-refresh.yml" target="_blank" rel="noopener">' +
+    "<b>Run the workflow once</b></a> — hit <b>Run workflow</b> so you do not wait for the next 15-minute tick.</li>" +
+    "<li>This page picks the data up within a minute. No reload needed.</li>" +
+    "</ol><p>After that it keeps itself current every 15 minutes.</p></div>";
 
   function render() {
     if (state.missing || !state.data) {
