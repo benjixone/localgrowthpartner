@@ -18,7 +18,7 @@ import { createRequire } from "node:module";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 
-import { fetchBrevo, fetchCalcom, fetchStripe } from "./lib/sources.mjs";
+import { fetchBrevo, fetchCalcom, fetchStripe, fetchMetaAds, fetchBrevoEmail } from "./lib/sources.mjs";
 
 const require = createRequire(import.meta.url);
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
@@ -34,6 +34,12 @@ const SALT = "c01b7c6c55b689e1ac19fb22b1bf8b9c";
 
 /** Rewrite an unchanged file this often, so "last checked" proves liveness. */
 const HEARTBEAT_HOURS = 6;
+
+/**
+ * Window for every funnel ratio. Must match the `date_preset` used for Meta
+ * insights in lib/sources.mjs — the two are divided by each other.
+ */
+const FUNNEL_WINDOW_DAYS = 30;
 
 const DAY_MS = 24 * 60 * 60 * 1000;
 
@@ -115,7 +121,58 @@ function buildModel(sources, now) {
   const mrrCents = byId.stripe?.data?.mrrCents ?? 0;
   const currency = byId.stripe?.data?.currency ?? "usd";
 
+  const ads = byId.meta?.data?.totals ?? null;
+  const email = byId.email?.data ?? null;
+
+  // Every funnel figure is scoped to the same window as the ad spend it is
+  // divided by. Using Brevo's lifetime contact total here instead would have
+  // read as a 656% visitor-to-lead rate and a cost per lead of pennies.
+  const windowStart = now - FUNNEL_WINDOW_DAYS * DAY_MS;
+  const inWindow = (iso) => {
+    const t = new Date(iso || 0).getTime();
+    return Number.isFinite(t) && t >= windowStart;
+  };
+  const leadCount = countSince(leads, "createdAt", FUNNEL_WINDOW_DAYS, now);
+  const bookedCount = bookings.filter((b) => b.status !== "cancelled" && inWindow(b.start)).length;
+
+  // Funnel ratios are cross-source, so each is only meaningful when both of its
+  // inputs came back live. `null` means "we cannot say", which the page renders
+  // as a dash — never as a zero that looks like a real measurement.
+  const ratio = (top, bottom, live) => (live && bottom ? top / bottom : null);
+  const adsLive = Boolean(byId.meta?.ok);
+  const leadsLive = Boolean(byId.brevo?.ok);
+  const callsLive = Boolean(byId.calcom?.ok);
+
   return {
+    funnel: {
+      live: adsLive || leadsLive || callsLive,
+      windowDays: FUNNEL_WINDOW_DAYS,
+      spend: adsLive ? ads.spend : null,
+      impressions: adsLive ? ads.impressions : null,
+      clicks: adsLive ? ads.clicks : null,
+      ctr: adsLive ? ads.ctr : null,
+      cpc: adsLive ? ads.cpc : null,
+      leads: leadsLive ? leadCount : null,
+      costPerLead: ratio(ads?.spend, leadCount, adsLive && leadsLive),
+      visitorToLead: ratio(leadCount, ads?.clicks, adsLive && leadsLive),
+      bookedCalls: callsLive ? bookedCount : null,
+      costPerBookedCall: ratio(ads?.spend, bookedCount, adsLive && callsLive),
+      leadToBooked: ratio(bookedCount, leadCount, leadsLive && callsLive),
+    },
+    ads: {
+      live: adsLive,
+      rows: byId.meta?.data?.ads ?? [],
+      totals: ads,
+    },
+    email: {
+      live: Boolean(byId.email?.ok),
+      delivered: email?.delivered ?? null,
+      openRate: email?.openRate ?? null,
+      openRateSuspect: Boolean(email?.openRateSuspect),
+      uniqueOpens: email?.uniqueOpens ?? null,
+      clicks: email?.clicks ?? null,
+      bounces: email ? email.hardBounces + email.softBounces : null,
+    },
     kpis: {
       leads7d: { value: countSince(leads, "createdAt", 7, now), live: Boolean(byId.brevo?.ok) },
       leads30d: { value: countSince(leads, "createdAt", 30, now), live: Boolean(byId.brevo?.ok) },
@@ -179,7 +236,13 @@ async function main() {
   }
 
   const now = Date.now();
-  const sources = await Promise.all([fetchBrevo(process.env), fetchCalcom(process.env), fetchStripe(process.env)]);
+  const sources = await Promise.all([
+    fetchBrevo(process.env),
+    fetchCalcom(process.env),
+    fetchStripe(process.env),
+    fetchMetaAds(process.env),
+    fetchBrevoEmail(process.env),
+  ]);
 
   for (const s of sources) {
     const status = s.ok ? "ok" : s.configured ? "FAILED" : "not configured";

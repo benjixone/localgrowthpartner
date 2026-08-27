@@ -132,6 +132,27 @@
   .notice code{background:var(--lift); padding:2px 6px; border-radius:5px;
     font-family:ui-monospace,Menlo,monospace; font-size:12.5px; color:var(--cream)}
 
+  /* --------------------------------------------------------- stat tiles -- */
+  .stats{display:grid; grid-template-columns:repeat(auto-fit,minmax(132px,1fr)); gap:11px; padding:14px 0 4px}
+  .stat{background:var(--lift); border:1px solid var(--line); border-radius:10px; padding:12px 13px}
+  .stat .sv{font-size:21px; font-weight:700; letter-spacing:-.01em}
+  .stat .sk{font-size:11px; text-transform:uppercase; letter-spacing:.07em; color:var(--mist); margin-top:5px}
+  .stat .ss{font-size:11px; color:var(--steel); margin-top:2px}
+
+  /* ------------------------------------------------------------- cockpit -- */
+  .cockpit-body{padding:15px 18px 17px}
+  .cockpit-links{display:flex; flex-wrap:wrap; gap:9px; margin-bottom:14px}
+  .cockpit-links a{display:inline-block; padding:8px 13px; border-radius:8px; font-size:13px;
+    font-weight:600; text-decoration:none; border:1px solid var(--line); color:var(--mist)}
+  .cockpit-links a:hover{border-color:var(--accent); color:var(--cream)}
+  .cockpit-links a.pay{background:var(--accent); border-color:var(--accent); color:#fff}
+  .cockpit-links a.pay:hover{background:var(--accent-dk); color:#fff}
+  #cockpit-script-wrap summary{cursor:pointer; font-size:13.5px; color:var(--mist);
+    padding:9px 0; border-top:1px solid var(--line)}
+  #cockpit-script-wrap summary:hover{color:var(--cream)}
+  .script{white-space:pre-wrap; font-family:'Inter',system-ui,sans-serif; font-size:13px;
+    line-height:1.6; color:var(--cream); margin:4px 0 0; max-height:460px; overflow:auto}
+
   .flash{animation:flash .9s ease-out}
   @keyframes flash{from{background:rgba(255,107,26,.14)} to{background:transparent}}
   @media (prefers-reduced-motion:reduce){.flash{animation:none}}
@@ -171,6 +192,17 @@
 
   <div id="setup" hidden></div>
 
+  <section class="card" id="cockpit-card" hidden>
+    <header><h2>Call cockpit</h2><span class="count">links &amp; script</span></header>
+    <div class="cockpit-body">
+      <div class="cockpit-links" id="cockpit-links"></div>
+      <details id="cockpit-script-wrap">
+        <summary>Open the call script (CUPPP)</summary>
+        <pre class="script" id="cockpit-script"></pre>
+      </details>
+    </div>
+  </section>
+
   <section class="kpis" id="kpis"></section>
 
   <div class="grid">
@@ -181,6 +213,22 @@
     <section class="card">
       <header><h2>Booked calls</h2><span class="count" id="bookings-count"></span></header>
       <div class="card-body" id="bookings"></div>
+    </section>
+  </div>
+
+  <section class="card" id="funnel-card">
+    <header><h2>Funnel</h2><span class="count" id="funnel-count"></span></header>
+    <div class="card-body" id="funnel"></div>
+  </section>
+
+  <div class="grid">
+    <section class="card">
+      <header><h2>Ads</h2><span class="count" id="ads-count"></span></header>
+      <div class="card-body" id="ads"></div>
+    </section>
+    <section class="card">
+      <header><h2>Email</h2><span class="count" id="email-count"></span></header>
+      <div class="card-body" id="email"></div>
     </section>
   </div>
 
@@ -217,7 +265,7 @@
   var LEGACY_KEY = "staticrypt_passphrase"; // what the old StaticCrypt page wrote
 
   var state = { key:null, data:null, fingerprint:null, generatedAt:null,
-                lastCheck:0, online:false, missing:false };
+                lastCheck:0, online:false, missing:false, cockpitLoaded:false };
 
   var $ = function (id) { return document.getElementById(id); };
 
@@ -371,12 +419,14 @@
         '<td><div class="biz trunc">' + esc(l.business || l.name || "—") + "</div>" +
           (l.city ? '<div class="dim">' + esc(l.city) + "</div>" : "") + "</td>" +
         '<td class="dim">' + contact + "</td>" +
+        '<td class="dim trunc">' + esc(l.gbp || "—") + "</td>" +
         "<td>" + (l.source ? '<span class="tag">' + esc(l.source) + "</span>" : "") + "</td>" +
         '<td class="dim nowrap">' + esc(ago(l.createdAt)) + "</td></tr>";
     }).join("");
 
     $("leads").innerHTML =
-      "<table><thead><tr><th>Business</th><th>Contact</th><th>Source</th><th>When</th></tr></thead>" +
+      "<table><thead><tr><th>Business</th><th>Contact</th><th>GBP</th>" +
+      "<th>Source</th><th>When</th></tr></thead>" +
       "<tbody>" + rows + "</tbody></table>";
   }
 
@@ -450,6 +500,73 @@
     }).join("");
   }
 
+  /** A metric we could not measure renders as "—", never as 0. */
+  function statTile(label, value, sub) {
+    return '<div class="stat"><div class="sv">' + esc(value == null ? "—" : value) + "</div>" +
+      '<div class="sk">' + esc(label) + "</div>" +
+      (sub ? '<div class="ss">' + esc(sub) + "</div>" : "") + "</div>";
+  }
+
+  var pct = function (v, dp) { return v == null ? null : v.toFixed(dp == null ? 1 : dp) + "%"; };
+  var usd = function (v, dp) { return v == null ? null : "$" + v.toFixed(dp == null ? 2 : dp); };
+  var int = function (v) { return v == null ? null : Math.round(v).toLocaleString(); };
+
+  function renderFunnel(d) {
+    var f = d.funnel || {};
+    $("funnel-count").textContent = f.live
+      ? "last " + (f.windowDays || 30) + " days"
+      : "no feeds connected";
+    $("funnel").innerHTML =
+      '<div class="stats">' +
+      statTile("Ad spend", usd(f.spend)) +
+      statTile("Impressions", int(f.impressions)) +
+      statTile("Clicks", int(f.clicks)) +
+      statTile("CTR", pct(f.ctr, 2)) +
+      statTile("CPC", usd(f.cpc)) +
+      statTile("Leads", int(f.leads)) +
+      statTile("Cost per lead", usd(f.costPerLead)) +
+      statTile("Visitor → lead", pct(f.visitorToLead == null ? null : f.visitorToLead * 100)) +
+      statTile("Booked calls", int(f.bookedCalls)) +
+      statTile("Cost per booked call", usd(f.costPerBookedCall)) +
+      statTile("Lead → booked", pct(f.leadToBooked == null ? null : f.leadToBooked * 100)) +
+      "</div>";
+  }
+
+  function renderAds(d) {
+    var a = d.ads || {}, rows = a.rows || [];
+    $("ads-count").textContent = a.live ? rows.length + " ads" : "not connected";
+    if (!rows.length) {
+      $("ads").innerHTML = '<div class="empty">' +
+        (a.live ? "No ads reporting yet." : "Meta feed not connected.") + "</div>";
+      return;
+    }
+    $("ads").innerHTML =
+      "<table><thead><tr><th>Ad</th><th>Spend</th><th>Impr.</th><th>Clicks</th>" +
+      "<th>CTR</th><th>CPC</th></tr></thead><tbody>" +
+      rows.map(function (r) {
+        return '<tr><td class="biz trunc">' + esc(r.name) + "</td>" +
+          '<td class="nowrap">' + esc(usd(r.spend)) + "</td>" +
+          '<td class="dim">' + esc(int(r.impressions)) + "</td>" +
+          '<td class="dim">' + esc(int(r.clicks)) + "</td>" +
+          '<td class="dim">' + esc(pct(r.ctr, 2)) + "</td>" +
+          '<td class="dim">' + esc(r.clicks ? usd(r.cpc) : "—") + "</td></tr>";
+      }).join("") + "</tbody></table>";
+  }
+
+  function renderEmail(d) {
+    var e = d.email || {};
+    $("email-count").textContent = e.live ? "last 30 days" : "not connected";
+    $("email").innerHTML = '<div class="stats">' +
+      statTile("Delivered", int(e.delivered)) +
+      statTile("Open rate", pct(e.openRate),
+        e.uniqueOpens == null ? ""
+          : e.openRateSuspect ? e.uniqueOpens + " opens vs " + e.delivered + " delivered — window overlap"
+          : e.uniqueOpens + " unique opens") +
+      statTile("Clicks", int(e.clicks)) +
+      statTile("Bounces", int(e.bounces)) +
+      "</div>";
+  }
+
   function renderFeeds(d) {
     var sources = d.sources || [];
     if (!sources.length) { $("feeds").innerHTML = '<div class="empty">No feeds reported.</div>'; return; }
@@ -478,11 +595,51 @@
     "<li>This page picks the data up within a minute. No reload needed.</li>" +
     "</ol><p>After that it keeps itself current every 15 minutes.</p></div>";
 
+  /**
+   * The cockpit is static content, not a feed: fetch it once per session after
+   * unlocking. It stays useful even when every API feed is down, which is the
+   * point — it is what you open during a call.
+   */
+  function loadCockpit() {
+    if (!state.key || state.cockpitLoaded) return Promise.resolve();
+    return fetch("cockpit.enc.json?t=" + Date.now(), { cache: "no-store" })
+      .then(function (res) { return res.status === 404 ? null : res.json(); })
+      .then(function (env) {
+        if (!env) return;
+        return decodeEnvelope(env, state.key).then(function (cockpit) {
+          state.cockpitLoaded = true;
+          renderCockpit(cockpit);
+        });
+      })
+      .catch(function (err) {
+        if (console && console.warn) console.warn("Cockpit unavailable:", err);
+      });
+  }
+
+  function renderCockpit(cockpit) {
+    var links = (cockpit && cockpit.links) || [];
+    if (!links.length && !(cockpit && cockpit.callScript)) return;
+
+    $("cockpit-links").innerHTML = links.map(function (l) {
+      // Only http(s) — never let a stored string become a javascript: URL.
+      if (!/^https?:\/\//i.test(l.url || "")) return "";
+      return '<a class="' + (l.kind === "pay" ? "pay" : "") + '" href="' + esc(l.url) +
+        '" target="_blank" rel="noopener">' + esc(l.label || l.url) + "</a>";
+    }).join("");
+
+    if (cockpit.callScript) {
+      $("cockpit-script").textContent = cockpit.callScript;
+    } else {
+      $("cockpit-script-wrap").hidden = true;
+    }
+    $("cockpit-card").hidden = false;
+  }
+
   function render() {
     if (state.missing || !state.data) {
       $("setup").innerHTML = SETUP_HTML;
       $("setup").hidden = false;
-      ["kpis","leads","bookings","revenue","activity","feeds"].forEach(function (id) {
+      ["kpis","funnel","leads","bookings","ads","email","revenue","activity","feeds"].forEach(function (id) {
         var el = $(id); if (el) el.innerHTML = "";
       });
       renderStatus();
@@ -490,7 +647,8 @@
     }
     $("setup").hidden = true;
     var d = state.data;
-    renderKpis(d); renderLeads(d); renderBookings(d);
+    renderKpis(d); renderFunnel(d); renderLeads(d); renderBookings(d);
+    renderAds(d); renderEmail(d);
     renderRevenue(d); renderActivity(d); renderFeeds(d);
     renderStatus();
   }
@@ -504,6 +662,9 @@
     $("app").hidden = false;
 
     render();
+    // Independent of the feeds on purpose: the cockpit must be there even when
+    // no API key is configured and every panel above it is empty.
+    loadCockpit();
     poll();
     setInterval(poll, POLL_MS);
     setInterval(renderStatus, 1000);          // keep "3m ago" honest
