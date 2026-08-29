@@ -1,5 +1,7 @@
 User-agent: *
 Allow: /
-Disallow: /dash/
 
 Sitemap: https://localgrowthpartner.com/sitemap.xml
+
+User-agent: *
+Disallow: /dash/
