@@ -249,6 +249,14 @@ y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);})(window, documen
       return;
     }
     var lead={ business:g('f-biz'), city:g('f-city'), name:g('f-name'), phone:g('f-phone'), email:g('f-email'), gmb:(noGmb&&noGmb.checked)?'declared: no listing':g('f-gmb') };
+    /* server-side tracking: dedup event id + FB click/browser ids, relayed to Meta CAPI via Brevo */
+    var gc=function(n){ var m=document.cookie.match(new RegExp('(?:^|; )'+n+'=([^;]*)')); return m?decodeURIComponent(m[1]):''; };
+    lead.eid='lgp-'+Date.now()+'-'+Math.random().toString(36).slice(2,10);
+    lead.fbp=gc('_fbp'); lead.fbc=gc('_fbc');
+    var fbclid=new URLSearchParams(location.search).get('fbclid');
+    if(!lead.fbc && fbclid) lead.fbc='fb.1.'+Date.now()+'.'+fbclid;
+    lead.src=location.origin+location.pathname;
+    try { localStorage.removeItem('lgp_lead_fired'); } catch(e) {}
     try { localStorage.setItem('lgp_lead', JSON.stringify(lead)); } catch(e) {}
     /* store full details as Brevo contact attributes (client-side identify) */
     try {
@@ -256,7 +264,8 @@ y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);})(window, documen
         var parts=(lead.name||'').split(' ');
         sendinblue.identify(lead.email, { FIRSTNAME:parts[0]||'', LASTNAME:parts.slice(1).join(' '),
           BUSINESS:lead.business||'', CITY:lead.city||'', GMB_URL:lead.gmb||'', PHONE_TXT:lead.phone||'',
-          LEADSOURCE:(new URLSearchParams(location.search).get('utm_content'))||'direct' });
+          LEADSOURCE:(new URLSearchParams(location.search).get('utm_content'))||'direct',
+          FB_EVENT_ID:lead.eid, FBP:lead.fbp||'', FBC:lead.fbc||'', SOURCE_URL:lead.src });
       }
     } catch(e) {}
     /* instant lead alert to Ben (fire and forget) */
@@ -277,6 +286,7 @@ y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);})(window, documen
     add('FIRSTNAME', parts2[0]||''); add('LASTNAME', parts2.slice(1).join(' '));
     add('BUSINESS', lead.business||''); add('CITY', lead.city||''); add('GMB_URL', lead.gmb||'');
     add('PHONE_TXT', lead.phone||''); add('LEADSOURCE', (new URLSearchParams(location.search).get('utm_content'))||'direct');
+    add('FB_EVENT_ID', lead.eid); add('FBP', lead.fbp||''); add('FBC', lead.fbc||''); add('SOURCE_URL', lead.src);
     document.body.appendChild(f);
     setTimeout(function(){ f.submit(); }, 450);
   });

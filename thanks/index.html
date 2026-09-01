@@ -11,7 +11,8 @@ fbq('init','1046611924904183');
 fbq('track','PageView');
 try {
   if (localStorage.getItem('lgp_lead') && !localStorage.getItem('lgp_lead_fired')) {
-    fbq('track','Lead');
+    var _eid=''; try{ _eid=(JSON.parse(localStorage.getItem('lgp_lead')||'{}').eid)||''; }catch(e){}
+    if(_eid){ fbq('track','Lead',{},{eventID:_eid}); } else { fbq('track','Lead'); }
     localStorage.setItem('lgp_lead_fired','1');
   }
 } catch(e) {}
