@@ -240,7 +240,9 @@ y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);})(window, documen
   document.getElementById('f').addEventListener('submit', function(ev){
     ev.preventDefault();
     var g=function(id){ return document.getElementById(id).value.trim(); };
-    if(!emailGate(document.getElementById('f-email'), document.getElementById('f-email-sug'))) return;
+    var _ef=document.getElementById('f-email');
+    _ef.value=_ef.value.trim().replace(/\.(comb|conm|con|cmo|vom|c0m)$/i,'.com').replace(/@(gmial|gamil|gmal|gmaill)\./i,'@gmail.').replace(/@(yahooo|yaho)\./i,'@yahoo.');
+    if(!emailGate(_ef, document.getElementById('f-email-sug'))) return;
     var ph=document.getElementById('f-phone');
     if(!validUSPhone(ph.value)){
       ph.style.borderColor='#DC2626'; ph.focus();
