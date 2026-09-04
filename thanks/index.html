@@ -100,7 +100,7 @@ y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);})(window, documen
   var cfg = {layout:"month_view", theme:"light"};
   if(lead.name) cfg.name = lead.name;
   if(lead.email) cfg.email = lead.email;
-  if(lead.phone) cfg.attendeePhoneNumber = lead.phone;
+  if(lead.phone){ var _d=String(lead.phone).replace(/\D/g,''); if(_d.length===10) _d='1'+_d; cfg.attendeePhoneNumber = _d ? '+'+_d : lead.phone; }
   if(lead.business) cfg.business = lead.business;
   if(lead.city) cfg.city = lead.city;
   Cal.ns.scan("inline", { elementOrSelector:"#cal-inline", calLink:"goldenclients/scan", config: cfg });
