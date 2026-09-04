@@ -141,7 +141,7 @@ y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);})(window, documen
   <div class="glow"></div>
   <div class="wrap in">
     <h1>What does <em>ChatGPT</em> say<br>about your business?</h1>
-    <p class="sub">Watch this short video. Then get your free scan. We show you everything on a free 15 minute call.</p>
+    <p class="sub">Find out on a free 15 minute call. We pull up your city live and show you who Google and ChatGPT recommend, and why it is not you yet.</p>
 
     <div class="vsl">
       <iframe src="https://www.youtube-nocookie.com/embed/dvFuz6aPVig?rel=0&amp;modestbranding=1&amp;playsinline=1" title="Local Growth Partner: what AI says about your business" style="position:absolute;inset:0;width:100%;height:100%;border:0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
@@ -178,8 +178,8 @@ y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);})(window, documen
           </div>
           
             <div style="font-size:11.5px;color:#8896A8;line-height:1.5;margin-top:10px">By submitting, you agree Local Growth Partner may call or text you about your scan and booking. Msg &amp; data rates may apply. Reply STOP to opt out anytime.</div>
-            <button class="btn" type="submit">Send me my free scan &#8594;</button>
-          <div class="micro">We only use this to run your scan and reach you. <a href="/privacy.html">Privacy</a></div>
+            <button class="btn" type="submit" id="f-submit">Show me who is winning my city &#8594;</button>
+          <div class="micro">You pick a 15 minute slot next. Everything runs live, on the call. <a href="/privacy.html">Privacy</a></div>
         </div>
       </form>
     </div>
@@ -312,7 +312,8 @@ y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);})(window, documen
     if(t.value==='Other' && !to.value.trim()){ to.focus(); return; }
     s1.classList.remove('on'); s2.classList.add('on');
     document.getElementById('d2').classList.add('on');
-    document.getElementById('f-title').textContent='Where do we send it?';
+    document.getElementById('f-title').textContent='Where do we reach you?';
+    var _cityTxt=(c.value||'').trim(); var _sb=document.getElementById('f-submit'); if(_sb){ _sb.innerHTML='Show me who is winning '+(_cityTxt? _cityTxt : 'my city')+' &#8594;'; }
     document.getElementById('f-name').focus();
   });
   document.getElementById('f').addEventListener('submit', function(ev){
