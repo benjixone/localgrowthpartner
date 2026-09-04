@@ -70,6 +70,9 @@ fbq('track','ViewContent',{content_name:'scan-lander'});
   .f-row { display:grid; gap:10px; }
   input { padding:14px 16px; border-radius:10px; border:1.5px solid var(--line-l); font-family:inherit; font-size:15px; width:100%; }
   input:focus { outline:none; border-color:var(--accent); }
+  select { padding:14px 16px; border-radius:10px; border:1.5px solid var(--line-l); font-family:inherit; font-size:15px; width:100%; background:#fff; color:#101B2B; -webkit-appearance:none; appearance:none; }
+  select:focus { outline:none; border-color:var(--accent); }
+  select:invalid { color:#8896A8; }
   .btn { display:inline-flex; align-items:center; justify-content:center; gap:8px; width:100%;
     background:var(--accent); color:#fff; padding:15px 26px; border-radius:100px; border:none; cursor:pointer;
     font-family:inherit; font-size:15.5px; font-weight:600; margin-top:14px; box-shadow:0 8px 26px rgba(255,107,26,0.3); transition:background .2s; }
@@ -128,6 +131,13 @@ y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);})(window, documen
             <input id="f-biz" type="text" placeholder="Business name" required>
             <input id="f-city" type="text" placeholder="City" required>
           </div>
+          <div class="f-row" style="margin-top:10px">
+            <select id="f-trade" required>
+              <option value="" disabled selected>Your trade</option>
+              <option>Plumbing</option><option>HVAC</option><option>Electrician</option><option>Roofing</option><option>Moving company</option><option>Transportation / airport shuttle</option><option>Towing</option><option>Auto repair</option><option>Landscaping / lawn care</option><option>Cleaning services</option><option>Pest control</option><option>Home remodeling / contractor</option><option>Painting</option><option>Flooring</option><option>Garage doors</option><option>Locksmith</option><option>Med spa / aesthetics</option><option>Dental</option><option>Chiropractic</option><option>Physical therapy</option><option>Salon / barber</option><option>Gym / fitness</option><option>Restaurant</option><option>Law firm</option><option>Real estate</option><option>Photography</option><option value="Other">Other</option>
+            </select>
+            <input id="f-trade-other" type="text" placeholder="Your trade" style="display:none">
+          </div>
           <button class="btn" type="button" id="next">Check my city &#8594;</button>
           <div class="micro">One business per trade, per city. We check if yours is open.</div>
         </div>
@@ -169,10 +179,10 @@ y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);})(window, documen
 
 <div class="faq">
   <h2>Fair questions.</h2>
-  <details><summary>I got burned by an agency before. Why is this different?</summary><p>You see progress every week. No show-up in 90 days, money back. The risk sits with us.</p></details>
+  <details><summary>I got burned by an agency before. Why is this different?</summary><p>You see progress every week. Not showing up by day 90? Your billing pauses and we keep working for free until you do. The risk sits with us.</p></details>
   <details><summary>How much of my time does this take?</summary><p>About 15 minutes to start. Then you run your business.</p></details>
   <details><summary>Do you need my passwords?</summary><p>No. You keep control of everything you own.</p></details>
-  <details><summary>What if I do not show up in 90 days?</summary><p>We refund you. Plain words, in your agreement.</p></details>
+  <details><summary>What if I do not show up in 90 days?</summary><p>Your billing pauses and we keep working for free until you do. Plain words, in your agreement.</p></details>
   <details><summary>Why only one business per city?</summary><p>Two rivals can't both be first. We pick one and win for them.</p></details>
   <details><summary>Is my business a fit?</summary><p>Maybe not, and we'll tell you. The free scan is where we find out.</p></details>
   <div class="again"><a href="#form-card">Get my free scan &#8594;</a></div>
@@ -180,7 +190,7 @@ y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);})(window, documen
 
 <footer>
   <div class="wrap">
-    90-day show-up-or-refund guarantee on the Single Location plan; full terms in your service agreement. Results shown are documented accounts from the ranking technology we run for clients; every business and city is different, and your results will vary.<br>
+    90-day guarantee on the Single Location plan: top 3 or we keep working free until you are; full terms in your service agreement. Results shown are documented accounts from the ranking technology we run for clients; every business and city is different, and your results will vary.<br>
     &copy; 2026 Golden Partners &middot; <a href="/privacy.html">Privacy</a> &middot; <a href="/">localgrowthpartner.com</a>
   </div>
 </footer>
@@ -228,10 +238,13 @@ y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);})(window, documen
     gmbEl.required = !noGmb.checked; gmbEl.disabled = noGmb.checked;
     if(noGmb.checked) gmbEl.value='';
   }); }
+  (function(){ var t=document.getElementById('f-trade'), to=document.getElementById('f-trade-other'); if(t){ t.addEventListener('change', function(){ t.style.borderColor=''; to.style.display = (t.value==='Other') ? 'block' : 'none'; if(t.value==='Other') to.focus(); }); } })();
   document.getElementById('next').addEventListener('click', function(){
-    var b=document.getElementById('f-biz'), c=document.getElementById('f-city');
+    var b=document.getElementById('f-biz'), c=document.getElementById('f-city'), t=document.getElementById('f-trade'), to=document.getElementById('f-trade-other');
     if(!b.value.trim()){ b.focus(); return; }
     if(!c.value.trim()){ c.focus(); return; }
+    if(!t.value){ t.focus(); t.style.borderColor='#DC2626'; return; }
+    if(t.value==='Other' && !to.value.trim()){ to.focus(); return; }
     s1.classList.remove('on'); s2.classList.add('on');
     document.getElementById('d2').classList.add('on');
     document.getElementById('f-title').textContent='Where do we send it?';
@@ -250,7 +263,9 @@ y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);})(window, documen
       ph.reportValidity(); setTimeout(function(){ph.setCustomValidity('');},2500);
       return;
     }
-    var lead={ business:g('f-biz'), city:g('f-city'), name:g('f-name'), phone:g('f-phone'), email:g('f-email'), gmb:(noGmb&&noGmb.checked)?'declared: no listing':g('f-gmb') };
+    var _t=document.getElementById('f-trade'), _to=document.getElementById('f-trade-other');
+    var tradeVal = _t ? ((_t.value==='Other') ? g('f-trade-other') : _t.value) : '';
+    var lead={ business:g('f-biz'), city:g('f-city'), trade:tradeVal, name:g('f-name'), phone:g('f-phone'), email:g('f-email'), gmb:(noGmb&&noGmb.checked)?'declared: no listing':g('f-gmb') };
     /* server-side tracking: dedup event id + FB click/browser ids, relayed to Meta CAPI via Brevo */
     var gc=function(n){ var m=document.cookie.match(new RegExp('(?:^|; )'+n+'=([^;]*)')); return m?decodeURIComponent(m[1]):''; };
     lead.eid='lgp-'+Date.now()+'-'+Math.random().toString(36).slice(2,10);
@@ -267,7 +282,7 @@ y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);})(window, documen
         sendinblue.identify(lead.email, { FIRSTNAME:parts[0]||'', LASTNAME:parts.slice(1).join(' '),
           BUSINESS:lead.business||'', CITY:lead.city||'', GMB_URL:lead.gmb||'', PHONE_TXT:lead.phone||'',
           LEADSOURCE:(new URLSearchParams(location.search).get('utm_content'))||'direct',
-          FB_EVENT_ID:lead.eid, FBP:lead.fbp||'', FBC:lead.fbc||'', SOURCE_URL:lead.src });
+          FB_EVENT_ID:lead.eid, FBP:lead.fbp||'', FBC:lead.fbc||'', SOURCE_URL:lead.src, TRADE:lead.trade||'' });
       }
     } catch(e) {}
     /* instant lead alert to Ben (fire and forget) */
@@ -288,7 +303,7 @@ y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);})(window, documen
     add('FIRSTNAME', parts2[0]||''); add('LASTNAME', parts2.slice(1).join(' '));
     add('BUSINESS', lead.business||''); add('CITY', lead.city||''); add('GMB_URL', lead.gmb||'');
     add('PHONE_TXT', lead.phone||''); add('LEADSOURCE', (new URLSearchParams(location.search).get('utm_content'))||'direct');
-    add('FB_EVENT_ID', lead.eid); add('FBP', lead.fbp||''); add('FBC', lead.fbc||''); add('SOURCE_URL', lead.src);
+    add('FB_EVENT_ID', lead.eid); add('FBP', lead.fbp||''); add('FBC', lead.fbc||''); add('SOURCE_URL', lead.src); add('TRADE', lead.trade||'');
     document.body.appendChild(f);
     setTimeout(function(){ f.submit(); }, 450);
   });
