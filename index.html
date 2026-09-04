@@ -818,16 +818,7 @@ y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);})(window, documen
         <div>Where you rank today</div><div>Who beats you</div>
         <div>What AI says about you</div><div>What we would fix first</div>
       </div>
-      <form class="form" id="f">
-        <input id="f-biz" class="full" type="text" placeholder="Business name" required>
-        <input id="f-city" type="text" placeholder="City" required>
-        <input id="f-phone" type="tel" placeholder="Phone" required>
-        <input id="f-email" class="full" type="email" placeholder="Email" required>
-        <div id="f-email-sug" style="display:none;font-size:12.5px;color:#D97706"></div>
-        
-            <div style="font-size:11.5px;color:#8896A8;line-height:1.5;margin-top:10px">By submitting, you agree Local Growth Partner may call or text you about your scan and booking. Msg &amp; data rates may apply. Reply STOP to opt out anytime.</div>
-            <button class="btn" type="submit">Send me my free scan <svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
-      </form>
+      <a class="btn" href="/scan/#form-card" style="display:inline-flex;align-items:center;gap:10px;margin-top:18px">Get my free scan <svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
       <p class="micro">15 minutes. No pressure. If you are not a fit, we say so. We only use your details to send your scan.</p>
     </div>
   </div>
@@ -840,12 +831,21 @@ y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);})(window, documen
       <h2 class="display">Fair questions.</h2>
     </div>
     <div class="qs rv">
-      <details><summary>I got burned by an agency before. Why is this different?</summary><p>You see progress every week. Not showing up by day 90? Your billing pauses and we keep working for free until you do. The risk sits with us.</p></details>
+            <details><summary>I got burned by an agency before. Why is this different?</summary><p>You see progress every week. Not showing up by day 90? Your billing pauses and we keep working for free until you do. The risk sits with us.</p></details>
+      <details><summary>Do I get the scan by email?</summary><p>No. We show it to you live on a 15 minute call, then the report is yours to keep. Live is where you see who beats you and why.</p></details>
+      <details><summary>Phone or video?</summary><p>Your choice when you book. We call you, or Google Meet if you want to see the screen.</p></details>
+      <details><summary>My partner makes decisions with me.</summary><p>Bring them. Add them as a guest when you book, or 3-way them in on the call.</p></details>
+      <details><summary>Is my business a fit?</summary><p>Not always. You need a Google listing with 10 or more reviews at 3.8 stars or better, and room to take on more customers. If you are not a fit, we say so on the call and you keep the report.</p></details>
       <details><summary>How much of my time does this take?</summary><p>About 15 minutes to start. Then you run your business.</p></details>
-      <details><summary>Do you need my passwords?</summary><p>No. You keep control of everything you own.</p></details>
+      <details><summary>Do you need my passwords?</summary><p>No. You keep control of everything you own. We work through manager access on your Google listing.</p></details>
+      <details><summary>What happens after I pay?</summary><p>You send us your Google Maps link and fill a 15 minute onboarding form. Your first plain-words report lands within 7 days, and every week after.</p></details>
       <details><summary>What if I do not show up in 90 days?</summary><p>Your billing pauses and we keep working for free until you do. Plain words, in your agreement.</p></details>
+      <details><summary>What if I reach the top 3 and then slip?</summary><p>Top 3 means top 3, number 3 counts. The engine keeps feeding your profile every week, that is what the subscription is. Stop it and rankings drift back, which is why clients stay.</p></details>
+      <details><summary>Is the guarantee in writing?</summary><p>Yes. It is in the terms you agree to at checkout. Read them any time at <a href="/terms.html">localgrowthpartner.com/terms</a>.</p></details>
+      <details><summary>I have more than one location.</summary><p>This page is one location. More locations, we quote it on the call.</p></details>
       <details><summary>Why only one business per city?</summary><p>Two rivals can't both be first. We pick one and win for them.</p></details>
-      <details><summary>Is my business a fit?</summary><p>Maybe not, and we'll tell you. The free scan is where we find out.</p></details>
+      <details><summary>Can I cancel or move the call?</summary><p>Yes. The links are in your booking confirmation email. Or just reply to any of our texts.</p></details>
+      <details><summary>Will you text me?</summary><p>Only about your scan and your booking. Reply STOP any time.</p></details>
     </div>
   </div>
 </section>
@@ -949,7 +949,7 @@ y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);})(window, documen
     if(ac==='000'||ac==='999') return false;
     return true;
   }
-  document.getElementById('f').addEventListener('submit', function (ev) {
+  var _f=document.getElementById('f'); if(_f) _f.addEventListener('submit', function(ev){
     ev.preventDefault();
     var g = function (id) { return document.getElementById(id).value.trim(); };
     if(!emailGate(document.getElementById('f-email'), document.getElementById('f-email-sug'))) return;
