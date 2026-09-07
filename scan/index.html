@@ -345,7 +345,9 @@ y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);})(window, documen
   var PL={ on:false, lib:null, token:null, sel:null, items:[], hi:-1, timer:null, seq:0,
     fields:['id','displayName','formattedAddress','addressComponents','rating','userRatingCount','googleMapsURI','primaryType','primaryTypeDisplayName','businessStatus'] };
   var bizEl=document.getElementById('f-biz'), cityEl=document.getElementById('f-city'), acList=document.getElementById('ac-list'), acHint=document.getElementById('ac-hint'), okBox=document.getElementById('biz-ok'), exitBox=document.getElementById('exit');
-  function manualMode(){ PL.on=false; if(gmbManual) gmbManual.style.display='grid'; if(gmbEl) gmbEl.required=!(noGmb&&noGmb.checked); }
+  function manualMode(){ PL.on=false; if(gmbManual) gmbManual.style.display='grid'; if(gmbEl) gmbEl.required=!(noGmb&&noGmb.checked);
+    /* gate off (no key, load failure, or 7s timeout): leads from here skipped the review check */
+    if(!PL.gateOffFired){ PL.gateOffFired=true; try { if(window.fbq) fbq('trackCustom','ScanGateOff'); } catch(e){} try { if(window.clarity) clarity('set','gate','off'); } catch(e){} } }
   function placesBoot(){
     if(!LGP_PLACES_KEY){ manualMode(); return; }
     var settled=false;
@@ -481,6 +483,10 @@ y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);})(window, documen
     var b=bizEl, c=cityEl, t=document.getElementById('f-trade'), to=document.getElementById('f-trade-other');
     if(!b.value.trim()){ b.focus(); return; }
     if(!gateOk()) return;
+    /* passed the gate: once per selected business, so a city/trade retry does not double count */
+    try { var _s=PL.sel||{}, _k=PL.on?(_s.id||'?'):'off'; if(PL.qualFiredFor!==_k){ PL.qualFiredFor=_k;
+      if(window.fbq) fbq('trackCustom','ScanQualified',{gate:PL.on?'places':'off', rating:(typeof _s.rating==='number')?_s.rating:'', reviews:(typeof _s.reviews==='number')?_s.reviews:''});
+      if(window.clarity) clarity('set','qualified', PL.on?'places':'off'); } } catch(e){}
     if(!c.value.trim()){ c.focus(); return; }
     if(!t.value){ t.focus(); t.style.borderColor='#DC2626'; return; }
     if(t.value==='Other' && !to.value.trim()){ to.focus(); return; }
