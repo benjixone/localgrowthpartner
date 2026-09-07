@@ -125,6 +125,30 @@ fbq('track','ViewContent',{content_name:'scan-lander'});
   @media (max-width:700px){ .steps, .plans { grid-template-columns:1fr; } }
   footer { border-top:1px solid var(--line-d); padding:26px 0 40px; text-align:center; font-size:11.5px; color:#5D6B7D; line-height:1.7; }
   footer a { color:#8A99AC; }
+  /* Google Places lookup + qualification gate */
+  .ac-wrap { position:relative; }
+  .ac-list { position:absolute; top:100%; left:0; right:0; background:#fff; border:1.5px solid var(--line-l); border-radius:10px; margin-top:4px; box-shadow:0 14px 34px rgba(16,27,43,0.16); z-index:30; max-height:280px; overflow:auto; display:none; }
+  .ac-list.on { display:block; }
+  .ac-item { padding:11px 14px; cursor:pointer; border-bottom:1px solid var(--sand); font-size:14px; line-height:1.35; }
+  .ac-item b { display:block; font-weight:600; color:var(--ink); }
+  .ac-item span { font-size:12.5px; color:var(--steel); }
+  .ac-item.hi, .ac-item[data-i]:hover { background:#FFF4EC; }
+  .ac-foot { padding:9px 14px; font-size:12px; color:var(--steel); display:flex; justify-content:space-between; align-items:center; gap:10px; }
+  .ac-foot button { background:none; border:none; padding:0; color:var(--accent-dk); font:inherit; font-size:12.5px; font-weight:600; cursor:pointer; text-decoration:underline; }
+  .ac-hint { font-size:12.5px; color:#B45309; margin-top:6px; display:none; }
+  .ac-hint.on { display:block; }
+  .biz-ok { display:none; margin-top:10px; border:1.5px solid #B7E4C7; background:#F0FBF4; border-radius:10px; padding:12px 14px; font-size:13.5px; color:var(--ink); line-height:1.45; }
+  .biz-ok.on { display:block; }
+  .biz-ok .stars { color:#B45309; font-weight:600; }
+  .biz-ok .again { background:none; border:none; padding:0; font:inherit; font-size:12.5px; color:var(--steel); text-decoration:underline; cursor:pointer; margin-top:4px; }
+  .exit { display:none; }
+  .exit.on { display:block; }
+  .exit h3 { font-family:'Cormorant',serif; font-size:25px; font-weight:500; line-height:1.2; }
+  .exit p { font-size:14.5px; color:var(--ink); margin-top:10px; }
+  .exit ol { margin:12px 0 0 18px; font-size:14px; color:var(--ink); }
+  .exit ol li { margin-top:6px; }
+  .exit .rl { display:block; margin-top:10px; font-size:13px; color:var(--accent-dk); word-break:break-all; }
+  .exit .back { background:none; border:none; padding:0; margin-top:18px; font:inherit; font-size:13px; color:var(--steel); text-decoration:underline; cursor:pointer; }
   @media (max-width:560px){ .card{ padding:24px 20px 28px; } }
 </style>
 <!-- Microsoft Clarity -->
@@ -153,9 +177,14 @@ y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);})(window, documen
       <form id="f" autocomplete="on">
         <div class="f-step on" id="s1">
           <div class="f-row">
-            <input id="f-biz" type="text" placeholder="Business name" required>
+            <div class="ac-wrap">
+              <input id="f-biz" type="text" placeholder="Business name" required autocomplete="off">
+              <div class="ac-list" id="ac-list" role="listbox"></div>
+            </div>
             <input id="f-city" type="text" placeholder="City" required>
           </div>
+          <div class="ac-hint" id="ac-hint">Pick your business from the list so we scan the right one.</div>
+          <div class="biz-ok" id="biz-ok"></div>
           <div class="f-row" style="margin-top:10px">
             <select id="f-trade" required>
               <option value="" disabled selected>Your trade</option>
@@ -172,9 +201,11 @@ y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);})(window, documen
             <input id="f-phone" type="tel" placeholder="Phone" required>
             <input id="f-email" type="email" placeholder="Email" required>
             <div id="f-email-sug" style="display:none;font-size:12.5px;color:#D97706;margin-top:-4px"></div>
-            <input id="f-gmb" type="url" placeholder="Your Google Maps listing link (for the scan)" required>
-            <div style="font-size:11.5px;color:#9AA7B8;margin-top:-4px">On Google Maps, find your business, tap Share, paste the link here.</div>
-            <label style="display:flex;gap:8px;align-items:flex-start;font-size:12.5px;color:#64748B;margin-top:2px;font-weight:400"><input id="f-nogmb" type="checkbox" style="width:auto;margin-top:2px">I don't have a Google listing (or can't find it)</label>
+            <div id="gmb-manual" style="display:none;gap:10px">
+              <input id="f-gmb" type="url" placeholder="Your Google Maps listing link (for the scan)">
+              <div style="font-size:11.5px;color:#9AA7B8;margin-top:-4px">On Google Maps, find your business, tap Share, paste the link here.</div>
+              <label style="display:flex;gap:8px;align-items:flex-start;font-size:12.5px;color:#64748B;margin-top:2px;font-weight:400"><input id="f-nogmb" type="checkbox" style="width:auto;margin-top:2px">I don't have a Google listing (or can't find it)</label>
+            </div>
           </div>
           
             <div style="font-size:11.5px;color:#8896A8;line-height:1.5;margin-top:10px">By submitting, you agree Local Growth Partner may call or text you about your scan and booking. Msg &amp; data rates may apply. Reply STOP to opt out anytime.</div>
@@ -182,6 +213,7 @@ y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);})(window, documen
           <div class="micro">We only use this to run your scan and reach you. <a href="/privacy.html">Privacy</a></div>
         </div>
       </form>
+      <div class="exit" id="exit"></div>
     </div>
 
     <div class="proof">
@@ -298,15 +330,157 @@ y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);})(window, documen
     return true;
   }
   var s1=document.getElementById('s1'), s2=document.getElementById('s2');
-  var gmbEl=document.getElementById('f-gmb'), noGmb=document.getElementById('f-nogmb');
+  var gmbEl=document.getElementById('f-gmb'), noGmb=document.getElementById('f-nogmb'), gmbManual=document.getElementById('gmb-manual');
   if(noGmb){ noGmb.addEventListener('change', function(){
     gmbEl.required = !noGmb.checked; gmbEl.disabled = noGmb.checked;
     if(noGmb.checked) gmbEl.value='';
   }); }
   (function(){ var t=document.getElementById('f-trade'), to=document.getElementById('f-trade-other'); if(t){ t.addEventListener('change', function(){ t.style.borderColor=''; to.style.display = (t.value==='Other') ? 'block' : 'none'; if(t.value==='Other') to.focus(); }); } })();
+
+  /* ---- Google Places: find the business, read its reviews, gate the booking ----
+     LGP_PLACES_KEY = a Google Maps Platform browser key with Places API (New) and Maps JavaScript API enabled,
+     restricted to this site's referrers (see maps-agency/CLAUDE.md, 2026-09-07). Empty key or a load failure
+     falls back to the manual link field with no review gate. */
+  var LGP_PLACES_KEY = "";
+  var PL={ on:false, lib:null, token:null, sel:null, items:[], hi:-1, timer:null, seq:0,
+    fields:['id','displayName','formattedAddress','addressComponents','rating','userRatingCount','googleMapsURI','primaryType','primaryTypeDisplayName','businessStatus'] };
+  var bizEl=document.getElementById('f-biz'), cityEl=document.getElementById('f-city'), acList=document.getElementById('ac-list'), acHint=document.getElementById('ac-hint'), okBox=document.getElementById('biz-ok'), exitBox=document.getElementById('exit');
+  function manualMode(){ PL.on=false; if(gmbManual) gmbManual.style.display='grid'; if(gmbEl) gmbEl.required=!(noGmb&&noGmb.checked); }
+  function placesBoot(){
+    if(!LGP_PLACES_KEY){ manualMode(); return; }
+    var settled=false;
+    try {
+      (g=>{var h,a,k,p="The Google Maps JavaScript API",c="google",l="importLibrary",q="__ib__",m=document,b=window;b=b[c]||(b[c]={});var d=b.maps||(b.maps={}),r=new Set,e=new URLSearchParams,u=()=>h||(h=new Promise(async(f,n)=>{await (a=m.createElement("script"));e.set("libraries",[...r]+"");for(k in g)e.set(k.replace(/[A-Z]/g,t=>"_"+t[0].toLowerCase()),g[k]);e.set("callback",c+".maps."+q);a.src=`https://maps.${c}apis.com/maps/api/js?`+e;d[q]=f;a.onerror=()=>h=n(Error(p+" could not load."));a.nonce=m.querySelector("script[nonce]")?.nonce||"";m.head.append(a)}));d[l]?console.warn(p+" only loads once. Ignoring:",g):d[l]=(f,...n)=>r.add(f)&&u().then(()=>d[l](f,...n))})({key:LGP_PLACES_KEY, v:"weekly"});
+      google.maps.importLibrary('places').then(function(lib){ if(settled) return; settled=true; PL.lib=lib; PL.on=true; PL.token=new lib.AutocompleteSessionToken(); }).catch(function(){ if(!settled){ settled=true; manualMode(); } });
+    } catch(e){ settled=true; manualMode(); return; }
+    setTimeout(function(){ if(!settled){ settled=true; manualMode(); } }, 7000);
+  }
+  function esc(v){ return String(v==null?'':v).replace(/[&<>"']/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]; }); }
+  function acHide(){ acList.classList.remove('on'); acList.innerHTML=''; PL.items=[]; PL.hi=-1; }
+  function hideOk(){ okBox.classList.remove('on'); okBox.innerHTML=''; }
+  var AC_FOOT='<div class="ac-foot"><button type="button" id="ac-none">Can&#39;t find your business?</button><span>Powered by Google</span></div>';
+  function acRender(list){
+    PL.items=list; PL.hi=-1; var h='';
+    for(var i=0;i<list.length;i++){ var pp=list[i].placePrediction; if(!pp) continue;
+      h+='<div class="ac-item" data-i="'+i+'" role="option"><b>'+esc(pp.mainText?pp.mainText.toString():pp.text.toString())+'</b><span>'+esc(pp.secondaryText?pp.secondaryText.toString():'')+'</span></div>'; }
+    if(!h) h='<div class="ac-item" style="cursor:default"><span>No Google listing matches that name yet.</span></div>';
+    acList.innerHTML=h+AC_FOOT; acList.classList.add('on');
+  }
+  function acSearch(q){
+    var seq=++PL.seq;
+    try {
+      PL.lib.AutocompleteSuggestion.fetchAutocompleteSuggestions({ input:q, sessionToken:PL.token, includedRegionCodes:['us'], includedPrimaryTypes:['establishment'] })
+        .then(function(r){ if(seq!==PL.seq) return; acRender((r&&r.suggestions)||[]); })
+        .catch(function(){ if(seq!==PL.seq) return; acRender([]); });
+    } catch(e){ acRender([]); }
+  }
+  bizEl.addEventListener('input', function(){
+    PL.sel=null; hideOk(); acHint.classList.remove('on'); if(PL.on && gmbEl) gmbEl.value='';
+    if(!PL.on) return;
+    var q=bizEl.value.trim(); clearTimeout(PL.timer);
+    if(q.length<2){ acHide(); return; }
+    PL.timer=setTimeout(function(){ acSearch(q); }, 220);
+  });
+  bizEl.addEventListener('keydown', function(ev){
+    if(!acList.classList.contains('on')) return;
+    var items=acList.querySelectorAll('.ac-item[data-i]');
+    if(ev.key==='ArrowDown'||ev.key==='ArrowUp'){ ev.preventDefault(); if(!items.length) return; PL.hi=(PL.hi+(ev.key==='ArrowDown'?1:-1)+items.length)%items.length; for(var i=0;i<items.length;i++) items[i].classList.toggle('hi', i===PL.hi); }
+    else if(ev.key==='Enter'){ ev.preventDefault(); var idx = PL.hi>=0 ? PL.hi : (items.length===1 ? 0 : -1); if(idx>=0) acPick(+items[idx].getAttribute('data-i')); }
+    else if(ev.key==='Escape'){ acHide(); }
+  });
+  acList.addEventListener('mousedown', function(ev){
+    var it=ev.target.closest('.ac-item[data-i]'); if(it){ ev.preventDefault(); acPick(+it.getAttribute('data-i')); return; }
+    if(ev.target.closest('#ac-none')){ ev.preventDefault(); acHide(); showExit('nolisting'); }
+  });
+  document.addEventListener('click', function(ev){ if(!ev.target.closest('.ac-wrap')) acHide(); });
+  var TRADE_MAP=[[/plumb/,'Plumbing'],[/hvac|air.?condition|heating|furnace/,'HVAC'],[/electric/,'Electrician'],[/roof/,'Roofing'],[/moving|mover/,'Moving company'],[/shuttle|taxi|limo|chauffeur|transport/,'Transportation / airport shuttle'],[/tow/,'Towing'],[/car_repair|auto_repair|mechanic|auto_body|tire|oil_change|car_wash/,'Auto repair'],[/landscap|lawn|garden|tree_service/,'Landscaping / lawn care'],[/clean|janitor|maid|pressure_wash/,'Cleaning services'],[/pest|exterminat/,'Pest control'],[/contractor|remodel|construction|home_improvement|handyman|kitchen|bathroom/,'Home remodeling / contractor'],[/paint/,'Painting'],[/floor|carpet|tile/,'Flooring'],[/garage_door/,'Garage doors'],[/locksmith/,'Locksmith'],[/med.?spa|medical_spa|aesthetic|skin_care|laser|botox/,'Med spa / aesthetics'],[/dent/,'Dental'],[/chiro/,'Chiropractic'],[/physio|physical_therap|rehab/,'Physical therapy'],[/salon|barber|hair|nail|beauty|lash|brow/,'Salon / barber'],[/gym|fitness|yoga|pilates|crossfit|martial/,'Gym / fitness'],[/restaurant|cafe|coffee|bar\b|pizza|bakery|grill|diner|food|taco|sushi/,'Restaurant'],[/law|attorney|legal/,'Law firm'],[/real_estate|realtor|property/,'Real estate'],[/photo/,'Photography']];
+  function guessTrade(sel){ var key=((sel.type||'')+' '+(sel.typeLabel||'')).toLowerCase().replace(/ /g,'_'); for(var i=0;i<TRADE_MAP.length;i++){ if(TRADE_MAP[i][0].test(key)) return TRADE_MAP[i][1]; } return ''; }
+  function fillFromPlace(){
+    var sel=PL.sel; if(!sel) return;
+    acHint.classList.remove('on');
+    if(sel.city){ cityEl.value = sel.city + (sel.state ? ', '+sel.state : ''); }
+    var t=document.getElementById('f-trade'), to=document.getElementById('f-trade-other');
+    if(t && !t.value){ var gt=guessTrade(sel); if(gt){ t.value=gt; t.style.borderColor=''; to.style.display='none'; } else if(sel.typeLabel){ t.value='Other'; to.style.display='block'; to.value=sel.typeLabel; } }
+    if(gmbEl) gmbEl.value = sel.url || '';
+    var stars = (sel.rating!==null) ? '<span class="stars">&#9733; '+sel.rating.toFixed(1)+'</span> &middot; ' : '';
+    var revs = (sel.reviews!==null) ? sel.reviews+' Google review'+(sel.reviews===1?'':'s') : 'review count not shown';
+    okBox.innerHTML='&#10003; Found it: <b>'+esc(sel.name)+'</b><br>'+esc(sel.address)+'<br>'+stars+esc(revs)+(sel.typeLabel?' &middot; '+esc(sel.typeLabel):'')+'<br><button type="button" class="again" id="biz-again">Not your business? Search again</button>';
+    okBox.classList.add('on');
+    document.getElementById('biz-again').addEventListener('click', function(){ PL.sel=null; hideOk(); bizEl.value=''; if(gmbEl) gmbEl.value=''; bizEl.focus(); });
+  }
+  function acPick(i){
+    var sg=PL.items[i]; if(!sg||!sg.placePrediction) return;
+    var pp=sg.placePrediction; acHide();
+    bizEl.value = pp.mainText ? pp.mainText.toString() : pp.text.toString();
+    var base={ id:pp.placeId||'', name:bizEl.value, address:(pp.secondaryText?pp.secondaryText.toString():''), rating:null, reviews:null, url:(pp.placeId?'https://www.google.com/maps/place/?q=place_id:'+pp.placeId:''), type:'', typeLabel:'', status:'', city:'', state:'' };
+    var place=null; try { place=pp.toPlace(); } catch(e){}
+    if(!place){ PL.sel=base; fillFromPlace(); return; }
+    place.fetchFields({ fields:PL.fields }).then(function(){
+      try { PL.token=new PL.lib.AutocompleteSessionToken(); } catch(e){}
+      var comps=place.addressComponents||[], city='', state='', alt='';
+      for(var k=0;k<comps.length;k++){ var ty=comps[k].types||[], v=comps[k].longText||comps[k].shortText||'';
+        if(ty.indexOf('locality')>=0) city=v;
+        else if(!alt && (ty.indexOf('sublocality_level_1')>=0||ty.indexOf('postal_town')>=0||ty.indexOf('administrative_area_level_3')>=0||ty.indexOf('neighborhood')>=0)) alt=v;
+        if(ty.indexOf('administrative_area_level_1')>=0) state=comps[k].shortText||v; }
+      PL.sel={ id:place.id||base.id, name:place.displayName||base.name, address:place.formattedAddress||base.address,
+        rating:(typeof place.rating==='number')?place.rating:null, reviews:(typeof place.userRatingCount==='number')?place.userRatingCount:null,
+        url:place.googleMapsURI||base.url, type:place.primaryType||'', typeLabel:place.primaryTypeDisplayName||'', status:place.businessStatus||'', city:(city||alt), state:state };
+      fillFromPlace();
+    }).catch(function(){ PL.sel=base; fillFromPlace(); });
+  }
+  function showExit(reason){
+    var sel=PL.sel||{}, name=esc(sel.name||bizEl.value.trim()||'your business');
+    var reviewLink = sel.id ? 'https://search.google.com/local/writereview?placeid='+encodeURIComponent(sel.id) : '';
+    var h='';
+    if(reason==='nolisting'){
+      h='<h3>We cannot scan a business Google cannot find.</h3>'
+       +'<p>Everything we do runs on your Google Business Profile: the scan, the Maps ranking, the AI answers. Without one there is nothing to rank yet. The fix is free and takes about 20 minutes.</p>'
+       +'<ol><li>Create your profile at google.com/business.</li><li>Verify it (Google offers postcard, phone or video).</li><li>Add your services, hours and 10 photos.</li><li>Ask your last 10 customers for a review.</li></ol>'
+       +'<p>Come back with 10 reviews on the profile and we run your scan the same day.</p>';
+    } else if(reason==='reviews'){
+      var n=(sel.reviews===null||sel.reviews===undefined)?0:sel.reviews;
+      h='<h3>'+name+' has '+n+' Google review'+(n===1?'':'s')+'. We need 10.</h3>'
+       +'<p>Not a brush-off: the 90-day guarantee depends on it. Google will not rank a profile customers have not vouched for, so we would be taking your money for a promise we cannot keep.</p>'
+       +'<p>Fastest way to 10, usually under two weeks: text your last 10 happy customers this line with your review link.</p>'
+       +'<p style="font-style:italic">Hi [first name], it was a pleasure working with you. Would you leave us a quick Google review? It takes 30 seconds and means a lot to a local business.</p>'
+       +(reviewLink?'<a class="rl" href="'+reviewLink+'" target="_blank" rel="noopener">Your review link: '+esc(reviewLink)+'</a>':'')
+       +'<p>Come back at 10 reviews and we run your scan the same day.</p>';
+    } else if(reason==='rating'){
+      h='<h3>'+name+' sits at '+(sel.rating!==null&&sel.rating!==undefined?sel.rating.toFixed(1):'under 3.8')+' stars. We take 3.8 and up.</h3>'
+       +'<p>Ranking a profile that customers rate below that only sends more people to a bad first impression, and the guarantee would be a lie. Fix the rating first: reply to every negative review, then ask your happiest customers for reviews.</p>'
+       +(reviewLink?'<a class="rl" href="'+reviewLink+'" target="_blank" rel="noopener">Your review link: '+esc(reviewLink)+'</a>':'')
+       +'<p>Come back at 3.8 and we run your scan.</p>';
+    } else {
+      h='<h3>Google lists '+name+' as closed.</h3><p>If that is wrong, fix it on your profile first (Google Business Profile, then Info, then mark it open), then come back and we run your scan.</p>';
+    }
+    h+='<button type="button" class="back" id="exit-back">&#8592; Search for a different business</button>';
+    exitBox.innerHTML=h; exitBox.classList.add('on');
+    document.getElementById('f').style.display='none';
+    document.querySelector('.steps-dots').style.display='none';
+    document.getElementById('f-title').textContent='Not a fit yet, and here is the honest reason';
+    document.getElementById('exit-back').addEventListener('click', function(){
+      exitBox.classList.remove('on'); exitBox.innerHTML='';
+      document.getElementById('f').style.display=''; document.querySelector('.steps-dots').style.display='';
+      document.getElementById('f-title').textContent='Get your free scan';
+      PL.sel=null; hideOk(); bizEl.value=''; if(gmbEl) gmbEl.value=''; bizEl.focus();
+    });
+    try { if(window.fbq) fbq('trackCustom','ScanDisqualified',{reason:reason}); } catch(e){}
+    try { if(window.clarity) clarity('set','disqualified',reason); } catch(e){}
+    try { exitBox.scrollIntoView({behavior:'smooth', block:'center'}); } catch(e){}
+  }
+  function gateOk(){
+    if(!PL.on) return true;
+    if(!PL.sel){ acHint.classList.add('on'); bizEl.focus(); var q=bizEl.value.trim(); if(q.length>=2) acSearch(q); return false; }
+    if(PL.sel.status && PL.sel.status!=='OPERATIONAL'){ showExit('closed'); return false; }
+    if(PL.sel.reviews!==null && PL.sel.reviews<10){ showExit('reviews'); return false; }
+    if(PL.sel.reviews!==null && PL.sel.rating!==null && PL.sel.rating<3.8){ showExit('rating'); return false; }
+    return true;
+  }
+  s1.addEventListener('keydown', function(ev){ if(ev.key==='Enter' && !ev.defaultPrevented){ ev.preventDefault(); document.getElementById('next').click(); } });
   document.getElementById('next').addEventListener('click', function(){
-    var b=document.getElementById('f-biz'), c=document.getElementById('f-city'), t=document.getElementById('f-trade'), to=document.getElementById('f-trade-other');
+    var b=bizEl, c=cityEl, t=document.getElementById('f-trade'), to=document.getElementById('f-trade-other');
     if(!b.value.trim()){ b.focus(); return; }
+    if(!gateOk()) return;
     if(!c.value.trim()){ c.focus(); return; }
     if(!t.value){ t.focus(); t.style.borderColor='#DC2626'; return; }
     if(t.value==='Other' && !to.value.trim()){ to.focus(); return; }
@@ -315,6 +489,7 @@ y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);})(window, documen
     document.getElementById('f-title').textContent='Where do we send it?';
     document.getElementById('f-name').focus();
   });
+  placesBoot();
   document.getElementById('f').addEventListener('submit', function(ev){
     ev.preventDefault();
     var g=function(id){ return document.getElementById(id).value.trim(); };
@@ -330,7 +505,10 @@ y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);})(window, documen
     }
     var _t=document.getElementById('f-trade'), _to=document.getElementById('f-trade-other');
     var tradeVal = _t ? ((_t.value==='Other') ? g('f-trade-other') : _t.value) : '';
-    var lead={ business:g('f-biz'), city:g('f-city'), trade:tradeVal, name:g('f-name'), phone:g('f-phone'), email:g('f-email'), gmb:(noGmb&&noGmb.checked)?'declared: no listing':g('f-gmb') };
+    var sel=PL.sel||{};
+    var gmbVal = PL.on ? (sel.url||'') : ((noGmb&&noGmb.checked)?'declared: no listing':g('f-gmb'));
+    var lead={ business:g('f-biz'), city:g('f-city'), trade:tradeVal, name:g('f-name'), phone:g('f-phone'), email:g('f-email'), gmb:gmbVal,
+      place_id:sel.id||'', rating:(typeof sel.rating==='number')?sel.rating:'', reviews:(typeof sel.reviews==='number')?sel.reviews:'', category:sel.typeLabel||sel.type||'', address:sel.address||'' };
     /* server-side tracking: dedup event id + FB click/browser ids, relayed to Meta CAPI via Brevo */
     var gc=function(n){ var m=document.cookie.match(new RegExp('(?:^|; )'+n+'=([^;]*)')); return m?decodeURIComponent(m[1]):''; };
     lead.eid='lgp-'+Date.now()+'-'+Math.random().toString(36).slice(2,10);
@@ -344,18 +522,20 @@ y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);})(window, documen
     try {
       if (window.sendinblue && lead.email) {
         var parts=(lead.name||'').split(' ');
-        sendinblue.identify(lead.email, { FIRSTNAME:parts[0]||'', LASTNAME:parts.slice(1).join(' '),
+        sendinblue.identify(lead.email, Object.assign({ FIRSTNAME:parts[0]||'', LASTNAME:parts.slice(1).join(' '),
           BUSINESS:lead.business||'', CITY:lead.city||'', GMB_URL:lead.gmb||'', PHONE_TXT:lead.phone||'',
           LEADSOURCE:(new URLSearchParams(location.search).get('utm_content'))||'direct',
-          FB_EVENT_ID:lead.eid, FBP:lead.fbp||'', FBC:lead.fbc||'', SOURCE_URL:lead.src, TRADE:lead.trade||'' });
+          FB_EVENT_ID:lead.eid, FBP:lead.fbp||'', FBC:lead.fbc||'', SOURCE_URL:lead.src, TRADE:lead.trade||'',
+          CATEGORY:lead.category||'', ADDRESS:lead.address||'', PLACE_ID:lead.place_id||'' }, lead.rating!=='' ? {RATING:lead.rating, REVIEWS:lead.reviews} : {}));
       }
     } catch(e) {}
     /* instant lead alert to Ben (fire and forget) */
     try {
       fetch('https://formsubmit.co/ajax/ben@goldenpartners.co', {
         method:'POST', headers:{'Content-Type':'application/json'},
-        body: JSON.stringify({ _subject:'SCAN LEAD: '+lead.business+' ('+lead.city+')',
-          business:lead.business, city:lead.city, name:lead.name, phone:lead.phone, email:lead.email, gmb_link:lead.gmb||'not provided' })
+        body: JSON.stringify({ _subject:'SCAN LEAD: '+lead.business+' ('+lead.city+')'+(lead.reviews!==''?' | '+lead.rating+' stars, '+lead.reviews+' reviews':(PL.on?' | reviews unknown':'')),
+          business:lead.business, city:lead.city, trade:lead.trade, name:lead.name, phone:lead.phone, email:lead.email, gmb_link:lead.gmb||'not provided',
+          rating:lead.rating, reviews:lead.reviews, category:lead.category, address:lead.address, place_id:lead.place_id })
       });
     } catch(e) {}
     /* capture into Brevo list via classic POST; Brevo redirects to /thanks/ */
@@ -367,6 +547,8 @@ y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);})(window, documen
     var parts2=(lead.name||'').split(' ');
     add('FIRSTNAME', parts2[0]||''); add('LASTNAME', parts2.slice(1).join(' '));
     add('BUSINESS', lead.business||''); add('CITY', lead.city||''); add('GMB_URL', lead.gmb||'');
+    if(lead.category) add('CATEGORY', lead.category); if(lead.address) add('ADDRESS', lead.address); if(lead.place_id) add('PLACE_ID', lead.place_id);
+    if(lead.rating!==''){ add('RATING', String(lead.rating)); add('REVIEWS', String(lead.reviews)); }
     add('PHONE_TXT', lead.phone||''); add('LEADSOURCE', (new URLSearchParams(location.search).get('utm_content'))||'direct');
     add('FB_EVENT_ID', lead.eid); add('FBP', lead.fbp||''); add('FBC', lead.fbc||''); add('SOURCE_URL', lead.src); add('TRADE', lead.trade||'');
     document.body.appendChild(f);
