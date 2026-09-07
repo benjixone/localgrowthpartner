@@ -39,7 +39,8 @@ try { var _l=JSON.parse(localStorage.getItem('lgp_lead')||'{}'); if(_l.email){ v
   .brand span { font-size:15px; font-weight:700; color:#fff; }
   .dot { width:9px; height:9px; border-radius:50%; background:#35D07F; display:inline-block; box-shadow:0 0 0 5px rgba(53,208,127,0.15); margin-right:9px; animation:pulse 1.6s infinite; }
   @keyframes pulse { 50% { box-shadow:0 0 0 9px rgba(53,208,127,0.05); } }
-  h1 { font-family:'Cormorant',Georgia,serif; font-weight:400; font-size:clamp(32px,5vw,46px); line-height:1.12; margin-top:10px; }
+  h1 { font-family:'Cormorant',Georgia,serif; font-weight:400; font-size:clamp(32px,5vw,46px); line-height:1.12; margin-top:10px; overflow-wrap:anywhere; text-wrap:balance; }
+  html, body { overflow-x:hidden; max-width:100%; }
   h1 em { color:var(--accent); font-style:italic; }
   .sub { color:var(--mist); font-size:16px; margin-top:14px; }
   .next { background:#fff; color:var(--ink); border-radius:16px; padding:28px 28px 30px; margin-top:36px; text-align:left; box-shadow:0 40px 80px rgba(0,0,0,0.5); }
@@ -95,10 +96,10 @@ y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);})(window, documen
   var lead={};
   try { lead=JSON.parse(localStorage.getItem('lgp_lead')||'{}'); } catch(e) {}
   var p=new URLSearchParams(location.search);
-  var city=p.get('city')||lead.city, name=p.get('name')||lead.name;
+  var city=p.get('city')||lead.city, leadName=p.get('name')||lead.name;
   if(city){ document.getElementById('checking').textContent='Checking if '+city+' is still open'; }
   try{ var _sc=document.getElementById('sms-cta'); if(_sc && lead.business){ _sc.href='sms:+17039621423&body='+encodeURIComponent('Hi Ben, I just requested my scan for '+lead.business+'. Call me back.'); } }catch(e){}
-  if(name){ document.getElementById('hl').innerHTML=name.split(' ')[0]+", one step left: <em>pick your 15 minutes.</em>"; }
+  if(leadName && typeof leadName==='string'){ document.getElementById('hl').innerHTML=leadName.split(' ')[0]+", one step left: <em>pick your 15 minutes.</em>"; }
 
   /* Cal.com official embed; bookingSuccessful feeds the pixel as Schedule */
   (function (C, A, L) { let pfn = function (a, ar) { a.q.push(ar); }; let d = C.document; C.Cal = C.Cal || function () { let cal = C.Cal; let ar = arguments; if (!cal.loaded) { cal.ns = {}; cal.q = cal.q || []; d.head.appendChild(d.createElement("script")).src = A; cal.loaded = true; } if (ar[0] === L) { const api = function () { pfn(api, arguments); }; const namespace = ar[1]; api.q = api.q || []; if (typeof namespace === "string") { cal.ns[namespace] = cal.ns[namespace] || api; pfn(cal.ns[namespace], ar); pfn(cal, ["initNamespace", namespace]); } else pfn(cal, ar); return; } pfn(cal, ar); }; })(window, "https://app.cal.com/embed/embed.js", "init");
