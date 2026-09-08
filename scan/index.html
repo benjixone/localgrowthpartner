@@ -3,7 +3,6 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Free Scan | Local Growth Partner</title>
 <!-- Meta Pixel -->
 <script>
 !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');
@@ -12,8 +11,14 @@ fbq('track','PageView');
 fbq('track','ViewContent',{content_name:'scan-lander'});
 </script>
 <noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=1046611924904183&ev=PageView&noscript=1"/></noscript>
-<!-- Brevo tracker: identifies leads so their details land as contact attributes -->
+<!-- Brevo tracker -->
 <script>window.sib={equeue:[],client_key:"okp6o1fyavx5g31wu4r1y4on"};window.sendinblue={};for(var j=['track','identify','trackLink','page'],i=0;i<j.length;i++){(function(k){window.sendinblue[k]=function(){var arg=Array.prototype.slice.call(arguments);(window.sib[k]||function(){var t={};t[k]=arg;window.sib.equeue.push(t)})(arg[0],arg[1],arg[2],arg[3])};})(j[i])}var sbn=document.createElement("script"),sbs=document.getElementsByTagName("script")[0];sbn.type="text/javascript",sbn.id="sendinblue-js",sbn.async=!0,sbn.src="https://sibautomation.com/sa.js?key="+window.sib.client_key,sbs.parentNode.insertBefore(sbn,sbs),window.sendinblue.page();</script>
+<script type="text/javascript">
+(function(c,l,a,r,i,t,y){c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);})(window, document, "clarity", "script", "y8giyd42rx");
+</script>
+<title>Free Scan | Local Growth Partner</title>
 <meta name="description" content="See what ChatGPT and Google say about your business. Free scan, one business per trade, per city.">
 <link rel="canonical" href="https://localgrowthpartner.com/scan/">
 <meta property="og:type" content="website">
@@ -26,271 +31,223 @@ fbq('track','ViewContent',{content_name:'scan-lander'});
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="What Does ChatGPT Say About Your Business?">
-<meta name="twitter:description" content="Free visibility scan: see what ChatGPT and Google say about your business.">
+<meta name="twitter:description" content="Free visibility scan: see what ChatGPT and Google say about your business. One business per trade, per city.">
 <meta name="twitter:image" content="https://localgrowthpartner.com/img/og.png">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%23070D16'/%3E%3Cpath d='M32 8 C21.5 8 13.5 16 13.5 26 C13.5 39 32 56 32 56 C32 56 50.5 39 50.5 26 C50.5 16 42.5 8 32 8 Z' fill='%23FF6B1A'/%3E%3Cpath d='M22 32 L28 25 L32 28.5 L41 18.5 M41 18.5 L34.5 18.5 M41 18.5 L41 25' stroke='white' stroke-width='4' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,400;0,500;1,400&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-<style>
-  :root {
-    --void:#070D16; --navy:#0B1524; --cream:#FAF7F1; --sand:#F1EBDF;
-    --accent:#FF6B1A; --accent-dk:#E85A0C; --accent-soft:#FFA45C;
-    --ink:#101B2B; --mist:#8A99AC; --steel:#64748B;
-    --line-d:rgba(255,255,255,0.09); --line-l:#E7E0D3;
-  }
-  * { margin:0; padding:0; box-sizing:border-box; }
-  body { font-family:'Inter',system-ui,sans-serif; background:var(--void); color:#fff; line-height:1.55; -webkit-font-smoothing:antialiased; overflow-x:hidden; }
-  .wrap { max-width:860px; margin:0 auto; padding:0 24px; }
-  .top { display:flex; justify-content:center; padding:22px 0 6px; }
-  .brand { display:flex; align-items:center; gap:10px; text-decoration:none; }
-  .brand svg { width:30px; height:30px; }
-  .brand span { font-size:15px; font-weight:700; color:#fff; }
-  .hero { text-align:center; padding:26px 0 60px; position:relative; overflow:hidden; }
-  .glow { position:absolute; left:50%; top:-260px; transform:translateX(-50%); width:1000px; height:640px; pointer-events:none;
-    background:radial-gradient(ellipse at center, rgba(255,107,26,0.18) 0%, transparent 65%); filter:blur(20px); }
-  .in { position:relative; z-index:2; }
-  h1 { font-family:'Cormorant',Georgia,serif; font-weight:400; font-size:clamp(34px,5.4vw,54px); line-height:1.08; letter-spacing:-0.5px; }
-  h1 em { color:var(--accent); font-style:italic; }
-  .sub { color:var(--mist); font-size:16.5px; margin:16px auto 0; max-width:520px; }
-  .vsl { margin:34px auto 0; max-width:760px; border-radius:16px; overflow:hidden; box-shadow:0 40px 90px rgba(0,0,0,0.55); background:#000; position:relative; aspect-ratio:16/9; }
-  /* VSL EMBED SLOT: replace this block with the video embed (YouTube/Vimeo iframe or <video>) */
-  .vsl .ph { position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:14px;
-    background:linear-gradient(160deg,#101D30,#070D16); }
-  .vsl .play { width:74px; height:74px; border-radius:50%; background:var(--accent); display:flex; align-items:center; justify-content:center; box-shadow:0 12px 40px rgba(255,107,26,0.45); }
-  .vsl .play svg { width:26px; height:26px; fill:#fff; margin-left:4px; }
-  .vsl .t { color:#C9D2DE; font-size:14px; }
-  .card { background:#fff; color:var(--ink); border-radius:18px; max-width:560px; margin:40px auto 0; padding:30px 30px 34px; text-align:left; box-shadow:0 40px 90px rgba(0,0,0,0.5); }
-  .card h2 { font-family:'Cormorant',serif; font-size:26px; font-weight:500; text-align:center; }
-  .card .steps-dots { display:flex; gap:6px; justify-content:center; margin:14px 0 20px; }
-  .card .steps-dots i { width:34px; height:4px; border-radius:4px; background:var(--sand); }
-  .card .steps-dots i.on { background:var(--accent); }
-  .f-step { display:none; }
-  .f-step.on { display:block; }
-  .f-row { display:grid; gap:10px; }
-  input { padding:14px 16px; border-radius:10px; border:1.5px solid var(--line-l); font-family:inherit; font-size:15px; width:100%; }
-  input:focus { outline:none; border-color:var(--accent); }
-  select { padding:14px 16px; border-radius:10px; border:1.5px solid var(--line-l); font-family:inherit; font-size:15px; width:100%; background:#fff; color:#101B2B; -webkit-appearance:none; appearance:none; }
-  select:focus { outline:none; border-color:var(--accent); }
-  select:invalid { color:#8896A8; }
-  .btn { display:inline-flex; align-items:center; justify-content:center; gap:8px; width:100%;
-    background:var(--accent); color:#fff; padding:15px 26px; border-radius:100px; border:none; cursor:pointer;
-    font-family:inherit; font-size:15.5px; font-weight:600; margin-top:14px; box-shadow:0 8px 26px rgba(255,107,26,0.3); transition:background .2s; }
-  .btn:hover { background:var(--accent-dk); }
-  .micro { font-size:12px; color:var(--steel); text-align:center; margin-top:12px; }
-  .micro a { color:var(--steel); }
-  .proof { display:flex; gap:26px; justify-content:center; flex-wrap:wrap; margin:44px auto 0; }
-  .pf { text-align:center; }
-  .pf .v { font-family:'Cormorant',serif; font-size:30px; color:#fff; }
-  .pf .k { font-size:12px; color:#6B7A8D; }
-  .quote { max-width:560px; margin:40px auto 0; text-align:center; }
-  .quote p { font-family:'Cormorant',serif; font-size:21px; line-height:1.45; color:#EDF1F6; }
-  .quote span { display:block; margin-top:10px; font-size:12.5px; color:#6B7A8D; }
-  .faq { max-width:640px; margin:0 auto; padding:10px 24px 64px; }
-  .faq h2 { font-family:'Cormorant',serif; font-weight:400; font-size:30px; text-align:center; margin-bottom:18px; }
-  .faq details { border-bottom:1px solid var(--line-d); }
-  .faq details:first-of-type { border-top:1px solid var(--line-d); }
-  .faq summary { cursor:pointer; list-style:none; display:flex; justify-content:space-between; align-items:center; gap:14px; padding:16px 0; font-weight:600; font-size:15px; color:#EDF1F6; }
-  .faq summary::-webkit-details-marker { display:none; }
-  .faq summary::after { content:"+"; color:var(--accent); font-size:20px; font-weight:400; flex:0 0 auto; }
-  .faq details[open] summary::after { content:"\2212"; }
-  .faq details p { color:var(--mist); font-size:14.5px; padding:0 0 16px; }
-  .faq .again { text-align:center; margin-top:28px; }
-  .faq .again a { display:inline-flex; align-items:center; gap:8px; background:var(--accent); color:#fff; padding:14px 30px; border-radius:100px; text-decoration:none; font-weight:600; font-size:15px; box-shadow:0 8px 26px rgba(255,107,26,0.3); transition:background .2s; }
-  .faq .again a:hover { background:var(--accent-dk); }
-  .sec { padding:56px 0 8px; }
-  .sec h2 { font-family:'Cormorant',Georgia,serif; font-weight:500; font-size:clamp(28px,4vw,40px); text-align:center; color:#fff; line-height:1.15; }
-  .sec .lede { text-align:center; color:#A9B6C8; font-size:15.5px; margin:12px auto 0; max-width:520px; }
-  .steps { display:grid; grid-template-columns:repeat(3,1fr); gap:14px; margin-top:28px; }
-  .step { background:#0B1524; border:1px solid rgba(255,255,255,0.08); border-radius:14px; padding:20px 18px; }
-  .step .n { font-size:11px; font-weight:700; letter-spacing:.12em; color:#FF6B1A; }
-  .step h3 { font-size:17px; font-weight:700; color:#fff; margin-top:8px; }
-  .step p { font-size:13.5px; color:#A9B6C8; margin-top:6px; line-height:1.5; }
-  .guar { margin-top:28px; background:#0B1524; border:1px solid #FF6B1A55; border-radius:16px; padding:26px 22px; display:flex; gap:22px; align-items:center; flex-wrap:wrap; }
-  .guar .seal { flex:0 0 auto; width:84px; height:84px; border-radius:50%; background:#FF6B1A; color:#fff; display:flex; flex-direction:column; align-items:center; justify-content:center; font-weight:800; line-height:1; }
-  .guar .seal b { font-size:30px; } .guar .seal span { font-size:11px; letter-spacing:.1em; margin-top:3px; }
-  .guar h3 { font-family:'Cormorant',Georgia,serif; font-weight:500; font-size:clamp(24px,3.4vw,32px); color:#fff; line-height:1.15; }
-  .guar p { color:#A9B6C8; font-size:14.5px; margin-top:8px; max-width:520px; }
-  .plans { display:grid; grid-template-columns:repeat(3,1fr); gap:14px; margin-top:28px; }
-  .plan { background:#0B1524; border:1px solid rgba(255,255,255,0.08); border-radius:14px; padding:22px 18px; text-align:center; }
-  .plan.hi { border-color:#FF6B1A; box-shadow:0 20px 50px rgba(255,107,26,0.15); }
-  .plan .nm { font-size:12px; font-weight:700; letter-spacing:.1em; color:#8A99AC; text-transform:uppercase; }
-  .plan .amt { font-size:30px; font-weight:800; color:#fff; margin-top:10px; } .plan .amt small { font-size:13px; color:#8A99AC; font-weight:600; }
-  .plan .bill { font-size:12.5px; color:#8A99AC; margin-top:4px; }
-  .plan .best { display:inline-block; background:#FF6B1A; color:#fff; font-size:10.5px; font-weight:800; letter-spacing:.08em; padding:3px 9px; border-radius:99px; margin-bottom:10px; }
-  .plan a.pay { display:block; margin-top:12px; font-size:12.5px; color:#FF8A45; }
-  .plans-cta { text-align:center; margin-top:22px; }
-  .plans-cta a { display:inline-block; background:#FF6B1A; color:#fff; font-weight:700; font-size:15px; padding:14px 26px; border-radius:12px; text-decoration:none; }
-  .plans-note { text-align:center; font-size:12.5px; color:#8A99AC; margin-top:12px; }
-  @media (max-width:700px){ .steps, .plans { grid-template-columns:1fr; } }
-  footer { border-top:1px solid var(--line-d); padding:26px 0 40px; text-align:center; font-size:11.5px; color:#5D6B7D; line-height:1.7; }
-  footer a { color:#8A99AC; }
-  /* Google Places lookup + qualification gate */
-  .ac-wrap { position:relative; }
-  .ac-list { position:absolute; top:100%; left:0; right:0; background:#fff; border:1.5px solid var(--line-l); border-radius:10px; margin-top:4px; box-shadow:0 14px 34px rgba(16,27,43,0.16); z-index:30; max-height:280px; overflow:auto; display:none; }
-  .ac-list.on { display:block; }
-  .ac-item { padding:11px 14px; cursor:pointer; border-bottom:1px solid var(--sand); font-size:14px; line-height:1.35; }
-  .ac-item b { display:block; font-weight:600; color:var(--ink); }
-  .ac-item span { font-size:12.5px; color:var(--steel); }
-  .ac-item.hi, .ac-item[data-i]:hover { background:#FFF4EC; }
-  .ac-foot { padding:9px 14px; font-size:12px; color:var(--steel); display:flex; justify-content:space-between; align-items:center; gap:10px; }
-  .ac-foot button { background:none; border:none; padding:0; color:var(--accent-dk); font:inherit; font-size:12.5px; font-weight:600; cursor:pointer; text-decoration:underline; }
-  .ac-hint { font-size:12.5px; color:#B45309; margin-top:6px; display:none; }
-  .ac-hint.on { display:block; }
-  .biz-ok { display:none; margin-top:10px; border:1.5px solid #B7E4C7; background:#F0FBF4; border-radius:10px; padding:12px 14px; font-size:13.5px; color:var(--ink); line-height:1.45; }
-  .biz-ok.on { display:block; }
-  .biz-ok .stars { color:#B45309; font-weight:600; }
-  .biz-ok .again { background:none; border:none; padding:0; font:inherit; font-size:12.5px; color:var(--steel); text-decoration:underline; cursor:pointer; margin-top:4px; }
-  .exit { display:none; }
-  .exit.on { display:block; }
-  .exit h3 { font-family:'Cormorant',serif; font-size:25px; font-weight:500; line-height:1.2; }
-  .exit p { font-size:14.5px; color:var(--ink); margin-top:10px; }
-  .exit ol { margin:12px 0 0 18px; font-size:14px; color:var(--ink); }
-  .exit ol li { margin-top:6px; }
-  .exit .rl { display:block; margin-top:10px; font-size:13px; color:var(--accent-dk); word-break:break-all; }
-  .exit .back { background:none; border:none; padding:0; margin-top:18px; font:inherit; font-size:13px; color:var(--steel); text-decoration:underline; cursor:pointer; }
-  @media (max-width:560px){ .card{ padding:24px 20px 28px; } }
-</style>
-<!-- Microsoft Clarity -->
-<script type="text/javascript">
-(function(c,l,a,r,i,t,y){c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
-t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
-y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);})(window, document, "clarity", "script", "y8giyd42rx");
-</script>
+<link rel="preconnect" href="https://www.youtube-nocookie.com" crossorigin>
+<link rel="preload" as="font" type="font/ttf" href="/fonts/Manrope[wght].ttf" crossorigin>
+<link rel="stylesheet" href="/css/lgp.css">
+<meta name="theme-color" content="#FFFFFF">
 </head>
 <body>
-<div class="top"><a class="brand" href="/"><svg viewBox="0 0 48 48"><path d="M24 3 C14.6 3 7.2 10.3 7.2 19.6 C7.2 31.5 24 45.5 24 45.5 C24 45.5 40.8 31.5 40.8 19.6 C40.8 10.3 33.4 3 24 3 Z" fill="#FF6B1A"/><path d="M16 25 L21 19.5 L24.5 22.5 L32 14 M32 14 L26.8 14 M32 14 L32 19.2" stroke="#fff" stroke-width="3.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Local Growth Partner</span></a></div>
-
-<div class="hero">
-  <div class="glow"></div>
-  <div class="wrap in">
-    <h1>What does <em>ChatGPT</em> say<br>about your business?</h1>
-    <p class="sub">Watch this short video. Then get your free scan. We show you everything on a free 15 minute call.</p>
-
-    <div class="vsl">
-      <video id="vsl" controls playsinline preload="metadata" poster="/img/vsl/poster.jpg" style="position:absolute;inset:0;width:100%;height:100%;background:#000"><source src="/img/vsl/lgp-vsl.mp4" type="video/mp4"></video>
-    </div>
-
-    <div class="card" id="form-card">
-      <h2 id="f-title">Get your free scan</h2>
-      <div class="steps-dots"><i class="on" id="d1"></i><i id="d2"></i></div>
-      <form id="f" autocomplete="on">
-        <div class="f-step on" id="s1">
-          <div class="f-row">
-            <div class="ac-wrap">
-              <input id="f-biz" type="text" placeholder="Business name" required autocomplete="off">
-              <div class="ac-list" id="ac-list" role="listbox"></div>
-            </div>
-            <input id="f-city" type="text" placeholder="City" required>
-          </div>
-          <div class="ac-hint" id="ac-hint">Pick your business from the list so we scan the right one.</div>
-          <div class="biz-ok" id="biz-ok"></div>
-          <div class="f-row" style="margin-top:10px">
-            <select id="f-trade" required>
-              <option value="" disabled selected>Your trade</option>
-              <option>Plumbing</option><option>HVAC</option><option>Electrician</option><option>Roofing</option><option>Moving company</option><option>Transportation / airport shuttle</option><option>Towing</option><option>Auto repair</option><option>Landscaping / lawn care</option><option>Cleaning services</option><option>Pest control</option><option>Home remodeling / contractor</option><option>Painting</option><option>Flooring</option><option>Garage doors</option><option>Locksmith</option><option>Med spa / aesthetics</option><option>Dental</option><option>Chiropractic</option><option>Physical therapy</option><option>Salon / barber</option><option>Gym / fitness</option><option>Restaurant</option><option>Law firm</option><option>Real estate</option><option>Photography</option><option value="Other">Other</option>
-            </select>
-            <input id="f-trade-other" type="text" placeholder="Your trade" style="display:none">
-          </div>
-          <button class="btn" type="button" id="next">Check my city &#8594;</button>
-          <div class="micro">One business per trade, per city. We check if yours is open.</div>
-        </div>
-        <div class="f-step" id="s2">
-          <div class="f-row">
-            <input id="f-name" type="text" placeholder="Your name" required>
-            <input id="f-phone" type="tel" placeholder="Phone" required>
-            <input id="f-email" type="email" placeholder="Email" required>
-            <div id="f-email-sug" style="display:none;font-size:12.5px;color:#D97706;margin-top:-4px"></div>
-            <div id="sms-consent" style="font-size:11.5px;line-height:1.45;color:#9AA7B8;margin-top:-2px">By submitting, you agree that Local Growth Partner may call or text you at this number about your scan and booking. Message frequency varies. Msg and data rates may apply. Reply STOP to opt out, HELP for help. Consent is not a condition of purchase.</div>
-            <div id="gmb-manual" style="display:none;gap:10px">
-              <input id="f-gmb" type="url" placeholder="Your Google Maps listing link (for the scan)">
-              <div style="font-size:11.5px;color:#9AA7B8;margin-top:-4px">On Google Maps, find your business, tap Share, paste the link here.</div>
-              <label style="display:flex;gap:8px;align-items:flex-start;font-size:12.5px;color:#64748B;margin-top:2px;font-weight:400"><input id="f-nogmb" type="checkbox" style="width:auto;margin-top:2px">I don't have a Google listing (or can't find it)</label>
-            </div>
-          </div>
-          
-            <button class="btn" type="submit">Send me my free scan &#8594;</button>
-          <div class="micro">We only use this to run your scan and reach you. <a href="/privacy.html">Privacy</a></div>
-        </div>
-      </form>
-      <div class="exit" id="exit"></div>
-    </div>
-
-    <div class="proof">
-      <div class="pf"><div class="v">#8 &#8594; #1</div><div class="k">Smoothie shop, San Diego</div></div>
-      <div class="pf"><div class="v">#11 &#8594; #1</div><div class="k">Yoga studio, Texas</div></div>
-      <div class="pf"><div class="v">#12 &#8594; #1</div><div class="k">Pizzeria, California</div></div>
-    </div>
-    <p style="margin:22px auto 0;font-size:13.5px;color:#C9D2DE;text-align:center">Same system. Now taking <b style="color:#fff">med spas, roofing and moving companies</b> in the US.</p>
-
-    <div class="quote">
-      <p>"We actually have people coming in stating that they found us with a Google Search."</p>
-      <span>Mark Hrubant, Franchise Owner, YogaSix &middot; results on the platform we run</span>
-    </div>
-    <div class="quote">
-      <p>"They promised and overdelivered. Everything that they promised was actually faster than the anticipated date."</p>
-      <span>Local Growth Partner client &middot; business owner, on record</span>
-    </div>
+<nav class="nav" aria-label="Main">
+  <div class="wrap">
+    <a class="brand" href="/" aria-label="Local Growth Partner home"><svg viewBox="0 0 48 48"><defs><linearGradient id="pg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#FF8A45"/><stop offset="1" stop-color="#E85A0C"/></linearGradient></defs><path d="M24 3 C14.6 3 7.2 10.3 7.2 19.6 C7.2 31.5 24 45.5 24 45.5 C24 45.5 40.8 31.5 40.8 19.6 C40.8 10.3 33.4 3 24 3 Z" fill="url(#pg)"/><path d="M16 25 L21 19.5 L24.5 22.5 L32 14 M32 14 L26.8 14 M32 14 L32 19.2" stroke="#fff" stroke-width="3.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Local Growth Partner</span></a>
+    <div class="nav-links"><a class="btn btn-primary btn-sm" href="#form-card"><span class="lg-t">Get my free scan</span><span class="sm-t">Free scan</span></a></div>
   </div>
-</div>
+</nav>
 
-<div class="wrap">
-  <div class="sec" id="how">
-    <h2>Three steps. No passwords.</h2>
-    <div class="steps">
-      <div class="step"><div class="n">STEP 01</div><h3>We fix how you look</h3><p>Your whole Google profile, made complete. Categories, services, photos, the foundation.</p></div>
-      <div class="step"><div class="n">STEP 02</div><h3>We feed the proof</h3><p>Fresh reviews, photos and updates. Every week. That is what Google and the AI engines read.</p></div>
-      <div class="step"><div class="n">STEP 03</div><h3>You show up</h3><p>Climb week by week. Not there by day 90? We keep working, free, until you are.</p></div>
+<main id="top">
+<section class="hero">
+  <div class="wrap">
+    <div class="hero-in">
+      <div class="trust"><i></i><b>One business per trade, per city.</b> We check if yours is open.</div>
+      <h1 class="hero-display">What does <em>ChatGPT</em> say about your business?</h1>
+      <p class="lead">Watch this short video. Then get your free scan. We show you everything on a free 15 minute call.</p>
+      <div class="hero-cta"><a class="btn btn-primary" href="#form-card">Get my free scan</a></div>
+      <p class="hero-note">15 minutes. No pressure. <b>The report is yours to keep.</b></p>
     </div>
-    <div class="guar">
-      <div class="seal"><b>90</b><span>DAYS</span></div>
-      <div>
-        <h3>Show up, or we work for free.</h3>
-        <p>Top 3 on Maps and named by ChatGPT within 90 days. If not, your billing pauses and we keep going until you are. We can promise that because we say no a lot: no clear path to the top, we tell you and walk away.</p>
+    <div class="stage-2">
+      <div class="deck2">
+        <div>
+          <div class="video"><video id="vsl" controls playsinline preload="metadata" poster="/img/vsl/poster.jpg"><source src="/img/vsl/lgp-vsl.mp4" type="video/mp4"></video></div>
+          <p class="caption" style="margin-top:16px">Short video: what the scan shows you, and what happens on the call.</p>
+        </div>
+        <div class="form-card" id="form-card">
+          <h2 id="f-title">Get your free scan</h2>
+          <div class="dots steps-dots" aria-hidden="true"><i class="on" id="d1"></i><i id="d2"></i></div>
+          <form id="f" autocomplete="on">
+            <div class="f-step on" id="s1">
+              <div class="f-grid">
+                <div class="ac-wrap"><input class="field" id="f-biz" type="text" placeholder="Business name" autocomplete="off" required><div class="ac-list" id="ac-list" role="listbox"></div></div>
+                <input class="field" id="f-city" type="text" placeholder="City" autocomplete="address-level2" required>
+                <p class="warn ac-hint" id="ac-hint">Pick your business from the list so we scan the right one.</p>
+                <div class="biz-ok" id="biz-ok"></div>
+                <select class="field" id="f-trade" required aria-label="Your trade"><option value="" disabled selected>Your trade</option><option>Plumbing</option><option>HVAC</option><option>Electrician</option><option>Roofing</option><option>Moving company</option><option>Transportation / airport shuttle</option><option>Towing</option><option>Auto repair</option><option>Landscaping / lawn care</option><option>Cleaning services</option><option>Pest control</option><option>Home remodeling / contractor</option><option>Painting</option><option>Flooring</option><option>Garage doors</option><option>Locksmith</option><option>Med spa / aesthetics</option><option>Dental</option><option>Chiropractic</option><option>Physical therapy</option><option>Salon / barber</option><option>Gym / fitness</option><option>Restaurant</option><option>Law firm</option><option>Real estate</option><option>Photography</option><option value="Other">Other</option></select>
+                <input class="field" id="f-trade-other" type="text" placeholder="Your trade" style="display:none">
+              </div>
+              <button class="btn btn-primary" type="button" id="next">Check my city</button>
+              <p class="help center">One business per trade, per city. We check if yours is open.</p>
+            </div>
+            <div class="f-step" id="s2">
+              <div class="f-grid">
+                <input class="field" id="f-name" type="text" placeholder="Your name" autocomplete="name" required>
+                <input class="field" id="f-phone" type="tel" placeholder="Phone" autocomplete="tel" required>
+                <input class="field" id="f-email" type="email" placeholder="Email" autocomplete="email" required>
+                <div class="warn" id="f-email-sug" style="display:none"></div>
+                <p class="legal" id="sms-consent" style="margin-top:0">By submitting, you agree that Local Growth Partner may call or text you at this number about your scan and booking. Message frequency varies. Msg and data rates may apply. Reply STOP to opt out, HELP for help. Consent is not a condition of purchase.</p>
+                <div id="gmb-manual" style="display:none;gap:10px">
+                  <input class="field" id="f-gmb" type="url" placeholder="Your Google Maps listing link (for the scan)">
+                  <p class="help" style="margin-top:-2px">On Google Maps, find your business, tap Share, paste the link here.</p>
+                  <label class="check"><input id="f-nogmb" type="checkbox"><span>I don't have a Google listing (or can't find it)</span></label>
+                </div>
+              </div>
+              <button class="btn btn-primary" type="submit">Send me my free scan</button>
+              <p class="help center">We only use this to run your scan and reach you. <a href="/privacy.html" style="color:inherit">Privacy</a></p>
+            </div>
+          </form>
+          <div class="exit" id="exit"></div>
+        </div>
       </div>
     </div>
   </div>
+</section>
 
-  <div class="sec" id="pricing">
-    <h2>One plan. Everything in.</h2>
-    <p class="lede">Single location. Show up on Google, Maps and ChatGPT. Weekly report in plain words. The 90-day guarantee.</p>
-    <div class="plans">
-      <div class="plan"><div class="nm">Every 4 weeks</div><div class="amt">$1,500</div><div class="bill">Billed every 4 weeks</div><a class="pay" href="https://buy.stripe.com/fZu6oJcywbNU5eO4TUdfG00" target="_blank" rel="noopener">Pay by card</a></div>
-      <div class="plan hi"><div class="best">MOST CHOSEN</div><div class="nm">Quarterly</div><div class="amt">$3,600 <small>/ 3 months</small></div><div class="bill">$1,200 a month, 20% off</div><a class="pay" href="https://buy.stripe.com/bJe14p0PO05c8r05XYdfG01" target="_blank" rel="noopener">Pay by card</a></div>
-      <div class="plan"><div class="nm">Yearly</div><div class="amt">$10,800 <small>/ year</small></div><div class="bill">$900 a month, 40% off</div><a class="pay" href="https://buy.stripe.com/28E5kFbus5pw0YybiidfG02" target="_blank" rel="noopener">Pay by card</a></div>
+<section class="tile on-dark" id="proof">
+  <div class="wrap">
+    <div class="tile-head">
+      <h2 class="display">From invisible to <em>first pick.</em></h2>
+      <p class="lead">Same system. Now taking med spas, roofing and moving companies in the US.</p>
     </div>
-    <div class="plans-cta"><a href="#form-card">Start with the free scan &#8593;</a></div>
-    <div class="plans-note">Most people book the scan first. Paying now skips the line: we start within 72 hours.</div>
+    <div class="stats num">
+      <div class="stat"><div class="big">#1<small>was #8</small></div><svg class="ladder" viewBox="0 0 300 44" width="300" height="44" role="img" aria-label="From number 8 to number 1">
+  <line x1="14" y1="22" x2="286" y2="22" stroke="rgba(255,255,255,0.14)" stroke-width="2"/>
+  <circle cx="14.0" cy="22" r="3" fill="rgba(255,255,255,0.18)"/><circle cx="38.7" cy="22" r="3" fill="rgba(255,255,255,0.18)"/><circle cx="63.5" cy="22" r="3" fill="rgba(255,255,255,0.18)"/><circle cx="88.2" cy="22" r="3" fill="rgba(255,255,255,0.18)"/><circle cx="112.9" cy="22" r="3" fill="rgba(255,255,255,0.18)"/><circle cx="137.6" cy="22" r="3" fill="rgba(255,255,255,0.18)"/><circle cx="162.4" cy="22" r="3" fill="rgba(255,255,255,0.18)"/><circle cx="187.1" cy="22" r="3" fill="rgba(255,255,255,0.18)"/><circle cx="211.8" cy="22" r="3" fill="rgba(255,255,255,0.18)"/><circle cx="236.5" cy="22" r="3" fill="rgba(255,255,255,0.18)"/><circle cx="261.3" cy="22" r="3" fill="rgba(255,255,255,0.18)"/><circle cx="286.0" cy="22" r="3" fill="rgba(255,255,255,0.18)"/>
+  <line x1="112.9" y1="22" x2="276.0" y2="22" stroke="#FFA36B" stroke-width="3" stroke-linecap="round"/>
+  <circle cx="112.9" cy="22" r="8" fill="#132038" stroke="rgba(255,255,255,0.5)" stroke-width="2"/>
+  <text x="112.9" y="10" fill="#B8BEC9" font-size="11" font-weight="700" text-anchor="middle" font-family="Manrope, system-ui, sans-serif">#8</text>
+  <circle cx="286.0" cy="22" r="10" fill="#E8632B"/>
+  <text x="286.0" y="10" fill="#FFA36B" font-size="11" font-weight="800" text-anchor="middle" font-family="Manrope, system-ui, sans-serif">#1</text>
+</svg><div class="was">In about a month</div><div class="stat-who">Smoothie shop &middot; San Diego, CA</div><div class="note">Sales up 193%, owner reported.</div></div>
+      <div class="stat"><div class="big">#1<small>was #11</small></div><svg class="ladder" viewBox="0 0 300 44" width="300" height="44" role="img" aria-label="From number 11 to number 1">
+  <line x1="14" y1="22" x2="286" y2="22" stroke="rgba(255,255,255,0.14)" stroke-width="2"/>
+  <circle cx="14.0" cy="22" r="3" fill="rgba(255,255,255,0.18)"/><circle cx="38.7" cy="22" r="3" fill="rgba(255,255,255,0.18)"/><circle cx="63.5" cy="22" r="3" fill="rgba(255,255,255,0.18)"/><circle cx="88.2" cy="22" r="3" fill="rgba(255,255,255,0.18)"/><circle cx="112.9" cy="22" r="3" fill="rgba(255,255,255,0.18)"/><circle cx="137.6" cy="22" r="3" fill="rgba(255,255,255,0.18)"/><circle cx="162.4" cy="22" r="3" fill="rgba(255,255,255,0.18)"/><circle cx="187.1" cy="22" r="3" fill="rgba(255,255,255,0.18)"/><circle cx="211.8" cy="22" r="3" fill="rgba(255,255,255,0.18)"/><circle cx="236.5" cy="22" r="3" fill="rgba(255,255,255,0.18)"/><circle cx="261.3" cy="22" r="3" fill="rgba(255,255,255,0.18)"/><circle cx="286.0" cy="22" r="3" fill="rgba(255,255,255,0.18)"/>
+  <line x1="38.7" y1="22" x2="276.0" y2="22" stroke="#FFA36B" stroke-width="3" stroke-linecap="round"/>
+  <circle cx="38.7" cy="22" r="8" fill="#132038" stroke="rgba(255,255,255,0.5)" stroke-width="2"/>
+  <text x="38.7" y="10" fill="#B8BEC9" font-size="11" font-weight="700" text-anchor="middle" font-family="Manrope, system-ui, sans-serif">#11</text>
+  <circle cx="286.0" cy="22" r="10" fill="#E8632B"/>
+  <text x="286.0" y="10" fill="#FFA36B" font-size="11" font-weight="800" text-anchor="middle" font-family="Manrope, system-ui, sans-serif">#1</text>
+</svg><div class="was">Under 90 days</div><div class="stat-who">Yoga studio &middot; Trophy Club, TX</div><div class="note">First answer across 20 local searches.</div></div>
+      <div class="stat"><div class="big">#1<small>was #12</small></div><svg class="ladder" viewBox="0 0 300 44" width="300" height="44" role="img" aria-label="From number 12 to number 1">
+  <line x1="14" y1="22" x2="286" y2="22" stroke="rgba(255,255,255,0.14)" stroke-width="2"/>
+  <circle cx="14.0" cy="22" r="3" fill="rgba(255,255,255,0.18)"/><circle cx="38.7" cy="22" r="3" fill="rgba(255,255,255,0.18)"/><circle cx="63.5" cy="22" r="3" fill="rgba(255,255,255,0.18)"/><circle cx="88.2" cy="22" r="3" fill="rgba(255,255,255,0.18)"/><circle cx="112.9" cy="22" r="3" fill="rgba(255,255,255,0.18)"/><circle cx="137.6" cy="22" r="3" fill="rgba(255,255,255,0.18)"/><circle cx="162.4" cy="22" r="3" fill="rgba(255,255,255,0.18)"/><circle cx="187.1" cy="22" r="3" fill="rgba(255,255,255,0.18)"/><circle cx="211.8" cy="22" r="3" fill="rgba(255,255,255,0.18)"/><circle cx="236.5" cy="22" r="3" fill="rgba(255,255,255,0.18)"/><circle cx="261.3" cy="22" r="3" fill="rgba(255,255,255,0.18)"/><circle cx="286.0" cy="22" r="3" fill="rgba(255,255,255,0.18)"/>
+  <line x1="14.0" y1="22" x2="276.0" y2="22" stroke="#FFA36B" stroke-width="3" stroke-linecap="round"/>
+  <circle cx="14.0" cy="22" r="8" fill="#132038" stroke="rgba(255,255,255,0.5)" stroke-width="2"/>
+  <text x="14.0" y="10" fill="#B8BEC9" font-size="11" font-weight="700" text-anchor="middle" font-family="Manrope, system-ui, sans-serif">#12</text>
+  <circle cx="286.0" cy="22" r="10" fill="#E8632B"/>
+  <text x="286.0" y="10" fill="#FFA36B" font-size="11" font-weight="800" text-anchor="middle" font-family="Manrope, system-ui, sans-serif">#1</text>
+</svg><div class="was">Under 90 days</div><div class="stat-who">Pizzeria &middot; San Luis Obispo, CA</div><div class="note">Top spot, held all year.</div></div>
+    </div>
+    <div class="quotes">
+      <figure class="quote"><p>&ldquo;We actually have people coming in stating that they found us with a Google Search.&rdquo;</p><figcaption class="who"><span class="av" aria-hidden="true">MH</span><div><b>Mark Hrubant</b><span>Franchise Owner, YogaSix &middot; Trophy Club</span></div></figcaption></figure>
+      <figure class="quote"><p>&ldquo;They promised and overdelivered. Everything that they promised was actually faster than the anticipated date.&rdquo;</p><figcaption class="who"><span class="av" aria-hidden="true">LG</span><div><b>Local Growth Partner client</b><span>Business owner, on record</span></div></figcaption></figure>
+    </div>
+    <p class="caption" style="margin-top:24px">Results and quotes are documented accounts from businesses on the ranking platform we run. Every business and city is different; your results will vary.</p>
   </div>
-</div>
+</section>
 
-<div class="faq">
-  <h2>Fair questions.</h2>
-    <details><summary>I got burned by an agency before. Why is this different?</summary><p>You see progress every week. Not showing up by day 90? Your billing pauses and we keep working for free until you do. The risk sits with us.</p></details>
-  <details><summary>Do I get the scan by email?</summary><p>No. We show it to you live on a 15 minute call, then the report is yours to keep. Live is where you see who beats you and why.</p></details>
-  <details><summary>Phone or video?</summary><p>Your choice when you book. We call you, or Google Meet if you want to see the screen.</p></details>
-  <details><summary>My partner makes decisions with me.</summary><p>Bring them. Add them as a guest when you book, or 3-way them in on the call.</p></details>
-  <details><summary>Is my business a fit?</summary><p>Not always. You need a Google listing with 10 or more reviews at 3.8 stars or better, and room to take on more customers. If you are not a fit, we say so on the call and you keep the report.</p></details>
-  <details><summary>How much of my time does this take?</summary><p>About 15 minutes to start. Then you run your business.</p></details>
-  <details><summary>Do you need my passwords?</summary><p>No. You keep control of everything you own. We work through manager access on your Google listing.</p></details>
-  <details><summary>What happens after I pay?</summary><p>You send us your Google Maps link and fill a 15 minute onboarding form. Your first plain-words report lands within 7 days, and every week after.</p></details>
-  <details><summary>What if I do not show up in 90 days?</summary><p>Your billing pauses and we keep working for free until you do. Plain words, in your agreement.</p></details>
-  <details><summary>What if I reach the top 3 and then slip?</summary><p>Top 3 means top 3, number 3 counts. The engine keeps feeding your profile every week, that is what the subscription is. Stop it and rankings drift back, which is why clients stay.</p></details>
-  <details><summary>Is the guarantee in writing?</summary><p>Yes. It is in the terms you agree to at checkout. Read them any time at <a href="/terms.html">localgrowthpartner.com/terms</a>.</p></details>
-  <details><summary>I have more than one location.</summary><p>This page is one location. More locations, we quote it on the call.</p></details>
-  <details><summary>Why only one business per city?</summary><p>Two rivals can't both be first. We pick one and win for them.</p></details>
-  <details><summary>Can I cancel or move the call?</summary><p>Yes. The links are in your booking confirmation email. Or just reply to any of our texts.</p></details>
-  <details><summary>Will you text me?</summary><p>Only about your scan and your booking. Reply STOP any time.</p></details>
+<section class="tile white" id="how">
+  <div class="wrap">
+    <div class="tile-head">
+      <h2 class="display">Three steps. No passwords.</h2>
+      <p class="lead">About 15 minutes of your time to start. Then you run your business.</p>
+    </div>
+    <div class="steps3">
+      <div class="step-card"><span class="eyebrow">Step 1</span><h3 class="title">We fix how you look.</h3><p>Your whole Google profile, made complete. Categories, services, photos, the foundation.</p></div>
+      <div class="step-card"><span class="eyebrow">Step 2</span><h3 class="title">We feed the proof.</h3><p>Fresh reviews, photos and updates. Every week. That is what Google and the AI engines read.</p></div>
+      <div class="step-card"><span class="eyebrow">Step 3</span><h3 class="title">You show up.</h3><p>Climb week by week. Not there by day 90? We keep working, free, until you are.</p></div>
+    </div>
+  </div>
+</section>
 
-  <div class="again"><a href="#form-card">Get my free scan &#8594;</a></div>
-</div>
+<section class="tile tonal" id="guarantee">
+  <div class="wrap guar-grid">
+    <div class="portrait"><img src="/img/ben-lev.webp" alt="Ben Lev, founder of Local Growth Partner" width="1000" height="1000" loading="lazy"></div>
+    <div class="guar-copy">
+      <span class="eyebrow">The guarantee</span>
+      <h2 class="display">Show up, or we work for free.</h2>
+      <p class="lead">Top 3 on Maps and named by ChatGPT within 90 days. If not, your billing pauses and we keep going until you are.</p>
+      <p class="body">We can promise that because we say no a lot. No clear path to the top? We tell you on the scan call, and walk away. You work with me directly, not an account manager.</p>
+      <div class="sig"><div><b>Ben Lev</b><span>Founder, Local Growth Partner</span></div></div>
+      <a class="btn btn-dark" href="#form-card">Get my free scan</a>
+    </div>
+  </div>
+</section>
+
+<section class="tile gray" id="pricing">
+  <div class="wrap pricing">
+    <div>
+      <span class="eyebrow">Pricing</span>
+      <h2 class="display">One plan. Everything in.</h2>
+      <p class="lead">Single location. It starts with the free visibility scan, and the 90-day guarantee applies on every billing option.</p>
+      <ul class="incl">
+        <li>Show up on Google, Maps and ChatGPT</li>
+        <li>A weekly report in plain words</li>
+        <li>No passwords. You keep control of everything you own.</li>
+        <li>Facebook and Instagram lead generation, run for you, on request</li>
+      </ul>
+    </div>
+    <div class="pr">
+      <div class="toggle" id="toggle" role="group" aria-label="Billing period">
+        <button type="button" data-mode="monthly">Monthly</button>
+        <button type="button" data-mode="quarterly" class="on" aria-pressed="true">Quarterly <em>&minus;20%</em></button>
+        <button type="button" data-mode="yearly">Yearly <em>&minus;40%</em></button>
+      </div>
+      <div class="lbl">Single location</div>
+      <div class="amt num"><span id="p-amt">$1,200</span> <small>/ mo</small></div>
+      <div class="bill" id="p-bill">Billed every 3 months</div>
+      <ul><li>Top 3 in 90 days, or we work free until you are</li><li>See your progress every week</li><li>Work with Ben directly</li></ul>
+      <a class="btn btn-primary" href="#form-card">Get my free scan</a>
+      <a class="pay-alt" id="p-pay" href="https://buy.stripe.com/bJe14p0PO05c8r05XYdfG01" target="_blank" rel="noopener">Ready to start now? Pay by card</a>
+    </div>
+  </div>
+</section>
+
+<section class="tile white">
+  <div class="wrap">
+    <div class="tile-head"><h2 class="display">Fair questions.</h2></div>
+    <div class="qs-grid"><div class="qs"><details><summary>I got burned by an agency before. Why is this different?</summary><p>You see progress every week. Not showing up by day 90? Your billing pauses and we keep working for free until you do. The risk sits with us.</p></details>
+<details><summary>Do I get the scan by email?</summary><p>No. We show it to you live on a 15 minute call, then the report is yours to keep. Live is where you see who beats you and why.</p></details>
+<details><summary>Phone or video?</summary><p>Your choice when you book. We call you, or Google Meet if you want to see the screen.</p></details>
+<details><summary>My partner makes decisions with me.</summary><p>Bring them. Add them as a guest when you book, or 3-way them in on the call.</p></details>
+<details><summary>Is my business a fit?</summary><p>Not always. You need a Google listing with 10 or more reviews at 3.8 stars or better, and room to take on more customers. If you are not a fit, we say so on the call and you keep the report.</p></details>
+<details><summary>How much of my time does this take?</summary><p>About 15 minutes to start. Then you run your business.</p></details>
+<details><summary>Do you need my passwords?</summary><p>No. You keep control of everything you own. We work through manager access on your Google listing.</p></details>
+<details><summary>What happens after I pay?</summary><p>You send us your Google Maps link and fill a 15 minute onboarding form. Your first plain-words report lands within 7 days, and every week after.</p></details></div><div class="qs"><details><summary>What if I do not show up in 90 days?</summary><p>Your billing pauses and we keep working for free until you do. Plain words, in your agreement.</p></details>
+<details><summary>What if I reach the top 3 and then slip?</summary><p>Top 3 means top 3, number 3 counts. The engine keeps feeding your profile every week, that is what the subscription is. Stop it and rankings drift back, which is why clients stay.</p></details>
+<details><summary>Is the guarantee in writing?</summary><p>Yes. It is in the terms you agree to at checkout. Read them any time at <a href="/terms.html">localgrowthpartner.com/terms</a>.</p></details>
+<details><summary>I have more than one location.</summary><p>This page is one location. More locations, we quote it on the call.</p></details>
+<details><summary>Why only one business per city?</summary><p>Two rivals can't both be first. We pick one and win for them.</p></details>
+<details><summary>Can I cancel or move the call?</summary><p>Yes. The links are in your booking confirmation email. Or just reply to any of our texts.</p></details>
+<details><summary>Will you text me?</summary><p>Only about your scan and your booking. Reply STOP any time.</p></details></div></div>
+  </div>
+</section>
+
+<section class="tile on-dark close center">
+  <div class="wrap">
+    <h2 class="display">Ready to see <em>your city?</em></h2>
+    <p class="lead">We pull it up live on a free 15 minute call and show you who ChatGPT and Google recommend today. The report is yours to keep.</p>
+    <div class="hero-cta"><a class="btn btn-primary" href="#form-card">Get my free scan</a></div>
+    <p class="caption" style="margin-top:16px">15 minutes. No pressure. If you are not a fit, we say so.</p>
+  </div>
+</section>
+</main>
 
 <footer>
   <div class="wrap">
-    90-day guarantee on the Single Location plan: top 3 or we keep working free until you are; full terms in your service agreement. Results shown are documented accounts from the ranking technology we run for clients; every business and city is different, and your results will vary.<br>
-    &copy; 2026 Golden Partners &middot; <a href="/privacy.html">Privacy</a> &middot; <a href="/">localgrowthpartner.com</a>
+    <div class="f-top">
+      <a class="brand" href="/"><svg viewBox="0 0 48 48"><path d="M24 3 C14.6 3 7.2 10.3 7.2 19.6 C7.2 31.5 24 45.5 24 45.5 C24 45.5 40.8 31.5 40.8 19.6 C40.8 10.3 33.4 3 24 3 Z" fill="#FF6B1A"/><path d="M16 25 L21 19.5 L24.5 22.5 L32 14 M32 14 L26.8 14 M32 14 L32 19.2" stroke="#fff" stroke-width="3.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Local Growth Partner</span></a>
+      <div class="f-links"><a href="/#proof">Proof</a><a href="/#how">How it works</a><a href="/#pricing">Pricing</a><a href="/scan/">Free scan</a><a href="/terms.html">Terms</a><a href="/privacy.html">Privacy</a><a href="mailto:ben@benjix.com">ben@benjix.com</a></div>
+    </div>
+    <p class="f-fine fine">Local Growth Partner is the local visibility practice of Golden Partners. Case results and client quotes are documented accounts from businesses on the ranking technology we run for clients, and are not a promise of your results; every business and city is different. The 90-day guarantee (top 3, or we keep working free until you are) applies to the Single Location plan on any billing option, with full terms in our <a href="/terms.html" style="color:inherit">Terms</a>. Interface examples, ranking illustrations, notification screens and photography on this page are illustrations, not client records. We are not affiliated with, endorsed by, or partnered with OpenAI, Google, Apple, Anthropic, Perplexity or Yelp; those names refer only to the places we work to get you found.<br><br>
+      &copy; 2026 Golden Partners. All rights reserved. Local Growth Partner is a MikeNBen LLC company.</p>
   </div>
 </footer>
+
+<div class="sticky" id="sticky" aria-hidden="true">
+  <div class="txt"><b>Free scan, 15 minutes</b>One business per trade, per city</div>
+  <a class="btn btn-primary btn-sm" href="#form-card" tabindex="-1">Get my free scan</a>
+</div>
 
 <script>
   var SIB_URL = "https://4b8d96bf.sibforms.com/serve/MUIFAGfHGZHzu1FcvSvsoIzXGi4IINazStI42dREJ8NpZDb2l7fOooXQlumIYbYE92iwrHNcjG0zmYhhpcCe8n7Zf1ixfme03XUwTvT6eDmBRCfJQNjvxarNBwLHCh9eBJCRYeUnJO0-0pYI4IOpqOvghIOcSL9JmmsWFRRyNHPFiAT3BfcZVlg2Vvl0dlzaxwGVst6osKhfPh8bXA==";
@@ -560,6 +517,31 @@ y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);})(window, documen
     document.body.appendChild(f);
     setTimeout(function(){ f.submit(); }, 450);
   });
+</script>
+<script>
+  var plans = {
+    monthly:   { p: '$1,500', b: 'Billed every 4 weeks',  s: 'https://buy.stripe.com/fZu6oJcywbNU5eO4TUdfG00' },
+    quarterly: { p: '$1,200', b: 'Billed every 3 months', s: 'https://buy.stripe.com/bJe14p0PO05c8r05XYdfG01' },
+    yearly:    { p: '$900',   b: 'Billed once a year',    s: 'https://buy.stripe.com/28E5kFbus5pw0YybiidfG02' }
+  };
+  document.getElementById('toggle').addEventListener('click', function (ev) {
+    var btn = ev.target.closest('button');
+    if (!btn) return;
+    document.querySelectorAll('#toggle button').forEach(function (b) { b.classList.remove('on'); b.setAttribute('aria-pressed', b === btn ? 'true' : 'false'); });
+    btn.classList.add('on');
+    var m = plans[btn.dataset.mode];
+    document.getElementById('p-amt').textContent = m.p;
+    document.getElementById('p-bill').textContent = m.b;
+    document.getElementById('p-pay').href = m.s;
+  });
+</script>
+<script>
+  (function () {
+    var bar = document.getElementById('sticky'); if (!bar) return;
+    var hero = document.querySelector('.hero');
+    var update = function () { var past = window.scrollY > (hero ? hero.offsetHeight * 0.6 : 600); bar.classList.toggle('show', past); bar.setAttribute('aria-hidden', past ? 'false' : 'true'); bar.querySelector('a').tabIndex = past ? 0 : -1; };
+    window.addEventListener('scroll', update, { passive: true }); update();
+  })();
 </script>
 </body>
 </html>
