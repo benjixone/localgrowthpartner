@@ -3,21 +3,31 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<!-- Meta Pixel -->
+<!-- Meta Pixel: Lead fires only after a real form submit (lgp_lead flag), once -->
 <script>
 !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');
 fbq('init','1046611924904183');
 fbq('track','PageView');
+try {
+  if (localStorage.getItem('lgp_lead') && !localStorage.getItem('lgp_lead_fired')) {
+    var _eid=''; try{ _eid=(JSON.parse(localStorage.getItem('lgp_lead')||'{}').eid)||''; }catch(e){}
+    if(_eid){ fbq('track','Lead',{},{eventID:_eid}); } else { fbq('track','Lead'); }
+    localStorage.setItem('lgp_lead_fired','1');
+  }
+} catch(e) {}
 </script>
 <noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=1046611924904183&ev=PageView&noscript=1"/></noscript>
-<!-- Brevo tracker -->
-<script>window.sib={equeue:[],client_key:"okp6o1fyavx5g31wu4r1y4on"};window.sendinblue={};for(var j=['track','identify','trackLink','page'],i=0;i<j.length;i++){(function(k){window.sendinblue[k]=function(){var arg=Array.prototype.slice.call(arguments);(window.sib[k]||function(){var t={};t[k]=arg;window.sib.equeue.push(t)})(arg[0],arg[1],arg[2],arg[3])};})(j[i])}var sbn=document.createElement("script"),sbs=document.getElementsByTagName("script")[0];sbn.type="text/javascript",sbn.id="sendinblue-js",sbn.async=!0,sbn.src="https://sibautomation.com/sa.js?key="+window.sib.client_key,sbs.parentNode.insertBefore(sbn,sbs),window.sendinblue.page();</script>
+<!-- Brevo tracker + identify retry (safety net if the submit-time call raced navigation) -->
+<script>window.sib={equeue:[],client_key:"okp6o1fyavx5g31wu4r1y4on"};window.sendinblue={};for(var j=['track','identify','trackLink','page'],i=0;i<j.length;i++){(function(k){window.sendinblue[k]=function(){var arg=Array.prototype.slice.call(arguments);(window.sib[k]||function(){var t={};t[k]=arg;window.sib.equeue.push(t)})(arg[0],arg[1],arg[2],arg[3])};})(j[i])}var sbn=document.createElement("script"),sbs=document.getElementsByTagName("script")[0];sbn.type="text/javascript",sbn.id="sendinblue-js",sbn.async=!0,sbn.src="https://sibautomation.com/sa.js?key="+window.sib.client_key,sbs.parentNode.insertBefore(sbn,sbs),window.sendinblue.page();
+try { var _l=JSON.parse(localStorage.getItem('lgp_lead')||'{}'); if(_l.email){ var _p=(_l.name||'').split(' ');
+  sendinblue.identify(_l.email, { FIRSTNAME:_p[0]||'', LASTNAME:_p.slice(1).join(' '), BUSINESS:_l.business||'', CITY:_l.city||'', GMB_URL:_l.gmb||'', PHONE_TXT:_l.phone||'' }); } } catch(e) {}</script>
+<!-- Microsoft Clarity -->
 <script type="text/javascript">
 (function(c,l,a,r,i,t,y){c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
 t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
 y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);})(window, document, "clarity", "script", "y8giyd42rx");
 </script>
-<title>Pick Your Time | Local Growth Partner</title>
+<title>You're In | Local Growth Partner</title>
 <meta name="description" content="Book your 15 minute scan call with Local Growth Partner.">
 <meta name="robots" content="noindex">
 <link rel="canonical" href="https://localgrowthpartner.com/thanks/">
@@ -42,9 +52,14 @@ y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);})(window, documen
       <div class="trust"><i></i><b id="checking">Checking your city</b></div>
       <h1 class="hero-display" id="hl" style="font-size:clamp(40px,6vw,76px)">One step left: <em>pick your 15 minutes.</em></h1>
       <p class="lead" style="color:var(--ink);font-weight:700">Your scan only runs on this call. No call, no scan.</p>
-      <p class="body" style="max-width:600px;margin:var(--s3) auto 0">Phone call or Google Meet, you pick. 15 minutes: your grid in red and green, and the name ChatGPT gives instead of yours.</p>
+      <p class="body" style="max-width:600px;margin:var(--s3) auto 0">Phone call or Google Meet, you pick when you book. That's where we show you everything we found.</p>
       <div class="hero-cta"><a class="btn btn-primary" href="#cal-inline" onclick="document.getElementById('cal-inline').scrollIntoView({behavior:'smooth'});return false;">Pick your time</a></div>
-      <p class="hero-note" id="call-now" style="display:none">Or talk to us right now: <a href="tel:+17039621423" style="color:var(--accent-ink);font-weight:700;text-decoration:none">(703) 962-1423</a></p>
+      <div class="hero-cta" style="margin-top:var(--s3)">
+        <a class="btn btn-outline" id="sms-cta" href="sms:+17039621423&amp;body=Hi%20Ben%2C%20I%20just%20requested%20my%20scan.%20Call%20me%20back.">Text Ben instead</a>
+        <a class="btn btn-outline" href="https://m.me/1268736562993739?ref=thanks" target="_blank" rel="noopener">Messenger</a>
+      </div>
+      <p class="caption" style="margin-top:var(--s3)">Texts go straight to Ben's phone. He calls you back.</p>
+      <p class="hero-note" id="call-now">Or talk to us right now: <a href="tel:+17039621423" style="color:var(--accent-ink);font-weight:700;text-decoration:none">(703) 962-1423</a></p>
     </div>
     <div class="stage-2 next">
       <div class="cal-frame">
@@ -53,7 +68,7 @@ y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);})(window, documen
       </div>
       <div class="steps-row">
         <span><b>1.</b> Book the call, phone or Google Meet</span>
-        <span><b>2.</b> We pull up your city live</span>
+        <span><b>2.</b> We run your scan</span>
         <span><b>3.</b> You see it all, and keep the report</span>
       </div>
     </div>
@@ -75,9 +90,10 @@ y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);})(window, documen
   var lead={};
   try { lead=JSON.parse(localStorage.getItem('lgp_lead')||'{}'); } catch(e) {}
   var p=new URLSearchParams(location.search);
-  var city=p.get('city')||lead.city, lname=p.get('name')||lead.name;
+  var city=p.get('city')||lead.city, leadName=p.get('name')||lead.name;
   if(city){ document.getElementById('checking').textContent='Checking if '+city+' is still open'; }
-  if(lname){ document.getElementById('hl').innerHTML=lname.split(' ')[0]+", one step left: <em>pick your 15 minutes.</em>"; }
+  try{ var _sc=document.getElementById('sms-cta'); if(_sc && lead.business){ _sc.href='sms:+17039621423&body='+encodeURIComponent('Hi Ben, I just requested my scan for '+lead.business+'. Call me back.'); } }catch(e){}
+  if(leadName && typeof leadName==='string'){ document.getElementById('hl').innerHTML=leadName.split(' ')[0]+", one step left: <em>pick your 15 minutes.</em>"; }
 
   /* Cal.com official embed; bookingSuccessful feeds the pixel as Schedule */
   (function (C, A, L) { let pfn = function (a, ar) { a.q.push(ar); }; let d = C.document; C.Cal = C.Cal || function () { let cal = C.Cal; let ar = arguments; if (!cal.loaded) { cal.ns = {}; cal.q = cal.q || []; d.head.appendChild(d.createElement("script")).src = A; cal.loaded = true; } if (ar[0] === L) { const api = function () { pfn(api, arguments); }; const namespace = ar[1]; api.q = api.q || []; if (typeof namespace === "string") { cal.ns[namespace] = cal.ns[namespace] || api; pfn(cal.ns[namespace], ar); pfn(cal, ["initNamespace", namespace]); } else pfn(cal, ar); return; } pfn(cal, ar); }; })(window, "https://app.cal.com/embed/embed.js", "init");
