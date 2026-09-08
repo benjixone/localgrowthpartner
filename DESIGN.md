@@ -1,10 +1,11 @@
 # Design system: Local Growth Partner
 
 Mode: brand with direct-response elements. Owner: Ben Lev. Updated:
-2026-09-06 (pass 4, home page only, uncommitted until approved). Source of
-truth for `index.html`. The lander (`scan/`), `proof/`, `onboard.html`,
-and `thanks/` are still on the live stylesheet and get ported to this file
-after the home page is approved.
+2026-09-08 (pass 4 approved on the home page, then ported to every page).
+Source of truth for `css/lgp.css`, which every page links: `index.html`,
+the lander `scan/`, `proof/`, `onboard.html`, and `thanks/`. Tokens and
+components live in the stylesheet once; pages carry only markup and their
+own scripts.
 
 ## 0. Lineage: which installed skill decided what
 
@@ -186,6 +187,33 @@ white at 86 percent with blur, hairline top, the guarantee line in 14px
 bold with "One business per city" under it, and the small primary pill.
 Body gets 72px bottom padding so nothing hides behind it.
 
+### Page recipes
+
+Home (`index.html`): brand mode. Promo strip, nav with three links, hero
+with the typed ChatGPT moment and the Maps mock, dark proof tile, feature
+rows, trade cards, tonal guarantee, gray pricing, FAQ, dark close.
+
+Lander (`scan/`): direct-response mode. Nav carries the brand and one
+pill to `#form-card`, no other links. Hero is the question headline, then
+a gray stage holding the video frame (16:9, the product shadow) beside the
+two-step form card. Fields are 48px, 17px text, hairline border, Ink focus
+ring, progress as two short bars. Below: the dark proof tile (three ladder
+cards, two quotes), three step cards, guarantee, pricing, FAQ, close.
+Every CTA and the sticky bar point at the form.
+
+Proof (`proof/`): brand mode. Hero, dark ladder tile with two named
+quotes, white outcomes tile with three gray cards (big number in Accent
+ink, label, extra line, owner-reported fine print), dark close with the
+booking link for people who already have a scan.
+
+Onboarding (`onboard.html`, noindex): brand only nav, headline, one white
+form card at 720px on gray with labeled fields in two groups, a tonal
+callout for the manager-access step, two checks, one full-width pill.
+
+Thanks (`thanks/`, noindex): brand only nav, trust pill that reads the
+city, headline that reads the first name, lead, pill that scrolls to the
+Cal.com embed inside a white frame on a gray stage, three-step row.
+
 ## 8. Motion
 
 Hero copy rises 12px over 500ms, the stage follows at 120ms, the
@@ -212,10 +240,9 @@ color only. Active scales to 0.97. Reduced motion turns everything off.
    only for large text (18.66px bold or 24px). The label is 17px 600, so
    it fails strictly. Options: Ink text on Accent (5.2:1, passes, less
    Apple), or raise the label to 19px 700. Decide before shipping.
-2. Port `scan/`, `proof/`, `onboard.html`, `thanks/` to this file.
-3. Extract the tokens to `css/lgp.css` once a second page uses them.
-4. Convert the Manrope TTF to woff2 (about 60 percent smaller) when a
+2. Convert the Manrope TTF to woff2 (about 60 percent smaller) when a
    converter is available.
-5. "Most chosen" on the lander stays until Ben confirms the share.
-6. The guarantee portrait is the benjix.com headshot. Swap in the newer
+3. "Most chosen" is off the lander (the pricing card defaults to
+   quarterly instead) until Ben confirms the share.
+4. The guarantee portrait is the benjix.com headshot. Swap in the newer
    photo Ben supplied once it is in the repo as `img/ben-lev.jpg`.
