@@ -1,283 +1,221 @@
-# Design system: Local Growth Partner (localgrowthpartner.com)
+# Design system: Local Growth Partner
 
-Mode: brand for the home page and proof pages, direct-response for /scan,
-/thanks, and any page paid traffic lands on.
-Owner: Ben Lev. Updated: 2026-09-04. Source of truth for every page in this
-repo and for the Meta ad creatives in `img/ads/`. Inferred from the live CSS
-in `index.html` and `scan/index.html`, then edited by hand. Read by Claude
-Design (connect this repo) and by Claude Code through `.claude/skills/`.
-Change tokens here first, then in each page's `:root`.
+Mode: brand with direct-response elements. Owner: Ben Lev. Updated:
+2026-09-06 (pass 4, home page only, uncommitted until approved). Source of
+truth for `index.html`. The lander (`scan/`), `proof/`, `onboard.html`,
+and `thanks/` are still on the live stylesheet and get ported to this file
+after the home page is approved.
 
-Back-end brand: Golden Partners (footer, agreements). Front-end: Local
-Growth Partner. Positioning and offer live in the golden-partners repo,
-`maps-agency/`.
+## 0. Lineage: which installed skill decided what
+
+| Decision | Source | What it said |
+|---|---|---|
+| One sans family at display weights with tight negative tracking, headline weight 800, body 17px at 1.47, lead 21 to 24px | `design-references/companies/apple/DESIGN.md` (SF Pro Display, "Apple tight" tracking, body at 17 not 16) | Apple runs one family and gets hierarchy from size, weight, and tracking |
+| Manrope, self-hosted, variable | Apple substitution rule (system-ui first, a geometric humanist for other platforms), `stitch-taste-design` (no Inter as a brand face, Outfit or similar), `ui-ux-pro-max` (fonts load once, no render-blocking stylesheet) | Google Sans is not licensable; Manrope is the closest open geometric with Google-like roundness and Apple-like neutrality |
+| Page as a stack of full-bleed tiles: white, gray #F5F5F7, near-black, the color change is the divider, 128px section padding, no borders on cards, no gradients, exactly one shadow (the product) | Apple DESIGN.md (tile alternation, elevation table, "exactly one drop-shadow in the entire system") | |
+| Hero: centered stack, giant headline, one-line lead, pill CTA plus a chevron text link, product on a gray surface below | Apple DESIGN.md (product tile anatomy, `button-primary` pill and `text-link`), `ui-ux-pro-max` landing pattern (hero image is the product) | |
+| Tonal containers: pale orange surface for feature illustrations and the guarantee tile, 28 to 36px radii, pill buttons | `material-3` (tonal surfaces carry depth, not shadows; shape scale up to 28dp and M3 Expressive larger), `design-references/styles/material` | Google's marketing chassis |
+| Feature rows alternating text and framed illustration | Google product pages via `design-references/styles/material` and `ui-ux-pro-max` "Hero + Features + CTA" | |
+| Big-number proof tile on near-black | Apple product pages (stat callouts), `material-3` Expressive research (bolder, larger emphasis is found faster by older users) | |
+| Sticky bottom bar on phones with the guarantee line and the CTA | Apple DESIGN.md `floating-sticky-bar` (parchment 80 percent, backdrop blur, running total left, CTA right) repurposed as the conversion bar | |
+| One accent at 80 percent saturation, white text on it for the primary button (3.4:1, large-text threshold met at 17px semibold on a 48px button is not enough, so the button text is 17px 600 which is under the 18.66px bold rule; see gap 3) | `stitch-taste-design` color discipline, `web-design-guidelines` contrast | |
+| Real founder photograph, first-person guarantee copy | `frontend-design` ("open with the most characteristic thing"), conversion research in `design-principles` | The two stock "founder" photos in img/ are not Ben and are never used. Testimonials keep initials discs: no AI face is ever attached to a real person's quote (FTC endorsement guides, ClickBank testimonial rule). Client names on the wall stay as type until each business supplies its logo and permission. |
+| The typed ChatGPT conversation as the single page-load moment, reduced-motion shows the final state | `frontend-design` ("one orchestrated moment") | |
+| Forms and CTA rules, 48px targets, focus rings, no placeholder-only labels | `web-design-guidelines`, `apple-hig`, `material-3` | Applied on the lander when it is ported |
 
 ## 1. Overview and atmosphere
 
-A local business owner, often on a phone, often burned by an agency before,
-lands here from an ad or a text. The page has to feel like a serious firm
-that says no a lot, not a growth-hack template. Dark navy ground with a
-warm cream proof section, one orange accent, a serif display with one
-italic accent word per headline, and product mocks (ChatGPT answer, Maps
-result, phone notifications) that show the outcome. The one memorable move
-is the italic orange word inside the serif headline. Everything else is
-quiet.
-
-Today the page carries more than that one move: glow blobs, floating mock
-cards, a cycling headline word, a marquee, gradient seals, lifted cards.
-Section 8 lists what comes out.
-
-Dials: density 5, variance 5, motion 2 (currently about 7).
+A product company's page for a local-growth service. White canvas, giant
+sans headlines, the product mock as the hero image, proof as big numbers
+on near-black, Google-style tonal feature rows, a real face behind the
+guarantee, one orange. Dials: variance 3, motion 2, density 2.
 
 ## 2. Colors
 
-### Grounds
-- Void (#070D16), the page ground and footer. Blue-black, not pure black.
-- Navy (#0B1524), the second dark tier: marquee band, demand section,
-  cards on dark, scan page cards.
-- Lift (#111E31), the third dark tier for hover on dark buttons.
-- Cream (#FAF7F1), the light proof and pricing ground.
-- Sand (#F1EBDF), light tier inside cream: step visuals, proof card feet.
-- White (#FFFFFF), product mocks and pricing cards only.
-
-### Accent
-- Accent (#FF6B1A), the single accent. Italic display words on dark, eyebrow
-  rule, checkmarks, seal, selected states. On-color: Ink, never white
-  (white on Accent is 2.9:1).
-- Accent deep (#E85A0C), hover state on Accent fills.
-- Accent soft (#FFA45C), small labels on Navy only.
-- Accent on cream for display words must use Accent deep or darker
-  (#C2410C recommended, 4.8:1); Accent itself on Cream is 2.7:1.
+### Surfaces
+- Canvas (#FFFFFF), the page.
+- Surface (#F5F5F7), Apple's gray. The promo strip, the product stage, the
+  trust pill, the pricing tile, the toggle track, the footer.
+- Surface 2 (#E8E8ED), image wells inside cards.
+- Tonal (#FBEDE4), the orange-tinted container. Feature illustration
+  frames, the guarantee tile, check discs. Tonal 2 (#F6DDCB) for the
+  portrait well.
+- Tile (#0B1524), the near-black tile for proof and the closing CTA.
+  Tile 2 (#132038), cards on it.
+- Hairline (black at 8 percent), the nav rule, FAQ rules, feature-row
+  dividers. No card has a border.
 
 ### Text
-- White (#FFFFFF), primary text on Void and Navy, 19.5:1.
-- Mist (#8A99AC), secondary text on dark, 6.7:1 on Void, 6.3:1 on Navy.
-- Ink (#101B2B), primary text on Cream and White, 16.2:1 on Cream.
-- Steel (#64748B), secondary text on light. 4.5:1 on Cream is the floor,
-  4.0:1 on Sand fails. Use #5B6B82 on Cream (5.1:1) and #5F6E85 on Sand
-  when the CSS is next touched.
-- Footer fine print (#5D6B7D) is 3.6:1 on Void and fails. Use #6F7E91
-  (4.7:1).
+- Ink (#1D1D1F), all text on light. Ink 2 (#6E6E73), leads and body on
+  light, 5.0:1 on white. Ink 3 (#86868B), fine print, 3.5:1, 12px legal
+  only.
+- On dark (#F5F5F7), On dark 2 (#B8BEC9, 8.6:1 on Tile 2), On dark 3
+  (#8A93A3, 5.0:1 on Tile 2).
 
-### Lines
-- Line dark (white at 9 percent), rules and card borders on dark.
-- Line light (#E7E0D3), rules and card borders on light.
-
-### Google brand colors (product mocks only)
-- Red #EA4335, star #FBBC04, blue #1A73E8, green #188038. Never used
-  outside the Maps and Search mocks.
-
-### Contrast table (as shipped)
-| Pair | Ratio | Verdict |
-|---|---|---|
-| White on Void | 19.5:1 | pass |
-| Mist on Void | 6.7:1 | pass |
-| Mist on Navy | 6.3:1 | pass |
-| Ink on Cream | 16.2:1 | pass |
-| Steel on Cream | 4.45:1 | fail by a hair, fix to #5B6B82 |
-| Steel on Sand | 4.0:1 | fail, fix to #5F6E85 |
-| Accent on Void (display italic) | 6.8:1 | pass |
-| Accent on Cream (display italic) | 2.7:1 | fail, large text needs 3:1, use #C2410C |
-| White on Accent (every primary button) | 2.9:1 | fail, auto-fail, use Ink text |
-| Ink on Accent (proposed button) | 6.1:1 | pass |
-| #5D6B7D footer on Void | 3.6:1 | fail, use #6F7E91 |
-| #6B7A8D labels on Navy | 4.2:1 | fail for body-size text, use Mist |
-| Nav #B7C2D0 on Void | 10.8:1 | pass |
+### Accent
+- Accent (#E8632B). The primary button fill, the highlighted word in
+  headlines on light, the "You" marker. White text on it in buttons.
+- Accent press (#D4561F). Accent ink (#B03E0A), the accent as text on
+  light: eyebrows, text links, the plus in FAQ rows, check marks. 5.5:1 on
+  white. Accent on dark (#FFA36B), the highlighted word and links on the
+  dark tile, 8.3:1 on Tile 2.
+- Good (#1E9E5A), the single status dot.
 
 ## 3. Typography
 
-Families
-- Display: Cormorant 400 and 500, italic 400 and 500. Fallback Georgia.
-  Elegant, and it reads as "firm" rather than "app". Keep.
-- Body and UI: Inter 400 to 800. Fallback system-ui. Inter is on the house
-  banned list for brand faces because it is the default of every template.
-  Swap to Geist or Satoshi at the next redesign; do not touch before the
-  contrast fixes ship.
-- Product mocks: system stack and Roboto on purpose, so the ChatGPT and
-  Google mocks look like the real products.
+Manrope, variable 200 to 800, self-hosted at `fonts/Manrope[wght].ttf`,
+preloaded, `font-display: swap`. Fallback system-ui so Safari gets SF Pro.
 
-Hierarchy
-| Role | Size | Line | Weight | Case | Use |
+| Role | Size | Line | Weight | Tracking | Use |
 |---|---|---|---|---|---|
-| display | clamp(46px, 6.4vw, 86px) | 1.04 | 400 Cormorant, -0.5px | sentence | h1, one italic Accent word |
-| display 2 | clamp(38px, 4.8vw, 62px) | 1.08 | 400 Cormorant | sentence | section h2 |
-| statement | clamp(38px, 5.2vw, 68px) | 1.1 | 400 Cormorant | sentence | the one-line claim on cream |
-| h3 | 25 to 29px | 1.2 | 600 Cormorant | sentence | card titles |
-| lede | 17.5 to 18px | 1.6 | 400 Inter | sentence | under every headline, 540px max |
-| body | 15px | 1.55 | 400 Inter | sentence | card copy, FAQ answers |
-| small | 13 to 13.5px | 1.5 | 400 to 500 Inter | sentence | captions, notes, nav |
-| eyebrow | 11.5px | 1 | 600 Inter, 3.4px tracking | upper | section labels, with a 22px Accent rule |
-| stat | 58px | 1 | 500 Cormorant | as is | proof numbers |
-| button | 15px | 1 | 600 Inter | sentence | all buttons |
-| fine | 11.3 to 12.5px | 1.8 | 400 Inter | sentence | disclaimers, footer |
+| hero-display | clamp(46px, 7vw, 92px) | 0.98 | 800 | -0.04em | One per page |
+| display | clamp(34px, 4.6vw, 60px) | 1.02 | 800 | -0.035em | Tile headlines |
+| display-sm | clamp(28px, 3.4vw, 44px) | 1.05 | 800 | -0.03em | Feature-row headlines |
+| lead | clamp(19px, 2.1vw, 24px) | 1.35 | 500 | -0.015em | Under headlines, Ink 2 |
+| title | 21px | 1.24 | 700 | -0.02em | Card titles |
+| body | 17px (19px in feature rows) | 1.47 | 400 | -0.01em | Default |
+| caption | 14px | 1.43 | 400 | 0 | Notes, disclaimers |
+| fine | 12px | 1.5 | 400 | 0 | Legal |
+| eyebrow | 15px | 1.4 | 700 | -0.01em, sentence case | "Step 1", "The guarantee", in Accent ink |
+| stat | clamp(56px, 7vw, 96px) | 0.95 | 800 | -0.05em | Proof numbers, tabular |
+| price | 64px | 1 | 800 | -0.05em | Tabular |
 
-Principles
-- One italic Accent word per headline, never two.
-- Sizes snap to 11.5, 13, 15, 17.5, 25, 29 and the clamps above. Today the
-  CSS uses 11.3, 12.5, 12.8, 13.5, 13.8, 14.5, 15.5, 17.5, 18.5 as well; fold
-  them in at the next pass.
-- Uppercase only on eyebrows and the two-word step labels.
+Principles: one family, hierarchy from size, weight, and tracking. Tracking
+tightens as size grows and is never applied below 14px. Headlines carry
+one accent word, never italic. Sentence case everywhere; no uppercase
+labels anywhere on the page.
 
 ## 4. Layout
 
-- Container 1180px, 30px side padding (20px under 560). Scan page 860px.
-- Section rhythm 112px desktop, 76px under 980. Scan sections 56px.
-- Heads capped at 640px, ledes at 540px, FAQ at 800px.
-- Grids: hero stage 1.05fr 0.95fr; who-we-help 3 cards; cases 3 cards;
-  steps 3 cards; numbers 3 columns; testimonials 2; demand 2; scan section
-  0.9fr 1.1fr. Four equal three-card grids on one page is the kit look;
-  section 8 lists the replacement.
-- Breakpoints: 980 (everything to one column, nav links hidden, the CTA
-  stays), 700 on scan (steps and plans stack), 560 (type steps down,
-  short button labels).
-- Whitespace: dark sections breathe, cream sections are tighter and
-  denser with proof.
+- Tokens: 4 8 12 16 24 32 48 64 96 128.
+- Container 1200px with 32px side padding (16px under 600). Hero copy
+  900px, tile heads 760px, FAQ 1040px.
+- Tile padding 128px desktop, 96px under 1040, 64px under 600.
+- Grids: stats and cases 3-up, quotes 2-up, feature rows 1:1, guarantee
+  0.8:1.2, pricing 1fr:480px, FAQ 2 columns. Everything single column
+  under 1040.
+- Breakpoints: 1040 and 600. Under 600 the brand text hides, the nav
+  keeps Proof and Pricing with a short CTA, buttons go full width, the
+  Maps mock hides and the sticky bar appears.
 
 ## 5. Elevation and depth
 
-- Three dark tiers (Void, Navy, Lift) and two light tiers (Cream, Sand).
-  That is enough depth. The house rule is no glows.
-- As shipped: button glow `0 8px 30px` in Accent at 30 percent, hover glow
-  at 42 percent, mock shadows `0 50px 100px` black at 60 percent, card
-  hover lift 7px with a 60px shadow, a blurred 1150px Accent blob behind
-  the hero, radial gradient seals, gradient guarantee band. Section 8.
-- Target: one shadow tier for floating product mocks only,
-  `0 24px 60px rgba(0,0,0,0.35)`. Buttons flat. No blur filters.
+Flat. Cards sit on a different surface value instead of carrying a border
+or a shadow. The one shadow in the system,
+`0 30px 80px rgba(29,29,31,0.18), 0 2px 8px rgba(29,29,31,0.06)`, belongs
+to the two product mocks on the hero stage. The nav and the sticky bar
+float with white at 78 to 86 percent and `backdrop-filter: saturate(180%)
+blur(20px)`.
 
-## 6. Shapes and imagery
+## 6. Shapes
 
-- Radius as shipped: 10 (inputs), 12 (step visuals), 14 (scan cards),
-  15 (notifications), 16 (cards, VSL), 18 (mocks, pricing), 34 (phone),
-  100 (pills). Target scale: 8, 12, 16, pill. Inputs 8, cards 12, mocks 16,
-  buttons pill.
-- Photography: three trade photos (spa, hvac, dental) with a dark gradient
-  foot. Real trades, no stock people.
-- Product mocks are illustrations and say so in a caption ("Illustrations
-  of the outcome we work toward. Not client records."). Keep that caption
-  adjacent, always.
-- Logos: the ChatGPT, Claude, and Google marks appear inside product mocks
-  only, never as endorsement badges.
-- Ad creatives in `img/ads/` follow the same palette. See section 9.
+12px small (focus outline, mock chips), 20px medium (proof cards, quotes,
+pricing toggle track is a pill), 28px large (stat cards, feature frames,
+trade cards, pricing card), 36px extra large (the product stage's top
+corners, the portrait). Pills for every button, the trust pill, and the
+toggle. Mocks use 20px on their top corners only because they rest on the
+stage edge.
 
 ## 7. Components
 
-Primary button: Accent ground, Ink text (fix from white), 600 Inter 15px,
-16px by 32px padding, pill, no shadow, hover Accent deep, active 1px down,
-focus ring 2px white with 3px offset on dark, 2px Ink on light. 48px tall
-minimum, full width under 560. Label is always the outcome: "Get my free
-scan", "Check if my city is open", "Show me who is winning my city". Drop
-the arrow icon.
+Promo strip: Surface, 14px, centered, bold lead-in.
 
-Ghost button: 1px Line dark border, white text, hover white at 6 percent.
-Light button (on Cream): white ground, Ink text; hover Accent ground with
-Ink text.
+Nav: sticky, white at 78 percent with blur, hairline, 56px. Brand 28px
+mark plus 16px bold name. Three 15px links in Ink 2. One primary pill,
+small variant 40px.
 
-Eyebrow: 11.5px 600 Inter, 3.4px tracking, uppercase, Mist, with a 22px
-Accent rule before it.
+Buttons: pill, 48px minimum, 17px semibold, 12px by 24px padding, no
+border. Primary: Accent with white text, press Accent press. Dark: Ink
+with white text (the guarantee tile). Light: white with Ink text (dark
+tiles, secondary). Active scale 0.97 in 100ms, hover color in 200ms.
+Text link: Accent ink, 17px semibold, trailing chevron, 48px hit height.
 
-Trust pill (hero): 1px Line dark, white at 4.5 percent, 12.8px, a static
-green dot. Keep, remove the dot's glow ring.
+Hero: trust pill on Surface with the green dot, hero-display with the
+accent word, lead capped at 640px, primary pill plus chevron link, a
+14px note line. Below, the stage: a Surface block with 36px top corners
+holding the ChatGPT mock at 1.2fr and the Maps mock at 1fr, both with
+the product shadow, both cut off at the stage's bottom edge like a
+product resting on a table. The conversation plays once on load: the
+question types over 800ms, the answer lines land 400ms apart, the client
+name highlights at 2.6s. Reduced motion shows the finished state. Under
+the stage, a Surface band with the illustration disclaimer and the engine
+row (ChatGPT, Google Search, Google Maps, Apple Maps, Claude, Perplexity,
+Gemini, Yelp) with the three real marks we have.
 
-Product mocks (ChatGPT answer, Maps result, phone): white, 16px radius, one
-shadow tier, system font, caption underneath. No float animation.
+Proof tile (near-black): centered headline and lead, then three stat
+cards on Tile 2 at 28px: "#1" at up to 96px with "was #n" in Accent on
+dark beside it, a rank ladder (an SVG track from #12 to #1 that marks
+only the two documented points, the starting rank and #1, with no
+invented intermediate weeks), the time line, the business and city, one
+documented note. Then the three engine mock cards (header row, chat body), then two
+quote cards with real curly quotes and initials discs, then the client
+wall and a "More results" link on one row, then the disclaimer caption.
 
-Proof card: white, 16px radius, chat or search mock on top, Sand foot with
-the rank change in Cormorant 34px, "was" in Steel, time in Accent deep
-uppercase. The documented-accounts disclaimer sits within the same section,
-above the fold of the section on mobile, not only in the footer.
+Feature rows (white tile): 1:1 grid, text and a Tonal frame at 28px with
+the step illustration, alternating sides. Eyebrow "Step n" in Accent ink,
+display-sm headline with a period, 19px body capped at 460px, the third
+row ends with a text link.
 
-Testimonial: Line dark border, 16px radius, white at 3 percent, quote in
-Cormorant 23px, name and role in 14 and 12.5px, avatar or initials.
-Anonymous quotes carry "on record" and nothing more.
+Trade cards (gray tile): three white cards at 28px, 4:3 image well, title,
+one line. The wells load generated editorial photographs
+(`img/trade-medspa.webp`, `trade-roofing.webp`, `trade-moving.webp`, 960 by
+717, made in Higgsfield with marketing_studio_image on 2026-09-08, faces
+turned away, no logos, no signage) and fall back to the older illustration
+if a file is missing. These are scene photographs, not people we claim to
+have worked with, and are never captioned as clients.
 
-Numbers: three columns with 1px rules, Cormorant 58px, label 13.5px Steel.
+Guarantee tile (Tonal): the portrait at 4:5 in a 36px frame at 0.8fr,
+then eyebrow, display, lead in Ink at 500, body, name and role, and a
+dark pill.
 
-Pricing card: white, 2px Accent border on the highlighted plan, amount in
-Cormorant 47px, checklist with Accent checkmarks, one primary button, a
-"pay by card" text link under it. Toggle: white pill group, Navy on the
-selected state.
+Pricing tile (gray): left, eyebrow, display, lead, and four included
+lines with Tonal check discs. Right, a white card at 28px with the
+billing toggle (Surface track, selected tab Ink), label, 64px price with
+tabular figures, billing line, three check lines, full-width primary
+pill, and a "Pay by card" text link.
 
-Guarantee band: Navy, a 164px seal with a 1px Accent soft ring, "90 Days"
-in Cormorant 46px. Remove the gradient and the blob.
+FAQ (white): two hairline columns, 19px semibold summaries, plus that
+turns into a minus in Accent ink, 16px answers capped at 520px.
 
-FAQ: details and summary, Cormorant 23px question, plus sign in Accent,
-answer 15px Steel, 640px max.
+Closing tile (near-black): display with the accent word, lead, primary
+pill, a caption. Footer on Surface with 14px links at 44px height and the
+12px legal block.
 
-Lead form (scan page, direct-response): two steps with a 4px progress dot
-row. Step 1: business, city, trade. Step 2: name, phone, email, Maps link
-with an "I don't have a listing" checkbox, TCPA consent line. Inputs 14px
-by 16px, 8px radius, 1.5px Line light border, focus border Accent plus a
-2px ring. Every input gets a visible label above it (today placeholders do
-that job). `autocomplete`, `inputmode`, and `type` set per field. Inline
-error under the field, first error focused. Submit stays enabled, shows
-"Sending…" while the request runs. The email typo fixer stays.
-
-Announce bar: Accent at 14 percent to 10 percent gradient today. Flat Navy
-with a 1px Line dark bottom and Accent soft for the bold words.
-
-Footer: Void, links in Mist, fine print at #6F7E91 11.3px at 1.8.
+Sticky bar (phones only, after 60 percent of the hero has scrolled):
+white at 86 percent with blur, hairline top, the guarantee line in 14px
+bold with "One business per city" under it, and the small primary pill.
+Body gets 72px bottom padding so nothing hides behind it.
 
 ## 8. Motion
 
-Reduced motion is handled globally (`animation: none`, `transition: none`)
-and that stays. What runs for everyone else today: a cycling headline word
-with blur, two floating mocks on a 7-second loop, a blinking cursor, a
-32-second marquee, scroll-reveal on most blocks at 800ms, card hover lifts,
-image zoom on hover, button lift with glow.
+Hero copy rises 12px over 500ms, the stage follows at 120ms, the
+conversation plays once. Sticky bar slides up in 300ms. Hover changes
+color only. Active scales to 0.97. Reduced motion turns everything off.
 
-Target: one page-load moment (the hero headline and lede fade in once,
-200ms), 150ms color transitions on buttons and links, nothing infinite,
-nothing on scroll. The cycling word becomes a fixed word chosen per
-campaign (it is also what the ad promised, so it should not cycle away
-from the message match). The marquee becomes a static two-row list.
+## 9. Do and don't
 
-## 9. Ad creatives (img/ads)
+- Do let the product mock be the hero image. Don't add a photo of people
+  who are not clients or Ben.
+- Do keep one accent word per headline in Accent. Don't use italics for
+  emphasis.
+- Do separate sections with a surface change. Don't add borders,
+  gradients, or shadows to cards.
+- Do keep headlines at weight 800 with tight tracking. Don't go lighter
+  than 500 on anything above 20px.
+- Do use "Get my free scan" as the only primary label. Don't invent a
+  second verb.
+- Don't animate on scroll, loop, float, or cycle words.
 
-Same tokens: Void or Navy ground, white headline in Cormorant with one
-italic Accent word, Inter for the body line, one product mock as the
-visual, Local Growth Partner mark bottom left. Square and 4:5. No glow, no
-gradient, no fake screenshots presented as client records. Every creative
-goes through the compliance skill in the golden-partners repo before it
-runs.
+## 10. Known gaps and next
 
-## 10. Do and don't
-
-- Do put Ink text on Accent buttons. Don't put white on Accent anywhere.
-- Do use one italic Accent word per headline. Don't color whole lines.
-- Do keep the "illustration, not client records" caption next to every
-  mock. Don't let a mock stand alone.
-- Do keep the documented-accounts disclaimer inside the proof section.
-  Don't push it to the footer only.
-- Do repeat "Get my free scan" as the one primary label. Don't invent
-  variants per section.
-- Do keep one shadow tier for mocks. Don't add glows, blobs, or gradients.
-- Do state the one-per-city rule as policy. Don't dress it as a countdown.
-- Do give every input a visible label. Don't use placeholders as labels.
-
-## 11. Responsive behavior
-
-Under 980: single column everywhere, nav links hidden (the button stays;
-add a two-link inline menu: Proof, Pricing). Under 560: container padding
-20, display 42px, short button labels via `.sm-t`. Primary button full
-width under 560. All targets 48px on this site because paid traffic lands
-here.
-
-## 12. Iteration guide and known gaps
-
-Change a token here, then in `:root` of `index.html`, `scan/index.html`,
-`thanks/index.html`, `proof/index.html`, `onboard.html` (five copies of the
-same tokens today; a shared `site.css` would end that). Re-run "design
-audit" on the changed page.
-
-Known gaps, in order
-1. White on Accent on every primary button (auto-fail). Ink text or a
-   darker orange (#C2410C keeps white at 5.2:1).
-2. Accent on Cream display words, Steel on Sand, footer fine print, and
-   #6B7A8D labels all under threshold.
-3. Motion inventory in section 8.
-4. Labels, autocomplete, inline errors on the scan form.
-5. Seven images without width and height on the home page; font stylesheet
-   loads 11 weights with no preload.
-6. Four equal three-card grids on the home page.
-7. Inter as the body face.
-8. Tokens duplicated across five HTML files.
+1. The primary button is white on Accent at 3.4:1. Under WCAG that passes
+   only for large text (18.66px bold or 24px). The label is 17px 600, so
+   it fails strictly. Options: Ink text on Accent (5.2:1, passes, less
+   Apple), or raise the label to 19px 700. Decide before shipping.
+2. Port `scan/`, `proof/`, `onboard.html`, `thanks/` to this file.
+3. Extract the tokens to `css/lgp.css` once a second page uses them.
+4. Convert the Manrope TTF to woff2 (about 60 percent smaller) when a
+   converter is available.
+5. "Most chosen" on the lander stays until Ben confirms the share.
+6. The guarantee portrait is the benjix.com headshot. Swap in the newer
+   photo Ben supplied once it is in the repo as `img/ben-lev.jpg`.
