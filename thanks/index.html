@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>You're In | Local Growth Partner</title>
 <!-- Meta Pixel: Lead fires only after a real form submit (lgp_lead flag), once -->
 <script>
 !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');
@@ -21,71 +22,76 @@ try {
 <script>window.sib={equeue:[],client_key:"okp6o1fyavx5g31wu4r1y4on"};window.sendinblue={};for(var j=['track','identify','trackLink','page'],i=0;i<j.length;i++){(function(k){window.sendinblue[k]=function(){var arg=Array.prototype.slice.call(arguments);(window.sib[k]||function(){var t={};t[k]=arg;window.sib.equeue.push(t)})(arg[0],arg[1],arg[2],arg[3])};})(j[i])}var sbn=document.createElement("script"),sbs=document.getElementsByTagName("script")[0];sbn.type="text/javascript",sbn.id="sendinblue-js",sbn.async=!0,sbn.src="https://sibautomation.com/sa.js?key="+window.sib.client_key,sbs.parentNode.insertBefore(sbn,sbs),window.sendinblue.page();
 try { var _l=JSON.parse(localStorage.getItem('lgp_lead')||'{}'); if(_l.email){ var _p=(_l.name||'').split(' ');
   sendinblue.identify(_l.email, { FIRSTNAME:_p[0]||'', LASTNAME:_p.slice(1).join(' '), BUSINESS:_l.business||'', CITY:_l.city||'', GMB_URL:_l.gmb||'', PHONE_TXT:_l.phone||'' }); } } catch(e) {}</script>
+<link rel="canonical" href="https://localgrowthpartner.com/thanks/">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%23070D16'/%3E%3Cpath d='M32 8 C21.5 8 13.5 16 13.5 26 C13.5 39 32 56 32 56 C32 56 50.5 39 50.5 26 C50.5 16 42.5 8 32 8 Z' fill='%23FF6B1A'/%3E%3Cpath d='M22 32 L28 25 L32 28.5 L41 18.5 M41 18.5 L34.5 18.5 M41 18.5 L41 25' stroke='white' stroke-width='4' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://app.cal.com" crossorigin>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,400;0,500;1,400&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root { --void:#070D16; --cream:#FAF7F1; --accent:#FF6B1A; --ink:#101B2B; --mist:#8A99AC; --steel:#64748B; --line-d:rgba(255,255,255,0.09); --line-l:#E7E0D3; --sand:#F1EBDF; }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { font-family:'Inter',system-ui,sans-serif; background:var(--void); color:#fff; line-height:1.6; -webkit-font-smoothing:antialiased; }
+  .wrap { max-width:660px; margin:0 auto; padding:0 24px; text-align:center; }
+  .top { display:flex; justify-content:center; padding:22px 0 30px; }
+  .brand { display:flex; align-items:center; gap:10px; text-decoration:none; }
+  .brand svg { width:30px; height:30px; }
+  .brand span { font-size:15px; font-weight:700; color:#fff; }
+  .dot { width:9px; height:9px; border-radius:50%; background:#35D07F; display:inline-block; box-shadow:0 0 0 5px rgba(53,208,127,0.15); margin-right:9px; animation:pulse 1.6s infinite; }
+  @keyframes pulse { 50% { box-shadow:0 0 0 9px rgba(53,208,127,0.05); } }
+  h1 { font-family:'Cormorant',Georgia,serif; font-weight:400; font-size:clamp(32px,5vw,46px); line-height:1.12; margin-top:10px; overflow-wrap:anywhere; text-wrap:balance; }
+  html, body { overflow-x:hidden; max-width:100%; }
+  h1 em { color:var(--accent); font-style:italic; }
+  .sub { color:var(--mist); font-size:16px; margin-top:14px; }
+  .next { background:#fff; color:var(--ink); border-radius:16px; padding:28px 28px 30px; margin-top:36px; text-align:left; box-shadow:0 40px 80px rgba(0,0,0,0.5); }
+  .next h2 { font-family:'Cormorant',serif; font-size:24px; font-weight:500; text-align:center; margin-bottom:18px; }
+  .st { display:flex; gap:13px; padding:11px 0; align-items:flex-start; }
+  .st .n { flex:0 0 26px; width:26px; height:26px; border-radius:50%; background:var(--sand); color:var(--accent); font-size:12.5px; font-weight:700; display:flex; align-items:center; justify-content:center; margin-top:2px; }
+  .st b { display:block; font-size:15px; }
+  .st span { font-size:13.5px; color:var(--steel); }
+  /* GHL CALENDAR SLOT: replace this block with the GHL calendar embed iframe */
+  .cal { margin-top:16px; border:2px dashed var(--line-l); border-radius:12px; padding:22px; text-align:center; color:var(--steel); font-size:14px; }
+  footer { padding:40px 0; text-align:center; font-size:11.5px; color:#5D6B7D; }
+  footer a { color:#8A99AC; }
+</style>
 <!-- Microsoft Clarity -->
 <script type="text/javascript">
 (function(c,l,a,r,i,t,y){c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
 t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
 y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);})(window, document, "clarity", "script", "y8giyd42rx");
 </script>
-<title>You're In | Local Growth Partner</title>
-<meta name="description" content="Book your 15 minute scan call with Local Growth Partner.">
-<meta name="robots" content="noindex">
-<link rel="canonical" href="https://localgrowthpartner.com/thanks/">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%23070D16'/%3E%3Cpath d='M32 8 C21.5 8 13.5 16 13.5 26 C13.5 39 32 56 32 56 C32 56 50.5 39 50.5 26 C50.5 16 42.5 8 32 8 Z' fill='%23FF6B1A'/%3E%3Cpath d='M22 32 L28 25 L32 28.5 L41 18.5 M41 18.5 L34.5 18.5 M41 18.5 L41 25' stroke='white' stroke-width='4' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
-<link rel="preconnect" href="https://app.cal.com" crossorigin>
-<link rel="preload" as="font" type="font/ttf" href="/fonts/Manrope[wght].ttf" crossorigin>
-<link rel="stylesheet" href="/css/lgp.css">
-<meta name="theme-color" content="#FFFFFF">
 </head>
 <body>
-<nav class="nav" aria-label="Main">
-  <div class="wrap">
-    <a class="brand" href="/" aria-label="Local Growth Partner home"><svg viewBox="0 0 48 48"><defs><linearGradient id="pg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#FF8A45"/><stop offset="1" stop-color="#E85A0C"/></linearGradient></defs><path d="M24 3 C14.6 3 7.2 10.3 7.2 19.6 C7.2 31.5 24 45.5 24 45.5 C24 45.5 40.8 31.5 40.8 19.6 C40.8 10.3 33.4 3 24 3 Z" fill="url(#pg)"/><path d="M16 25 L21 19.5 L24.5 22.5 L32 14 M32 14 L26.8 14 M32 14 L32 19.2" stroke="#fff" stroke-width="3.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Local Growth Partner</span></a>
-    <div class="nav-links"></div>
-  </div>
-</nav>
+<div class="top"><a class="brand" href="/"><svg viewBox="0 0 48 48"><path d="M24 3 C14.6 3 7.2 10.3 7.2 19.6 C7.2 31.5 24 45.5 24 45.5 C24 45.5 40.8 31.5 40.8 19.6 C40.8 10.3 33.4 3 24 3 Z" fill="#FF6B1A"/><path d="M16 25 L21 19.5 L24.5 22.5 L32 14 M32 14 L26.8 14 M32 14 L32 19.2" stroke="#fff" stroke-width="3.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Local Growth Partner</span></a></div>
 
-<main id="top">
-<section class="hero">
-  <div class="wrap">
-    <div class="hero-in">
-      <div class="trust"><i></i><b id="checking">Checking your city</b></div>
-      <h1 class="hero-display" id="hl" style="font-size:clamp(40px,6vw,76px)">One step left: <em>pick your 15 minutes.</em></h1>
-      <p class="lead" style="color:var(--ink);font-weight:700">Your scan only runs on this call. No call, no scan.</p>
-      <p class="body" style="max-width:600px;margin:var(--s3) auto 0">Phone call or Google Meet, you pick when you book. That's where we show you everything we found.</p>
-      <div class="hero-cta"><a class="btn btn-primary" href="#cal-inline" onclick="document.getElementById('cal-inline').scrollIntoView({behavior:'smooth'});return false;">Pick your time</a></div>
-      <div class="hero-cta" style="margin-top:var(--s3)">
-        <a class="btn btn-outline" id="sms-cta" href="sms:+17039621423&amp;body=Hi%20Ben%2C%20I%20just%20requested%20my%20scan.%20Call%20me%20back.">Text Ben instead</a>
-        <a class="btn btn-outline" href="https://m.me/1268736562993739?ref=thanks" target="_blank" rel="noopener">Messenger</a>
-      </div>
-      <p class="caption" style="margin-top:var(--s3)">Texts go straight to Ben's phone. He calls you back.</p>
-      <p class="hero-note" id="call-now">Or talk to us right now: <a href="tel:+17039621423" style="color:var(--accent-ink);font-weight:700;text-decoration:none">(703) 962-1423</a></p>
-    </div>
-    <div class="stage-2 next">
-      <div class="cal-frame">
-        <div id="cal-inline" style="width:100%;min-height:620px;overflow:auto"></div>
-        <div id="cal-fallback" style="display:none;padding:26px;text-align:center;font-size:15px"><a class="link" href="https://cal.com/goldenclients/scan" rel="noopener">Open the booking calendar</a></div>
-      </div>
-      <div class="steps-row">
-        <span><b>1.</b> Book the call, phone or Google Meet</span>
-        <span><b>2.</b> We run your scan</span>
-        <span><b>3.</b> You see it all, and keep the report</span>
-      </div>
-    </div>
+<div class="wrap">
+  <div><span class="dot"></span><span style="font-size:13px;color:#C9D2DE;font-weight:600;letter-spacing:1px;text-transform:uppercase" id="checking">Checking your city</span></div>
+  <h1 id="hl" style="font-size:clamp(38px,6vw,58px)">One step left: <em>pick your 15 minutes.</em></h1>
+  <p class="sub" style="font-size:clamp(19px,2.6vw,23px);color:#fff;font-weight:700;margin-top:16px">Your scan only runs on this call. No call, no scan.</p>
+  <p class="sub" style="font-size:17px;margin-top:8px">Phone call or Google Meet, you pick when you book. That's where we show you everything we found.</p>
+  <a href="#cal-inline" style="display:inline-block;margin-top:20px;background:var(--accent);color:#fff;font-weight:800;font-size:19px;padding:17px 34px;border-radius:14px;text-decoration:none;box-shadow:0 12px 30px rgba(255,107,26,0.35)" onclick="document.getElementById('cal-inline').scrollIntoView({behavior:'smooth'});return false;">Pick your time &#8595;</a>
+  <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:14px">
+    <a id="sms-cta" href="sms:+17039621423&amp;body=Hi%20Ben%2C%20I%20just%20requested%20my%20scan.%20Call%20me%20back." style="display:inline-flex;align-items:center;gap:8px;border:2px solid #FF6B1A;color:#fff;font-weight:800;font-size:16px;padding:13px 22px;border-radius:14px;text-decoration:none">&#128172; Text Ben instead</a>
+    <a href="https://m.me/1268736562993739?ref=thanks" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:8px;border:2px solid rgba(255,255,255,0.35);color:#fff;font-weight:700;font-size:16px;padding:13px 22px;border-radius:14px;text-decoration:none">Messenger</a>
   </div>
-</section>
-</main>
+  <div style="margin-top:10px;font-size:13px;color:#8A99AC">Texts go straight to Ben's phone. He calls you back.</div>
+  <div id="call-now" style="margin-top:14px;font-size:16px;color:#C9D2DE">Or talk to us right now: <a href="tel:+17039621423" style="color:#FF6B1A;font-weight:800;font-size:19px;text-decoration:none">(703) 962-1423</a></div>
 
-<footer>
-  <div class="wrap">
-    <div class="f-top">
-      <a class="brand" href="/"><svg viewBox="0 0 48 48"><path d="M24 3 C14.6 3 7.2 10.3 7.2 19.6 C7.2 31.5 24 45.5 24 45.5 C24 45.5 40.8 31.5 40.8 19.6 C40.8 10.3 33.4 3 24 3 Z" fill="#FF6B1A"/><path d="M16 25 L21 19.5 L24.5 22.5 L32 14 M32 14 L26.8 14 M32 14 L32 19.2" stroke="#fff" stroke-width="3.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Local Growth Partner</span></a>
-      <div class="f-links"><a href="/#proof">Proof</a><a href="/#how">How it works</a><a href="/#pricing">Pricing</a><a href="/scan/">Free scan</a><a href="/terms.html">Terms</a><a href="/privacy.html">Privacy</a><a href="mailto:ben@benjix.com">ben@benjix.com</a></div>
+  <div class="next">
+    <div style="margin-top:2px;border-radius:12px;overflow:hidden;background:#fff">
+      <div id="cal-inline" style="width:100%;min-height:620px;overflow:auto"></div>
+      <div id="cal-fallback" style="display:none;padding:26px;text-align:center;font-size:15px"><a href="https://cal.com/goldenclients/scan" rel="noopener" style="color:#E85A0C;font-weight:600">Open the booking calendar &#8594;</a></div>
     </div>
-    <p class="f-fine fine">Local Growth Partner is the local visibility practice of Golden Partners. Case results and client quotes are documented accounts from businesses on the ranking technology we run for clients, and are not a promise of your results; every business and city is different. The 90-day guarantee (top 3, or we keep working free until you are) applies to the Single Location plan on any billing option, with full terms in our <a href="/terms.html" style="color:inherit">Terms</a>. Interface examples, ranking illustrations, notification screens and photography on this page are illustrations, not client records. We are not affiliated with, endorsed by, or partnered with OpenAI, Google, Apple, Anthropic, Perplexity or Yelp; those names refer only to the places we work to get you found.<br><br>
-      &copy; 2026 Golden Partners. All rights reserved. Local Growth Partner is a MikeNBen LLC company.</p>
+    <div style="display:flex;gap:18px;justify-content:center;flex-wrap:wrap;margin-top:18px;font-size:14px;color:var(--steel)">
+      <span><b style="color:var(--ink)">1.</b> Book the call (phone or Google Meet, your pick)</span>
+      <span><b style="color:var(--ink)">2.</b> We run your scan</span>
+      <span><b style="color:var(--ink)">3.</b> You see it all live, and keep the report</span>
+    </div>
   </div>
-</footer>
+</div>
+
+<footer><a href="/">localgrowthpartner.com</a> &middot; <a href="/privacy.html">Privacy</a></footer>
+
 <script>
   var lead={};
   try { lead=JSON.parse(localStorage.getItem('lgp_lead')||'{}'); } catch(e) {}
@@ -119,11 +125,11 @@ y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);})(window, documen
       try { var bd=(ev&&ev.detail&&ev.detail.data)||{}; var b=bd.booking||bd;
         link=(b.metadata&&b.metadata.videoCallUrl)||b.meetingUrl||(typeof b.location==='string'&&b.location.indexOf('http')===0?b.location:''); } catch(_e){}
       var el=document.createElement('div');
-      el.className='booked';
-      el.innerHTML='<b>You are booked. The call happens on Google Meet.</b><br>'
+      el.style.cssText='background:#12240F;border:1px solid #1EA75955;border-radius:12px;padding:16px 18px;margin:0 0 16px;color:#D7E5D3;font-size:14.5px;text-align:left;line-height:1.55';
+      el.innerHTML='<b style="color:#35D07F">You are booked. The call happens on Google Meet.</b><br>'
         +'We just emailed you a calendar invite with the Google Meet link inside. Open it, hit Add to calendar, and click that link at call time.'
-        +(link?'<br>Or save the direct link now: <a href="'+link+'">'+link+'</a>':'')
-        +'<br><span>No email in 2 minutes? Check spam, it is from Cal.com.</span>';
+        +(link?'<br>Or save the direct link now: <a style="color:#FF8A45" href="'+link+'">'+link+'</a>':'')
+        +'<br><span style="color:#8A99AC;font-size:13px">No email in 2 minutes? Check spam, it is from Cal.com.</span>';
       var host=document.querySelector('.next'); if(host) host.insertBefore(el, host.firstChild);
       el.scrollIntoView({behavior:'smooth', block:'center'});
     } catch(e) {}
