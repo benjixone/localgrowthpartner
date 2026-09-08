@@ -66,24 +66,37 @@ y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);})(window, documen
 
 <div class="wrap">
   <div><span class="dot"></span><span style="font-size:13px;color:#C9D2DE;font-weight:600;letter-spacing:1px;text-transform:uppercase" id="checking">Checking your city</span></div>
-  <h1 id="hl" style="font-size:clamp(38px,6vw,58px)">One step left: <em>pick your 15 minutes.</em></h1>
-  <p class="sub" style="font-size:clamp(19px,2.6vw,23px);color:#fff;font-weight:700;margin-top:16px">Your scan only runs on this call. No call, no scan.</p>
-  <p class="sub" style="font-size:17px;margin-top:8px">Phone call or Google Meet, you pick when you book. That's where we show you everything we found.</p>
-  <a href="#cal-inline" style="display:inline-block;margin-top:20px;background:var(--accent);color:#fff;font-weight:800;font-size:19px;padding:17px 34px;border-radius:14px;text-decoration:none;box-shadow:0 12px 30px rgba(255,107,26,0.35)" onclick="document.getElementById('cal-inline').scrollIntoView({behavior:'smooth'});return false;">Pick your time &#8595;</a>
+  <h1 id="hl" style="font-size:clamp(36px,5.6vw,54px)">Three steps left <em>before your call.</em></h1>
+  <p class="sub" style="font-size:clamp(18px,2.4vw,22px);color:#fff;font-weight:700;margin-top:14px">Your scan only runs on this call. No call, no scan.</p>
+
+  <div id="steps" style="display:grid;gap:12px;margin:22px auto 0;max-width:720px;text-align:left">
+    <div class="stp" id="stp-video" style="display:flex;gap:14px;align-items:flex-start;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.12);border-radius:14px;padding:16px 18px"><div style="min-width:34px;height:34px;border-radius:50%;background:var(--accent);color:#fff;font-weight:900;display:flex;align-items:center;justify-content:center">1</div><div><b style="color:#fff;font-size:17px">Watch the 7 minute video below.</b><div style="color:#C9D2DE;font-size:15px;margin-top:3px">It shows what we found for businesses like yours and what we do about it. The call assumes you have seen it.</div></div></div>
+    <div class="stp" id="stp-book" style="display:flex;gap:14px;align-items:flex-start;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.12);border-radius:14px;padding:16px 18px"><div style="min-width:34px;height:34px;border-radius:50%;background:var(--accent);color:#fff;font-weight:900;display:flex;align-items:center;justify-content:center">2</div><div><b style="color:#fff;font-size:17px">Pick your 15 minutes.</b><div style="color:#C9D2DE;font-size:15px;margin-top:3px">Phone call or Google Meet, your pick. That is where we show you everything.</div></div></div>
+    <div class="stp" id="stp-partner" style="display:flex;gap:14px;align-items:flex-start;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.12);border-radius:14px;padding:16px 18px"><div style="min-width:34px;height:34px;border-radius:50%;background:var(--accent);color:#fff;font-weight:900;display:flex;align-items:center;justify-content:center">3</div><div><b style="color:#fff;font-size:17px">Bring anyone who decides with you.</b><div style="color:#C9D2DE;font-size:15px;margin-top:3px">We take one <span id="trade-word">business</span> per city. If your city is open, we decide together on the call, so your partner needs to be there.</div></div></div>
+  </div>
+
+  <div id="vsl-box" style="margin:22px auto 0;max-width:820px">
+    <div style="position:relative;padding-top:56.25%;border-radius:14px;overflow:hidden;background:#000;box-shadow:0 20px 50px rgba(0,0,0,0.45)">
+      <video id="vsl" controls playsinline preload="metadata" poster="/img/vsl/poster.jpg" style="position:absolute;inset:0;width:100%;height:100%;background:#000"><source src="/img/vsl/lgp-vsl.mp4" type="video/mp4"></video>
+    </div>
+    <div id="vsl-note" style="margin-top:8px;font-size:13px;color:#8A99AC">7 minutes. Watch it before the call.</div>
+  </div>
+
+  <a href="#cal-inline" style="display:inline-block;margin-top:22px;background:var(--accent);color:#fff;font-weight:800;font-size:19px;padding:17px 34px;border-radius:14px;text-decoration:none;box-shadow:0 12px 30px rgba(255,107,26,0.35)" onclick="document.getElementById('cal-inline').scrollIntoView({behavior:'smooth'});return false;">Pick your time &#8595;</a>
   <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:14px">
-    <a id="sms-cta" href="sms:+17039621423&amp;body=Hi%20Ben%2C%20I%20just%20requested%20my%20scan.%20Call%20me%20back." style="display:inline-flex;align-items:center;gap:8px;border:2px solid #FF6B1A;color:#fff;font-weight:800;font-size:16px;padding:13px 22px;border-radius:14px;text-decoration:none">&#128172; Text Ben instead</a>
+    <a id="sms-cta" href="sms:+17039621423&amp;body=Hi%20Ben%2C%20I%20just%20requested%20my%20scan.%20Call%20me%20back." style="display:inline-flex;align-items:center;gap:8px;border:2px solid #FF6B1A;color:#fff;font-weight:800;font-size:16px;padding:13px 22px;border-radius:14px;text-decoration:none">&#128172; Text <span class="closer-name">Ben</span> instead</a>
     <a href="https://m.me/1268736562993739?ref=thanks" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:8px;border:2px solid rgba(255,255,255,0.35);color:#fff;font-weight:700;font-size:16px;padding:13px 22px;border-radius:14px;text-decoration:none">Messenger</a>
   </div>
-  <div style="margin-top:10px;font-size:13px;color:#8A99AC">Texts go straight to Ben's phone. He calls you back.</div>
-  <div id="call-now" style="margin-top:14px;font-size:16px;color:#C9D2DE">Or talk to us right now: <a href="tel:+17039621423" style="color:#FF6B1A;font-weight:800;font-size:19px;text-decoration:none">(703) 962-1423</a></div>
+  <div style="margin-top:10px;font-size:13px;color:#8A99AC">Texts go straight to <span class="closer-name">Ben</span>'s phone. <span class="closer-he">He</span> calls you back.</div>
+  <div id="call-now" style="margin-top:14px;font-size:16px;color:#C9D2DE">Or talk to us right now: <a id="call-link" href="tel:+17039621423" style="color:#FF6B1A;font-weight:800;font-size:19px;text-decoration:none">(703) 962-1423</a></div>
 
   <div class="next">
     <div style="margin-top:2px;border-radius:12px;overflow:hidden;background:#fff">
       <div id="cal-inline" style="width:100%;min-height:620px;overflow:auto"></div>
-      <div id="cal-fallback" style="display:none;padding:26px;text-align:center;font-size:15px"><a href="https://cal.com/goldenclients/scan" rel="noopener" style="color:#E85A0C;font-weight:600">Open the booking calendar &#8594;</a></div>
+      <div id="cal-fallback" style="display:none;padding:26px;text-align:center;font-size:15px"><a id="cal-fallback-link" href="https://cal.com/goldenclients/scan" rel="noopener" style="color:#E85A0C;font-weight:600">Open the booking calendar &#8594;</a></div>
     </div>
     <div style="display:flex;gap:18px;justify-content:center;flex-wrap:wrap;margin-top:18px;font-size:14px;color:var(--steel)">
-      <span><b style="color:var(--ink)">1.</b> Book the call (phone or Google Meet, your pick)</span>
+      <span><b style="color:var(--ink)">1.</b> Watch the video, book the call, bring your partner</span>
       <span><b style="color:var(--ink)">2.</b> We run your scan</span>
       <span><b style="color:var(--ink)">3.</b> You see it all live, and keep the report</span>
     </div>
@@ -99,7 +112,39 @@ y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);})(window, documen
   var city=p.get('city')||lead.city, leadName=p.get('name')||lead.name;
   if(city){ document.getElementById('checking').textContent='Checking if '+city+' is still open'; }
   try{ var _sc=document.getElementById('sms-cta'); if(_sc && lead.business){ _sc.href='sms:+17039621423&body='+encodeURIComponent('Hi Ben, I just requested my scan for '+lead.business+'. Call me back.'); } }catch(e){}
-  if(leadName && typeof leadName==='string'){ document.getElementById('hl').innerHTML=leadName.split(' ')[0]+", one step left: <em>pick your 15 minutes.</em>"; }
+  if(leadName && typeof leadName==='string'){ document.getElementById('hl').innerHTML=leadName.split(' ')[0]+", three steps left <em>before your call.</em>"; }
+  try{ if(lead.trade){ document.getElementById('trade-word').textContent=String(lead.trade).toLowerCase().replace(/ \/.*$/,''); } }catch(e){}
+
+  /* Closer routing: ?closer=jeff or utm_source=jeff on the scan page, remembered in localStorage */
+  var CLOSERS = {
+    ben:   { name:'Ben',   cal:'goldenclients/scan', phone:'+17039621423', pretty:'(703) 962-1423', he:'He' },
+    jeff:  { name:'Jeff',  cal:'goldenclients/scan', phone:'+19107089159', pretty:'(910) 708-9159', he:'He' },
+    kevin: { name:'Kevin', cal:'goldenclients/scan', phone:'+17039621423', pretty:'(703) 962-1423', he:'He' }
+  };
+  var closerKey=''; try{ closerKey=(p.get('closer')||lead.closer||localStorage.getItem('lgp_closer')||'').toLowerCase(); }catch(e){}
+  var CL = CLOSERS[closerKey] || CLOSERS.ben;
+  try{
+    var nm=document.querySelectorAll('.closer-name'); for(var i=0;i<nm.length;i++) nm[i].textContent=CL.name;
+    var hes=document.querySelectorAll('.closer-he'); for(var j=0;j<hes.length;j++) hes[j].textContent=CL.he;
+    var cl=document.getElementById('call-link'); if(cl){ cl.href='tel:'+CL.phone; cl.textContent=CL.pretty; }
+    var sc=document.getElementById('sms-cta'); if(sc){ sc.href='sms:'+CL.phone+'&body='+encodeURIComponent('Hi '+CL.name+', I just requested my scan'+(lead.business?' for '+lead.business:'')+'. Call me back.'); }
+  }catch(e){}
+
+  /* Video first when they have not watched most of it on the scan page */
+  (function(){
+    try{
+      var t=parseInt(localStorage.getItem('lgp_vsl_t')||'0',10), d=parseInt(localStorage.getItem('lgp_vsl_d')||'0',10);
+      var watched = d>0 ? (t/d)>=0.6 : t>=240;
+      var box=document.getElementById('vsl-box'), note=document.getElementById('vsl-note'), sv=document.getElementById('stp-video');
+      if(watched){
+        /* already seen: keep the video available but below the calendar, and mark step 1 done */
+        sv.style.opacity='0.55'; sv.querySelector('b').textContent='Video: watched. Thank you.';
+        var host=document.querySelector('.next'); if(host && box){ host.parentNode.insertBefore(box, host.nextSibling); note.textContent='Want to see it again? Here it is.'; }
+      }else{
+        try{ var v=document.getElementById('vsl'); if(v){ var mx=t; v.addEventListener('timeupdate',function(){ if(v.currentTime>mx){ mx=v.currentTime; localStorage.setItem('lgp_vsl_t',String(Math.floor(mx))); localStorage.setItem('lgp_vsl_d',String(Math.floor(v.duration||0))); } }); } }catch(e){}
+      }
+    }catch(e){}
+  })();
 
   /* Cal.com official embed; bookingSuccessful feeds the pixel as Schedule */
   (function (C, A, L) { let pfn = function (a, ar) { a.q.push(ar); }; let d = C.document; C.Cal = C.Cal || function () { let cal = C.Cal; let ar = arguments; if (!cal.loaded) { cal.ns = {}; cal.q = cal.q || []; d.head.appendChild(d.createElement("script")).src = A; cal.loaded = true; } if (ar[0] === L) { const api = function () { pfn(api, arguments); }; const namespace = ar[1]; api.q = api.q || []; if (typeof namespace === "string") { cal.ns[namespace] = cal.ns[namespace] || api; pfn(cal.ns[namespace], ar); pfn(cal, ["initNamespace", namespace]); } else pfn(cal, ar); return; } pfn(cal, ar); }; })(window, "https://app.cal.com/embed/embed.js", "init");
@@ -110,7 +155,8 @@ y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);})(window, documen
   if(lead.phone){ var _d=String(lead.phone).replace(/\D/g,''); if(_d.length===10) _d='1'+_d; cfg.attendeePhoneNumber = _d ? '+'+_d : lead.phone; }
   if(lead.business) cfg.business = lead.business;
   if(lead.city) cfg.city = lead.city;
-  Cal.ns.scan("inline", { elementOrSelector:"#cal-inline", calLink:"goldenclients/scan", config: cfg });
+  Cal.ns.scan("inline", { elementOrSelector:"#cal-inline", calLink:CL.cal, config: cfg });
+  try{ document.getElementById('cal-fallback-link').href='https://cal.com/'+CL.cal; }catch(e){}
   Cal.ns.scan("ui", {theme:"light", hideEventTypeDetails:false});
   Cal.ns.scan("on", { action:"bookingSuccessful", callback:function(ev){
     try {
