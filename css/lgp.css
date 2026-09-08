@@ -311,11 +311,11 @@
   .ac-foot { padding:10px 16px; font-size:13px; color:var(--ink-2); display:flex; justify-content:space-between; align-items:center; gap:10px; }
   .ac-foot button { background:none; border:none; padding:0; min-height:24px; color:var(--accent-ink); font:inherit; font-size:13px; font-weight:600; cursor:pointer; text-decoration:underline; }
   .ac-hint { display:none; } .ac-hint.on { display:block; }
-  .biz-ok { display:none; background:#E9F6EE; border-radius:var(--r-sm); padding:12px 16px; font-size:14px; color:var(--ink); line-height:1.45; }
+  .biz-ok { display:none; text-align:left; background:#E9F6EE; border-radius:var(--r-sm); padding:12px 16px; font-size:14px; color:var(--ink); line-height:1.45; }
   .biz-ok.on { display:block; }
   .biz-ok b { font-weight:700; } .biz-ok .stars { color:var(--accent-ink); font-weight:700; }
   .biz-ok .again { background:none; border:none; padding:0; font:inherit; font-size:13px; color:var(--ink-2); text-decoration:underline; cursor:pointer; margin-top:4px; }
-  .exit { display:none; } .exit.on { display:block; }
+  .exit { display:none; text-align:left; margin-top:var(--s5); } .exit.on { display:block; }
   .exit h3 { font-size:22px; font-weight:700; letter-spacing:-0.02em; line-height:1.25; }
   .exit p { font-size:15px; color:var(--ink-2); margin-top:10px; line-height:1.5; }
   .exit ol { list-style:decimal; margin:12px 0 0 20px; font-size:15px; color:var(--ink); }
