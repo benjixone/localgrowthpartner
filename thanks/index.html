@@ -75,7 +75,7 @@ y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);})(window, documen
   var lead={};
   try { lead=JSON.parse(localStorage.getItem('lgp_lead')||'{}'); } catch(e) {}
   var p=new URLSearchParams(location.search);
-  var city=p.get('city')||lead.city, llname=p.get('name')||lead.name;
+  var city=p.get('city')||lead.city, lname=p.get('name')||lead.name;
   if(city){ document.getElementById('checking').textContent='Checking if '+city+' is still open'; }
   if(lname){ document.getElementById('hl').innerHTML=lname.split(' ')[0]+", one step left: <em>pick your 15 minutes.</em>"; }
 

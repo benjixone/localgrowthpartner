@@ -3,7 +3,8 @@
 Mode: brand with direct-response elements. Owner: Ben Lev. Updated:
 2026-09-08 (pass 4 approved on the home page, then ported to every page).
 Source of truth for `css/lgp.css`, which every page links: `index.html`,
-the lander `scan/`, `proof/`, `onboard.html`, and `thanks/`. Tokens and
+the lander `scan/`, `proof/`, `onboard.html`, `thanks/`, `terms.html`
+and `privacy.html`. Tokens and
 components live in the stylesheet once; pages carry only markup and their
 own scripts.
 
@@ -48,16 +49,18 @@ guarantee, one orange. Dials: variance 3, motion 2, density 2.
 
 ### Text
 - Ink (#1D1D1F), all text on light. Ink 2 (#6E6E73), leads and body on
-  light, 5.0:1 on white. Ink 3 (#86868B), fine print, 3.5:1, 12px legal
-  only.
+  light, 5.0:1 on white. Ink 3 (#757579), fine print, help text and
+  placeholders, 4.6:1 on white.
 - On dark (#F5F5F7), On dark 2 (#B8BEC9, 8.6:1 on Tile 2), On dark 3
   (#8A93A3, 5.0:1 on Tile 2).
 
 ### Accent
-- Accent (#E8632B). The primary button fill, the highlighted word in
-  headlines on light, the "You" marker. White text on it in buttons.
-- Accent press (#D4561F). Accent ink (#B03E0A), the accent as text on
-  light: eyebrows, text links, the plus in FAQ rows, check marks. 5.5:1 on
+- Accent (#E8632B). The highlighted word in headlines on light, the "You"
+  marker, the progress bar, the ladder end dot. Never a text color and no
+  longer a button fill (3.4:1 with white).
+- Accent fill (#C94F17). The primary button fill, white text at 4.55:1.
+  Presses to Accent ink. Accent ink (#B03E0A), the accent as text on
+  light: eyebrows, text links, the plus in FAQ rows, check marks. 5.9:1 on
   white. Accent on dark (#FFA36B), the highlighted word and links on the
   dark tile, 8.3:1 on Tile 2.
 - Good (#1E9E5A), the single status dot.
@@ -210,6 +213,10 @@ Onboarding (`onboard.html`, noindex): brand only nav, headline, one white
 form card at 720px on gray with labeled fields in two groups, a tonal
 callout for the manager-access step, two checks, one full-width pill.
 
+Legal (`terms.html`, `privacy.html`): brand nav, one prose column at
+720px, display-sm title, dated line, 22px section heads, 17px body in
+Ink 2 at 1.55.
+
 Thanks (`thanks/`, noindex): brand only nav, trust pill that reads the
 city, headline that reads the first name, lead, pill that scrolls to the
 Cal.com embed inside a white frame on a gray stage, three-step row.
@@ -236,10 +243,11 @@ color only. Active scales to 0.97. Reduced motion turns everything off.
 
 ## 10. Known gaps and next
 
-1. The primary button is white on Accent at 3.4:1. Under WCAG that passes
-   only for large text (18.66px bold or 24px). The label is 17px 600, so
-   it fails strictly. Options: Ink text on Accent (5.2:1, passes, less
-   Apple), or raise the label to 19px 700. Decide before shipping.
+1. Resolved 2026-09-08: the primary button fills with Accent fill
+   `#C94F17` (white text at 4.55:1, passes AA) and presses to Accent ink.
+   Accent `#E8632B` stays the display color for headline words and marks.
+   Ink 3 moved from `#86868B` (3.6:1) to `#757579` (4.6:1) so fine print,
+   help text and placeholders pass at small sizes.
 2. Convert the Manrope TTF to woff2 (about 60 percent smaller) when a
    converter is available.
 3. "Most chosen" is off the lander (the pricing card defaults to

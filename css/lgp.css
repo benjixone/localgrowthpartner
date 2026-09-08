@@ -3,9 +3,9 @@
   @font-face { font-family:'Manrope'; src:url('/fonts/Manrope[wght].ttf') format('truetype'); font-weight:200 800; font-display:swap; }
   :root {
     --canvas:#FFFFFF; --surface:#F5F5F7; --surface-2:#E8E8ED; --tonal:#FBEDE4; --tonal-2:#F6DDCB;
-    --ink:#1D1D1F; --ink-2:#6E6E73; --ink-3:#86868B; --hairline:rgba(0,0,0,0.08);
+    --ink:#1D1D1F; --ink-2:#6E6E73; --ink-3:#757579; --hairline:rgba(0,0,0,0.08);
     --tile:#0B1524; --tile-2:#132038; --on-dark:#F5F5F7; --on-dark-2:#B8BEC9; --on-dark-3:#8A93A3;
-    --accent:#E8632B; --accent-press:#D4561F; --accent-ink:#B03E0A; --accent-on-dark:#FFA36B; --good:#1E9E5A;
+    --accent:#E8632B; --accent-fill:#C94F17; --accent-press:#B03E0A; --accent-ink:#B03E0A; --accent-on-dark:#FFA36B; --good:#1E9E5A;
     --sans:'Manrope',system-ui,-apple-system,BlinkMacSystemFont,'SF Pro Text','Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif;
     --s1:4px; --s2:8px; --s3:12px; --s4:16px; --s5:24px; --s6:32px; --s7:48px; --s8:64px; --s9:96px; --s10:128px;
     --r-sm:12px; --r-md:20px; --r-lg:28px; --r-xl:36px; --pill:9999px;
@@ -45,7 +45,7 @@
   /* Buttons: Apple pill grammar, 48px targets */
   .btn { display:inline-flex; align-items:center; justify-content:center; gap:8px; min-height:48px; padding:12px 24px; border-radius:var(--pill); border:0; font:inherit; font-size:17px; font-weight:600; letter-spacing:-0.01em; text-decoration:none; cursor:pointer; white-space:nowrap; transition:background-color 200ms var(--ease), color 200ms var(--ease), transform 100ms var(--ease); }
   .btn:active { transform:scale(0.97); }
-  .btn-primary { background:var(--accent); color:#fff; }
+  .btn-primary { background:var(--accent-fill); color:#fff; }
   .btn-primary:hover { background:var(--accent-press); }
   .btn-dark { background:var(--ink); color:#fff; }
   .btn-dark:hover { background:#000; }
@@ -191,6 +191,7 @@
 
   /* Pricing: Apple/Stripe card on gray */
   .pricing { display:grid; grid-template-columns:1fr 480px; gap:var(--s8); align-items:center; }
+  .pricing > * { min-width:0; }
   .pricing .lead { margin-top:var(--s4); max-width:520px; }
   .incl { margin-top:var(--s6); display:grid; gap:var(--s3); max-width:460px; }
   .incl li { display:flex; gap:12px; align-items:flex-start; font-size:17px; color:var(--ink); }
@@ -208,7 +209,7 @@
   .pr li { font-size:15px; color:var(--ink); padding-left:24px; position:relative; }
   .pr li::before { content:""; position:absolute; left:2px; top:9px; width:12px; height:7px; border-left:2px solid var(--accent-ink); border-bottom:2px solid var(--accent-ink); transform:rotate(-45deg); }
   .pr .btn { width:100%; margin-top:var(--s5); }
-  .pr .pay-alt { display:block; text-align:center; margin-top:var(--s3); font-size:14px; font-weight:600; color:var(--accent-ink); text-decoration:none; }
+  .pr .pay-alt { display:flex; align-items:center; justify-content:center; min-height:44px; margin-top:var(--s1); font-size:14px; font-weight:600; color:var(--accent-ink); text-decoration:none; }
   .pr .pay-alt:hover { text-decoration:underline; }
 
   /* FAQ */
@@ -261,6 +262,10 @@
     .sticky { display:flex; }
     body { padding-bottom:72px; }
     summary { font-size:17px; }
+    .pr { padding:var(--s5); }
+    .toggle { display:grid; grid-template-columns:repeat(3,1fr); width:100%; }
+    .toggle button { padding:8px 4px; font-size:14px; justify-content:center; gap:4px; }
+    .toggle button em { font-size:11px; }
   }
   @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation:none !important; transition:none !important; } html { scroll-behavior:auto; } }
 
@@ -311,3 +316,14 @@
   .booked b { color:#157A45; } .booked a { color:var(--accent-ink); } .booked span { color:var(--ink-2); font-size:13px; }
   @media (max-width:1040px) { .stage-2 .deck2, .steps3, .outcomes { grid-template-columns:1fr; } .stage-2 { padding:var(--s6) var(--s5); } }
   @media (max-width:600px) { .f-2 { grid-template-columns:1fr; } .stage-2 { margin-top:var(--s7); padding:var(--s5) var(--s4); border-radius:var(--r-lg); } .form-card { padding:var(--s5); } }
+
+  /* Legal pages: one prose column */
+  .prose { max-width:720px; margin:0 auto; }
+  .prose h1 { margin-top:var(--s4); }
+  .prose .date { margin-top:var(--s3); font-size:15px; color:var(--ink-2); }
+  .prose h2 { font-size:22px; font-weight:700; letter-spacing:-0.02em; line-height:1.25; margin-top:var(--s7); }
+  .prose p, .prose li { font-size:17px; line-height:1.55; color:var(--ink-2); margin-top:var(--s3); }
+  .prose ul { list-style:disc; padding-left:22px; margin-top:var(--s3); }
+  .prose li { margin-top:6px; }
+  .prose a { color:var(--accent-ink); }
+  .prose b { color:var(--ink); }
