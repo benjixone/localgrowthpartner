@@ -244,5 +244,6 @@ color only. Active scales to 0.97. Reduced motion turns everything off.
    converter is available.
 3. "Most chosen" is off the lander (the pricing card defaults to
    quarterly instead) until Ben confirms the share.
-4. The guarantee portrait is the benjix.com headshot. Swap in the newer
-   photo Ben supplied once it is in the repo as `img/ben-lev.jpg`.
+4. The guarantee portrait (`img/ben-lev.webp`, 1000 by 1000) is Ben's
+   studio headshot, upscaled from the 512px original in Higgsfield on
+   2026-09-08. Replace it with the full-resolution export when Ben has it.
