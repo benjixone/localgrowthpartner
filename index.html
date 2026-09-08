@@ -949,6 +949,16 @@ y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);})(window, documen
     if(ac==='000'||ac==='999') return false;
     return true;
   }
+  /* Rep routing: a lead that lands from a rep's ad set (/scan/?rep=kevin) keeps that tag for the
+     session, so the Brevo contact, the alert email and the booking on /thanks/ all carry it. */
+  function lgpRep(){
+    try{
+      var q=(new URLSearchParams(location.search).get('rep')||'').toLowerCase().replace(/[^a-z0-9-]/g,'').slice(0,24);
+      if(q){ localStorage.setItem('lgp_rep', q); return q; }
+      return localStorage.getItem('lgp_rep')||'';
+    }catch(e){ return ''; }
+  }
+  lgpRep();
   var _f=document.getElementById('f'); if(_f) _f.addEventListener('submit', function(ev){
     ev.preventDefault();
     var g = function (id) { return document.getElementById(id).value.trim(); };
@@ -960,26 +970,26 @@ y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);})(window, documen
       ph.reportValidity(); setTimeout(function(){ph.setCustomValidity('');},2500);
       return;
     }
-    var lead = { business: g('f-biz'), city: g('f-city'), phone: g('f-phone'), email: g('f-email') };
+    var lead = { business: g('f-biz'), city: g('f-city'), phone: g('f-phone'), email: g('f-email'), rep: lgpRep() };
     try { localStorage.setItem('lgp_lead', JSON.stringify(lead)); } catch (e) {}
     try {
       if (window.sendinblue && lead.email) {
         sendinblue.identify(lead.email, { BUSINESS: lead.business || '', CITY: lead.city || '',
-          PHONE_TXT: lead.phone || '', LEADSOURCE: 'home-form' });
+          PHONE_TXT: lead.phone || '', LEADSOURCE: 'home-form', REP: lead.rep || '' });
       }
     } catch (e) {}
     try {
       fetch('https://formsubmit.co/ajax/ben@goldenpartners.co', {
         method: 'POST', headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ _subject: 'SCAN LEAD (home): ' + lead.business + ' (' + lead.city + ')',
-          business: lead.business, city: lead.city, phone: lead.phone, email: lead.email })
+        body: JSON.stringify({ _subject: 'SCAN LEAD (home): ' + lead.business + ' (' + lead.city + ')' + (lead.rep ? ' for ' + lead.rep : ''),
+          business: lead.business, city: lead.city, phone: lead.phone, email: lead.email, rep: lead.rep || 'unassigned' })
       });
     } catch (e) {}
     var f = document.createElement('form');
     f.method = 'POST'; f.action = SIB_URL; f.style.display = 'none';
     var add = function (n, v) { var i = document.createElement('input'); i.name = n; i.value = v; f.appendChild(i); };
     add('EMAIL', lead.email); add('email_address_check', ''); add('locale', 'en'); add('html_type', 'simple');
-    add('BUSINESS', lead.business || ''); add('CITY', lead.city || ''); add('PHONE_TXT', lead.phone || ''); add('LEADSOURCE', 'home-form');
+    add('BUSINESS', lead.business || ''); add('CITY', lead.city || ''); add('PHONE_TXT', lead.phone || ''); add('LEADSOURCE', 'home-form'); if (lead.rep) add('REP', lead.rep);
     document.body.appendChild(f);
     setTimeout(function(){ f.submit(); }, 450);
   });

@@ -69,7 +69,7 @@ function buildActivity({ leads, bookings, payments }) {
       at: lead.createdAt,
       kind: "lead",
       title: lead.business || lead.name || lead.email || "New lead",
-      detail: [lead.city, lead.source].filter(Boolean).join(" · "),
+      detail: [lead.city, lead.source, lead.rep ? `rep: ${lead.rep}` : ""].filter(Boolean).join(" · "),
     });
   }
   for (const booking of bookings) {

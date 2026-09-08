@@ -72,6 +72,8 @@ export async function fetchBrevo(env) {
         // The scan form posts the Google Business Profile as GMB_URL.
         gbp: a.GMB_URL || a.GBP || "",
         source: a.LEADSOURCE || "",
+        // Set by /scan/?rep=<name> (a rep's ad set); empty for unassigned leads.
+        rep: a.REP || "",
         name: [a.FIRSTNAME, a.LASTNAME].filter(Boolean).join(" "),
         createdAt: c.createdAt || null,
         blocklisted: Boolean(c.emailBlacklisted),

@@ -496,6 +496,16 @@ y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);})(window, documen
     document.getElementById('f-name').focus();
   });
   placesBoot();
+  /* Rep routing: a lead that lands from a rep's ad set (/scan/?rep=kevin) keeps that tag for the
+     session, so the Brevo contact, the alert email and the booking on /thanks/ all carry it. */
+  function lgpRep(){
+    try{
+      var q=(new URLSearchParams(location.search).get('rep')||'').toLowerCase().replace(/[^a-z0-9-]/g,'').slice(0,24);
+      if(q){ localStorage.setItem('lgp_rep', q); return q; }
+      return localStorage.getItem('lgp_rep')||'';
+    }catch(e){ return ''; }
+  }
+  lgpRep();
   document.getElementById('f').addEventListener('submit', function(ev){
     ev.preventDefault();
     var g=function(id){ return document.getElementById(id).value.trim(); };
@@ -522,6 +532,7 @@ y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);})(window, documen
     var fbclid=new URLSearchParams(location.search).get('fbclid');
     if(!lead.fbc && fbclid) lead.fbc='fb.1.'+Date.now()+'.'+fbclid;
     lead.src=location.origin+location.pathname;
+    lead.rep=lgpRep();
     try { localStorage.removeItem('lgp_lead_fired'); } catch(e) {}
     try { localStorage.setItem('lgp_lead', JSON.stringify(lead)); } catch(e) {}
     /* store full details as Brevo contact attributes (client-side identify) */
@@ -531,7 +542,7 @@ y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);})(window, documen
         sendinblue.identify(lead.email, Object.assign({ FIRSTNAME:parts[0]||'', LASTNAME:parts.slice(1).join(' '),
           BUSINESS:lead.business||'', CITY:lead.city||'', GMB_URL:lead.gmb||'', PHONE_TXT:lead.phone||'',
           LEADSOURCE:(new URLSearchParams(location.search).get('utm_content'))||'direct',
-          FB_EVENT_ID:lead.eid, FBP:lead.fbp||'', FBC:lead.fbc||'', SOURCE_URL:lead.src, TRADE:lead.trade||'',
+          FB_EVENT_ID:lead.eid, FBP:lead.fbp||'', FBC:lead.fbc||'', SOURCE_URL:lead.src, TRADE:lead.trade||'', REP:lead.rep||'',
           CATEGORY:lead.category||'', ADDRESS:lead.address||'', PLACE_ID:lead.place_id||'' }, lead.rating!=='' ? {RATING:lead.rating, REVIEWS:lead.reviews} : {}));
       }
     } catch(e) {}
@@ -539,9 +550,9 @@ y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);})(window, documen
     try {
       fetch('https://formsubmit.co/ajax/ben@goldenpartners.co', {
         method:'POST', headers:{'Content-Type':'application/json'},
-        body: JSON.stringify({ _subject:'SCAN LEAD: '+lead.business+' ('+lead.city+')'+(lead.reviews!==''?' | '+lead.rating+' stars, '+lead.reviews+' reviews':(PL.on?' | reviews unknown':'')),
+        body: JSON.stringify({ _subject:'SCAN LEAD: '+lead.business+' ('+lead.city+')'+(lead.rep?' for '+lead.rep:'')+(lead.reviews!==''?' | '+lead.rating+' stars, '+lead.reviews+' reviews':(PL.on?' | reviews unknown':'')),
           business:lead.business, city:lead.city, trade:lead.trade, name:lead.name, phone:lead.phone, email:lead.email, gmb_link:lead.gmb||'not provided',
-          rating:lead.rating, reviews:lead.reviews, category:lead.category, address:lead.address, place_id:lead.place_id })
+          rep:lead.rep||'unassigned', rating:lead.rating, reviews:lead.reviews, category:lead.category, address:lead.address, place_id:lead.place_id })
       });
     } catch(e) {}
     /* capture into Brevo list via classic POST; Brevo redirects to /thanks/ */
@@ -556,7 +567,7 @@ y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);})(window, documen
     if(lead.category) add('CATEGORY', lead.category); if(lead.address) add('ADDRESS', lead.address); if(lead.place_id) add('PLACE_ID', lead.place_id);
     if(lead.rating!==''){ add('RATING', String(lead.rating)); add('REVIEWS', String(lead.reviews)); }
     add('PHONE_TXT', lead.phone||''); add('LEADSOURCE', (new URLSearchParams(location.search).get('utm_content'))||'direct');
-    add('FB_EVENT_ID', lead.eid); add('FBP', lead.fbp||''); add('FBC', lead.fbc||''); add('SOURCE_URL', lead.src); add('TRADE', lead.trade||'');
+    add('FB_EVENT_ID', lead.eid); add('FBP', lead.fbp||''); add('FBC', lead.fbc||''); add('SOURCE_URL', lead.src); add('TRADE', lead.trade||''); if(lead.rep) add('REP', lead.rep);
     document.body.appendChild(f);
     setTimeout(function(){ f.submit(); }, 450);
   });

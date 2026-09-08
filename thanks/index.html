@@ -74,7 +74,7 @@ y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);})(window, documen
     <a id="sms-cta" href="sms:+17039621423&amp;body=Hi%20Ben%2C%20I%20just%20requested%20my%20scan.%20Call%20me%20back." style="display:inline-flex;align-items:center;gap:8px;border:2px solid #FF6B1A;color:#fff;font-weight:800;font-size:16px;padding:13px 22px;border-radius:14px;text-decoration:none">&#128172; Text Ben instead</a>
     <a href="https://m.me/1268736562993739?ref=thanks" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:8px;border:2px solid rgba(255,255,255,0.35);color:#fff;font-weight:700;font-size:16px;padding:13px 22px;border-radius:14px;text-decoration:none">Messenger</a>
   </div>
-  <div style="margin-top:10px;font-size:13px;color:#8A99AC">Texts go straight to Ben's phone. He calls you back.</div>
+  <div id="sms-note" style="margin-top:10px;font-size:13px;color:#8A99AC">Texts go straight to Ben's phone. He calls you back.</div>
   <div id="call-now" style="margin-top:14px;font-size:16px;color:#C9D2DE">Or talk to us right now: <a href="tel:+17039621423" style="color:#FF6B1A;font-weight:800;font-size:19px;text-decoration:none">(703) 962-1423</a></div>
 
   <div class="next">
@@ -96,9 +96,36 @@ y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);})(window, documen
   var lead={};
   try { lead=JSON.parse(localStorage.getItem('lgp_lead')||'{}'); } catch(e) {}
   var p=new URLSearchParams(location.search);
+
+  /* Rep routing. A lead that came in through a rep's ad set (/scan/?rep=kevin) is tagged on the form
+     page and arrives here as lead.rep. Give each rep their own Cal.com event type and put its link in
+     calLink (e.g. "kevin-lgp/scan"): the booking then lands on that rep's calendar. While calLink is
+     empty the lead books on the default calendar, so nothing breaks before the rep is set up. phone
+     (E.164, e.g. "+13105550100") switches the text and call buttons to the rep. Unknown rep = defaults. */
+  var DEFAULT_CAL_LINK='goldenclients/scan', DEFAULT_PHONE='+17039621423';
+  var REPS={
+    kevin:{ name:'Kevin', calLink:'', phone:'' },
+    jeff:{ name:'Jeff', calLink:'', phone:'' }
+  };
+  var rep='';
+  try { rep=(p.get('rep')||lead.rep||localStorage.getItem('lgp_rep')||'').toLowerCase().replace(/[^a-z0-9-]/g,'').slice(0,24); } catch(e) {}
+  var repCfg=REPS[rep]||null;
+  var calLink=(repCfg&&repCfg.calLink)||DEFAULT_CAL_LINK;
+  var who=(repCfg&&repCfg.phone)?repCfg.name:'Ben';
+  var phone=(repCfg&&repCfg.phone)||DEFAULT_PHONE;
+
   var city=p.get('city')||lead.city, leadName=p.get('name')||lead.name;
   if(city){ document.getElementById('checking').textContent='Checking if '+city+' is still open'; }
-  try{ var _sc=document.getElementById('sms-cta'); if(_sc && lead.business){ _sc.href='sms:+17039621423&body='+encodeURIComponent('Hi Ben, I just requested my scan for '+lead.business+'. Call me back.'); } }catch(e){}
+  try{
+    var _sc=document.getElementById('sms-cta');
+    if(_sc && (lead.business || who!=='Ben')){ _sc.href='sms:'+phone+'&body='+encodeURIComponent('Hi '+who+', I just requested my scan'+(lead.business?' for '+lead.business:'')+'. Call me back.'); }
+    if(_sc && who!=='Ben'){ _sc.innerHTML='&#128172; Text '+who+' instead'; }
+    if(who!=='Ben'){
+      var _sn=document.getElementById('sms-note'); if(_sn){ _sn.textContent='Texts go straight to '+who+"'s phone. You get a call back."; }
+      var _cn=document.querySelector('#call-now a'); if(_cn){ var _d=phone.replace(/\D/g,''); if(_d.length===11&&_d.charAt(0)==='1') _d=_d.slice(1); _cn.href='tel:'+phone; _cn.textContent=_d.length===10?'('+_d.slice(0,3)+') '+_d.slice(3,6)+'-'+_d.slice(6):phone; }
+    }
+    var _fb=document.querySelector('#cal-fallback a'); if(_fb){ _fb.href='https://cal.com/'+calLink; }
+  }catch(e){}
   if(leadName && typeof leadName==='string'){ document.getElementById('hl').innerHTML=leadName.split(' ')[0]+", one step left: <em>pick your 15 minutes.</em>"; }
 
   /* Cal.com official embed; bookingSuccessful feeds the pixel as Schedule */
@@ -110,7 +137,8 @@ y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);})(window, documen
   if(lead.phone){ var _d=String(lead.phone).replace(/\D/g,''); if(_d.length===10) _d='1'+_d; cfg.attendeePhoneNumber = _d ? '+'+_d : lead.phone; }
   if(lead.business) cfg.business = lead.business;
   if(lead.city) cfg.city = lead.city;
-  Cal.ns.scan("inline", { elementOrSelector:"#cal-inline", calLink:"goldenclients/scan", config: cfg });
+  if(rep) cfg.rep = rep; /* shows up on the booking once the event type has a hidden "rep" question */
+  Cal.ns.scan("inline", { elementOrSelector:"#cal-inline", calLink:calLink, config: cfg });
   Cal.ns.scan("ui", {theme:"light", hideEventTypeDetails:false});
   Cal.ns.scan("on", { action:"bookingSuccessful", callback:function(ev){
     try {
