@@ -151,12 +151,31 @@ Never merge two DESIGN.md files by prompt; rename the old one and reconcile
 by hand. Store at `<brand>/DESIGN.md` so Claude Design finds it when the
 repo is connected.
 
-## 8. Hand-offs
+## 8. Required stack (run these, in this order, before designing)
 
-- Copy: `direct-response-copy`, `landing-page-copy`, `ad-copy`, then
-  `copychief` for review. Design does not write the sales copy, it shapes
-  the container the copy lives in.
-- Aesthetic direction on a blank brief: `frontend-design` (Anthropic) can
-  run first to pick a direction, then this skill sets the system.
-- Engineering audit: `web-design-guidelines` (Vercel).
-- Ship gate for paid traffic: `compliance`. Always.
+The house method is the thin layer. The taste and the numbers come from
+the installed skills. Skipping them produces cleanup, not design.
+
+1. `ui-ux-pro-max`: run `python3 .claude/skills/ui-ux-pro-max/scripts/search.py
+   "<product> <industry> <audience>" --design-system --variance N --motion N
+   --density N -f markdown`, then one `--domain typography`, one
+   `--domain landing`, one `--domain style` query. Record what it returned
+   in the plan. Marketing pages: variance 3, motion 2, density 2.
+2. `design-references/companies/`: read the DESIGN.md of the two closest
+   world-class references (Apple for marketing chassis, Stripe for
+   pricing and cards, Linear for dark surfaces, Airbnb and Notion for
+   warm consumer). Copy their structure, not their colors.
+3. `apple-hig` and `material-3`: pull the type scale, spacing tokens,
+   touch targets, radius, easing, and breakpoints from their SKILL.md and
+   references. These are the numbers in `references/foundations.md`.
+4. `stitch-taste-design`: apply its color discipline (one accent under 80
+   percent saturation, neutral base, no pure black) and its banned list.
+5. `frontend-design` (Anthropic): pick the one memorable move and the
+   anti-patterns to avoid. Then remove one accessory.
+6. `web-design-guidelines` (Vercel): audit the built page before it ships.
+7. Copy: `direct-response-copy`, `landing-page-copy`, `ad-copy`, then
+   `copychief` for review. Design shapes the container the copy lives in.
+8. Ship gate for paid traffic: `compliance`. Always.
+
+Write the lineage into the brand DESIGN.md (section 0): which skill decided
+which rule. If a rule has no source, it is a guess and gets flagged.
