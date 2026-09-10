@@ -63,7 +63,7 @@ y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);})(window, documen
       </div>
       <div class="hero-cta"><a class="btn btn-primary" href="#cal-inline" onclick="document.getElementById('cal-inline').scrollIntoView({behavior:'smooth'});return false;">Pick your time</a></div>
       <div class="hero-cta" style="margin-top:var(--s3)">
-        <a class="btn btn-outline" id="sms-cta" href="sms:+17039621423&amp;body=Hi%20Ben%2C%20I%20just%20requested%20my%20scan.%20Call%20me%20back.">Text <span class="closer-name">Ben</span>&nbsp;instead</a>
+        <a class="btn btn-outline" id="sms-cta" href="sms:+18556838219&amp;body=Hi%20Ben%2C%20I%20just%20requested%20my%20scan.%20Call%20me%20back.">Text <span class="closer-name">Ben</span>&nbsp;instead</a>
         <a class="btn btn-outline" href="https://m.me/1268736562993739?ref=thanks" target="_blank" rel="noopener">Messenger</a>
       </div>
       <p class="caption" style="margin-top:var(--s3)">Texts go straight to <span class="closer-name">Ben</span>'s phone. <span class="closer-he">He</span> calls you back.</p>
@@ -100,7 +100,7 @@ y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);})(window, documen
   var p=new URLSearchParams(location.search);
   var city=p.get('city')||lead.city, leadName=p.get('name')||lead.name;
   if(city){ document.getElementById('checking').textContent='Checking if '+city+' is still open'; }
-  try{ var _sc=document.getElementById('sms-cta'); if(_sc && lead.business){ _sc.href='sms:+17039621423&body='+encodeURIComponent('Hi Ben, I just requested my scan for '+lead.business+'. Call me back.'); } }catch(e){}
+  try{ var _sc=document.getElementById('sms-cta'); if(_sc && lead.business){ _sc.href='sms:+18556838219&body='+encodeURIComponent('Hi Ben, I just requested my scan for '+lead.business+'. Call me back.'); } }catch(e){}
   if(leadName && typeof leadName==='string'){ document.getElementById('hl').innerHTML=leadName.split(' ')[0]+", three steps left <em>before your call.</em>"; }
   try{ if(lead.trade){ document.getElementById('trade-word').textContent=String(lead.trade).toLowerCase().replace(/ \/.*$/,''); } }catch(e){}
 
@@ -109,9 +109,9 @@ y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);})(window, documen
      The text button stays on the main line, which forwards to whoever is on duty. */
   var TEAM_CAL = 'team/local-growth-partner/scan';
   var CLOSERS = {
-    ben:   { name:'us', cal:TEAM_CAL, phone:'+17039621423', pretty:'(703) 962-1423', he:'We' },
-    jeff:  { name:'us', cal:TEAM_CAL, phone:'+17039621423', pretty:'(703) 962-1423', he:'We' },
-    kevin: { name:'us', cal:TEAM_CAL, phone:'+17039621423', pretty:'(703) 962-1423', he:'We' }
+    ben:   { name:'us', cal:TEAM_CAL, phone:'+17039621423', pretty:'(703) 962-1423', sms:'+18556838219', he:'We' },
+    jeff:  { name:'us', cal:TEAM_CAL, phone:'+17039621423', pretty:'(703) 962-1423', sms:'+18556838219', he:'We' },
+    kevin: { name:'us', cal:TEAM_CAL, phone:'+17039621423', pretty:'(703) 962-1423', sms:'+18556838219', he:'We' }
   };
   var closerKey=''; try{ closerKey=(p.get('closer')||lead.closer||localStorage.getItem('lgp_closer')||'').toLowerCase(); }catch(e){}
   var CL = CLOSERS[closerKey] || CLOSERS.ben;
