@@ -300,6 +300,11 @@ y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);})(window, documen
      restricted to this site's referrers (see maps-agency/CLAUDE.md, 2026-09-07). Empty key or a load failure
      falls back to the manual link field with no review gate. */
   var LGP_PLACES_KEY = "AIzaSyBXD-H1Sqy5LBcSPuXmx4b_qFjbwM2wjTI";
+  /* Lead capture straight to our own endpoint. Brevo's tracker is blocked by ad blockers,
+     and when it is, the lead lands with no business, no phone and no city. This token is
+     append-only: it cannot read anything back. */
+  var LGP_CAPTURE_URL = "https://script.google.com/macros/s/AKfycbySaDypwzw0Zl4gnCOQ20IWul6BmHl7tnXEVlscAePUwKPODC86ZpWuoIc4c85G64Mu/exec";
+  var LGP_CAPTURE_TOKEN = "lgpcap-39i_Ay8X3RDl-dpu-girrZ65";
   var PL={ on:false, lib:null, token:null, sel:null, items:[], hi:-1, timer:null, seq:0,
     fields:['id','displayName','formattedAddress','addressComponents','rating','userRatingCount','googleMapsURI','primaryType','primaryTypeDisplayName','businessStatus'] };
   var bizEl=document.getElementById('f-biz'), cityEl=document.getElementById('f-city'), acList=document.getElementById('ac-list'), acHint=document.getElementById('ac-hint'), okBox=document.getElementById('biz-ok'), exitBox=document.getElementById('exit');
@@ -502,6 +507,17 @@ y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);})(window, documen
           business:lead.business, city:lead.city, trade:lead.trade, name:lead.name, phone:lead.phone, email:lead.email, gmb_link:lead.gmb||'not provided',
           rating:lead.rating, reviews:lead.reviews, category:lead.category, address:lead.address, place_id:lead.place_id })
       });
+    } catch(e) {}
+    /* capture the full lead into our own endpoint, so the detail survives ad blockers */
+    try {
+      fetch(LGP_CAPTURE_URL, { method:'POST', mode:'no-cors', keepalive:true,
+        headers:{'Content-Type':'text/plain;charset=UTF-8'},
+        body: JSON.stringify({ secret: LGP_CAPTURE_TOKEN, lead: {
+          email:lead.email, business:lead.business, city:lead.city, trade:lead.trade,
+          first:(lead.name||'').split(' ')[0]||'', last:(lead.name||'').split(' ').slice(1).join(' '),
+          phone:lead.phone, gmb:lead.gmb||'', category:lead.category||'', address:lead.address||'',
+          place_id:lead.place_id||'', rating:lead.rating, reviews:lead.reviews,
+          source:(new URLSearchParams(location.search).get('utm_content'))||'direct', closer:lead.closer||'' } }) });
     } catch(e) {}
     /* capture into Brevo list via classic POST; Brevo redirects to /thanks/ */
     var f=document.createElement('form');
