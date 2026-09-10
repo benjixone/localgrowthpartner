@@ -54,7 +54,7 @@ y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);})(window, documen
       <p class="lead" style="color:var(--ink);font-weight:700">Your scan only runs on this call. No call, no scan.</p>
       <div class="steps-list" id="steps">
         <div class="stp" id="stp-video"><div class="n">1</div><div><b>Watch the 7 minute video below.</b><div>It shows what we found for businesses like yours and what we do about it. The call assumes you have seen it.</div></div></div>
-        <div class="stp" id="stp-book"><div class="n">2</div><div><b>Pick your 15 minutes.</b><div>Phone call or Google Meet, your pick. That is where we show you everything.</div></div></div>
+        <div class="stp" id="stp-book"><div class="n">2</div><div><b>Pick your 15 minutes.</b><div>Phone call or video, your pick. That is where we show you everything.</div></div></div>
         <div class="stp" id="stp-partner"><div class="n">3</div><div><b>Bring anyone who decides with you.</b><div>We take one <span id="trade-word">business</span> per city. If your city is open, we decide together on the call, so your partner needs to be there.</div></div></div>
       </div>
       <div id="vsl-box" class="vsl-box">
@@ -72,7 +72,7 @@ y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);})(window, documen
     <div class="stage-2 next">
       <div class="cal-frame">
         <div id="cal-inline" style="width:100%;min-height:620px;overflow:auto"></div>
-        <div id="cal-fallback" style="display:none;padding:26px;text-align:center;font-size:15px"><a class="link" id="cal-fallback-link" href="https://cal.com/goldenclients/scan" rel="noopener">Open the booking calendar</a></div>
+        <div id="cal-fallback" style="display:none;padding:26px;text-align:center;font-size:15px"><a class="link" id="cal-fallback-link" href="https://cal.com/team/local-growth-partner/scan" rel="noopener">Open the booking calendar</a></div>
       </div>
       <div class="steps-row">
         <span><b>1.</b> Watch the video, book the call, bring your partner</span>
@@ -105,10 +105,13 @@ y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);})(window, documen
   try{ if(lead.trade){ document.getElementById('trade-word').textContent=String(lead.trade).toLowerCase().replace(/ \/.*$/,''); } }catch(e){}
 
   /* Closer routing: ?closer=jeff or utm_source=jeff on the scan page, remembered in localStorage */
+  /* Round robin on the team event picks the host at booking time, so the page shows one link.
+     The text button stays on the main line, which forwards to whoever is on duty. */
+  var TEAM_CAL = 'team/local-growth-partner/scan';
   var CLOSERS = {
-    ben:   { name:'Ben',   cal:'goldenclients/scan', phone:'+17039621423', pretty:'(703) 962-1423', he:'He' },
-    jeff:  { name:'Jeff',  cal:'goldenclients/scan', phone:'+19107089159', pretty:'(910) 708-9159', he:'He' },
-    kevin: { name:'Kevin', cal:'goldenclients/scan', phone:'+17039621423', pretty:'(703) 962-1423', he:'He' }
+    ben:   { name:'us', cal:TEAM_CAL, phone:'+17039621423', pretty:'(703) 962-1423', he:'We' },
+    jeff:  { name:'us', cal:TEAM_CAL, phone:'+17039621423', pretty:'(703) 962-1423', he:'We' },
+    kevin: { name:'us', cal:TEAM_CAL, phone:'+17039621423', pretty:'(703) 962-1423', he:'We' }
   };
   var closerKey=''; try{ closerKey=(p.get('closer')||lead.closer||localStorage.getItem('lgp_closer')||'').toLowerCase(); }catch(e){}
   var CL = CLOSERS[closerKey] || CLOSERS.ben;
@@ -161,8 +164,8 @@ y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);})(window, documen
         link=(b.metadata&&b.metadata.videoCallUrl)||b.meetingUrl||(typeof b.location==='string'&&b.location.indexOf('http')===0?b.location:''); } catch(_e){}
       var el=document.createElement('div');
       el.className='booked';
-      el.innerHTML='<b>You are booked. The call happens on Google Meet.</b><br>'
-        +'We just emailed you a calendar invite with the Google Meet link inside. Open it, hit Add to calendar, and click that link at call time.'
+      el.innerHTML='<b>You are booked.</b><br>'
+        +'We just emailed you a calendar invite. Open it and hit Add to calendar. If you picked video, the link is inside. If you picked phone, we call the number you gave us.'
         +(link?'<br>Or save the direct link now: <a href="'+link+'">'+link+'</a>':'')
         +'<br><span>No email in 2 minutes? Check spam, it is from Cal.com.</span>';
       var host=document.querySelector('.next'); if(host) host.insertBefore(el, host.firstChild);
