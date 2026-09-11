@@ -202,18 +202,33 @@ body.shot .stamp{display:block}
       // Force a desktop shaped render whatever the device: an exported sheet that goes to a
       // client should not be phone shaped, and without an explicit width html2canvas can
       // measure the wrapper as a few pixels wide.
-      html2canvas(document.querySelector('.wrap'), {scale:2, backgroundColor:'#ffffff',
+      html2canvas(document.querySelector('.wrap'), {backgroundColor:'#ffffff',
         useCORS:true, logging:false, windowWidth:1120, width:1000,
+        scale: (window.innerWidth < 700 ? 1.5 : 2),
         onclone:function(doc){ var w = doc.querySelector('.wrap');
           if (w) { w.style.width='1000px'; w.style.maxWidth='1000px'; } }
       }).then(function(canvas){
         document.body.classList.remove('shot');
         btn.textContent = was;
         if (canvas.width < 300) { alert('Image export came out wrong on this screen. Use Save as PDF.'); return; }
-        var a = document.createElement('a');
-        a.download = slug() + '.png';
-        a.href = canvas.toDataURL('image/png');
-        a.click();
+        var name = slug() + '.png';
+        canvas.toBlob(function(blob){
+          if (!blob) { alert('Image export failed. Use Save as PDF instead.'); return; }
+          // On a phone the share sheet is what a closer actually wants: it goes straight into
+          // WhatsApp or Messages. iOS also blocks most programmatic downloads, so this is the
+          // only path that reliably works there.
+          var file = new File([blob], name, {type:'image/png'});
+          if (navigator.canShare && navigator.canShare({files:[file]})) {
+            navigator.share({files:[file], title:'ROI', text:'Your numbers, from Local Growth Partner.'})
+              .catch(function(){});
+            return;
+          }
+          var url = URL.createObjectURL(blob);
+          var a = document.createElement('a');
+          a.download = name; a.href = url;
+          document.body.appendChild(a); a.click(); a.remove();
+          setTimeout(function(){ URL.revokeObjectURL(url); }, 4000);
+        }, 'image/png');
       }).catch(function(){
         document.body.classList.remove('shot');
         btn.textContent = was;
