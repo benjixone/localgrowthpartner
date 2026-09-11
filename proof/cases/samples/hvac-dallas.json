@@ -1,0 +1,31 @@
+{
+  "slug": "hvac-dallas",
+  "trade": "HVAC",
+  "emoji": "❄️",
+  "city": "Dallas, TX",
+  "city_short": "Dallas",
+  "phrase": "ac repair",
+  "phrase_full": "ac repair dallas",
+  "month_before": "May",
+  "month_after": "August",
+  "year": "2026",
+  "rank_before": 8,
+  "rank_after": 1,
+  "ai_before_named": false,
+  "ai_after_named": true,
+  "ai_engines": [
+    "ChatGPT",
+    "Gemini",
+    "Perplexity"
+  ],
+  "ai_engines_after": 3,
+  "ai_engines_before": 0,
+  "calls_before": 12,
+  "calls_after": 41,
+  "revenue_dollars": 180000,
+  "revenue_window": "one year",
+  "quote": "We went from chasing work to turning it down. My guys are booked three weeks out and I have not bought a lead since March.",
+  "quote_role": "Owner",
+  "source_on_file": "SAMPLE",
+  "incentive": ""
+}

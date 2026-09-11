@@ -1,0 +1,42 @@
+{
+  "_what_to_send": "One file per case study. Everything below is needed; leave a field null only where the note says so.",
+  "slug": "hvac-dallas",
+  "trade": "HVAC",
+  "emoji": "❄️",
+  "city": "Dallas, TX",
+  "city_short": "Dallas",
+
+  "phrase": "ac repair",
+  "phrase_full": "ac repair dallas",
+  "month_before": "May",
+  "month_after": "August",
+  "year": "2026",
+
+  "rank_before": 8,
+  "rank_after": 1,
+
+  "ai_before_named": false,
+  "ai_after_named": true,
+  "ai_engines": ["ChatGPT", "Gemini", "Perplexity"],
+  "ai_engines_after": 3,
+  "ai_engines_before": 0,
+
+  "calls_before": 12,
+  "calls_after": 41,
+
+  "revenue_dollars": 180000,
+  "revenue_window": "one year",
+
+  "quote": "Verbatim. Do not tidy the grammar. Cut only with an ellipsis.",
+  "quote_role": "Owner",
+
+  "source_on_file": "text message 2026-09-11",
+  "incentive": "",
+
+  "_notes": {
+    "rank_before": "null only if it was never measured. The card then says 'was not in the top three' instead of a number.",
+    "revenue_dollars": "owner reported, in writing. null if they will not give a figure, and the slot is replaced by reviews gained.",
+    "incentive": "anything of value the client received for the quote, a discount or a free month. Printed next to the quote if present.",
+    "emoji": "from the locked set in case-study-spec-2026-09-11.md, section 12b"
+  }
+}

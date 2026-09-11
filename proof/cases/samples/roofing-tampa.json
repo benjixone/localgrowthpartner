@@ -1,0 +1,31 @@
+{
+  "slug": "roofing-tampa",
+  "trade": "Roofing",
+  "emoji": "🏠",
+  "city": "Tampa, FL",
+  "city_short": "Tampa",
+  "phrase": "roof replacement",
+  "phrase_full": "roof replacement tampa",
+  "month_before": "April",
+  "month_after": "August",
+  "year": "2026",
+  "rank_before": null,
+  "rank_after": 2,
+  "ai_before_named": false,
+  "ai_after_named": true,
+  "ai_engines": [
+    "ChatGPT",
+    "Gemini",
+    "Perplexity"
+  ],
+  "ai_engines_after": 2,
+  "ai_engines_before": 0,
+  "calls_before": 9,
+  "calls_after": 28,
+  "revenue_dollars": 240000,
+  "revenue_window": "eight months",
+  "quote": "Two of the jobs that came off Google paid for the whole year of working with them.",
+  "quote_role": "Owner",
+  "source_on_file": "SAMPLE",
+  "incentive": ""
+}
