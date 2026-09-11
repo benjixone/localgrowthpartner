@@ -181,6 +181,10 @@ body.shot .stamp{display:block}
   ids.forEach(function(id){ $(id).addEventListener('input', calc); });
   calc();
 
+  // ?shot=1 renders the export view directly, controls hidden and the stamp on. Useful as a
+  // clean link to show someone, and it is how the export is verified without a screenshot tool.
+  if (qs.get('shot') === '1') { setTimeout(function(){ stampIt(); document.body.classList.add('shot'); }, 0); }
+
   // Export. The stamp is only visible inside a capture or a print, so a sheet that reaches a
   // client always carries who it was for, the date, and the caveat.
   function stampIt(){
