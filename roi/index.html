@@ -53,6 +53,30 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:24px;heigh
      padding:15px 28px;border-radius:99px;text-decoration:none;margin-top:20px}
 .note{font-size:12.5px;color:var(--ink3);margin-top:28px;line-height:1.55;max-width:80ch}
 .note a{color:var(--ink2)}
+.who{margin-bottom:18px}
+.who input{border:0;outline:0;font:inherit;font-weight:800;font-size:15px;background:transparent;
+           color:var(--ink);width:100%;border-bottom:1px solid var(--line);padding:4px 0}
+.who input::placeholder{color:var(--ink3);font-weight:600}
+.acts{display:flex;gap:9px;flex-wrap:wrap;margin-top:18px}
+.btn{font:inherit;font-size:14px;font-weight:700;padding:11px 18px;border-radius:99px;border:0;
+     cursor:pointer;background:var(--surface);color:var(--ink)}
+.btn.solid{background:var(--ink);color:#fff}
+.stamp{display:none;font-size:12px;color:var(--ink3);margin-top:14px}
+
+/* capture and print: no controls, no buttons, values as text, stamp shown */
+body.shot .acts,body.shot .hint{display:none}
+body.shot input[type=range]{display:none}
+body.shot .stamp{display:block}
+@media print{
+  .acts,.cta,input[type=range],.hint{display:none!important}
+  .stamp{display:block}
+  body{font-size:14px}
+  .wrap{padding:0}
+  .grid{grid-template-columns:1fr 1fr;gap:14px}
+  .hero{background:#0B1524!important;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .panel{background:#F5F5F7!important;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  @page{margin:14mm}
+}
 @media (max-width:820px){.grid{grid-template-columns:1fr}.split{grid-template-columns:1fr}
   .wrap{padding:28px 16px 48px}}
 </style></head><body>
@@ -66,6 +90,8 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:24px;heigh
 
   <div class="grid">
     <div class="panel">
+      <div class="who"><input id="who" type="text" placeholder="Prepared for (optional)"></div>
+
       <div class="f"><label for="inv">Monthly investment</label>
         <div class="inp"><span class="pre">$</span><input id="inv" type="number" min="0" step="50" value="1200"></div></div>
 
@@ -101,6 +127,11 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:24px;heigh
         </div>
       </div>
       <p class="maths" id="maths"></p>
+      <div class="acts">
+        <button class="btn solid" id="png" type="button">Download image</button>
+        <button class="btn" id="pdf" type="button">Save as PDF</button>
+      </div>
+      <p class="stamp" id="stamp"></p>
       <a class="cta" href="../scan/">Get my free scan</a>
     </div>
   </div>
@@ -149,6 +180,46 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:24px;heigh
   }
   ids.forEach(function(id){ $(id).addEventListener('input', calc); });
   calc();
+
+  // Export. The stamp is only visible inside a capture or a print, so a sheet that reaches a
+  // client always carries who it was for, the date, and the caveat.
+  function stampIt(){
+    var who = ($('who').value || '').trim();
+    var d = new Date().toLocaleDateString('en-US', {year:'numeric', month:'long', day:'numeric'});
+    $('stamp').textContent = (who ? 'Prepared for ' + who + '. ' : '') + d +
+      '. Arithmetic on the numbers supplied, not a forecast or a promise. Local Growth Partner.';
+  }
+  function slug(){
+    var who = ($('who').value || 'roi').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
+    return 'lgp-roi-' + (who || 'roi') + '-' + new Date().toISOString().slice(0,10);
+  }
+  $('pdf').addEventListener('click', function(){ stampIt(); window.print(); });
+  $('png').addEventListener('click', function(){
+    stampIt();
+    var btn = $('png'); var was = btn.textContent; btn.textContent = 'Rendering...';
+    var go = function(){
+      document.body.classList.add('shot');
+      html2canvas(document.querySelector('.wrap'), {scale:2, backgroundColor:'#ffffff',
+        useCORS:true, logging:false}).then(function(canvas){
+        document.body.classList.remove('shot');
+        btn.textContent = was;
+        var a = document.createElement('a');
+        a.download = slug() + '.png';
+        a.href = canvas.toDataURL('image/png');
+        a.click();
+      }).catch(function(){
+        document.body.classList.remove('shot');
+        btn.textContent = was;
+        alert('Image export failed. Use Save as PDF instead.');
+      });
+    };
+    if (window.html2canvas) return go();
+    var sc = document.createElement('script');
+    sc.src = 'https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js';
+    sc.onload = go;
+    sc.onerror = function(){ btn.textContent = was; alert('Could not load the image library. Use Save as PDF.'); };
+    document.head.appendChild(sc);
+  });
 })();
 </script>
 </body></html>
