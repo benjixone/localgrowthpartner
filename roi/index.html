@@ -62,6 +62,12 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:24px;heigh
      cursor:pointer;background:var(--surface);color:var(--ink)}
 .btn.solid{background:var(--ink);color:#fff}
 .stamp{display:none;font-size:12px;color:var(--ink3);margin-top:14px}
+.presets{display:flex;gap:7px;margin-top:10px}
+.pz{font:inherit;font-size:13.5px;font-weight:700;padding:8px 14px;border-radius:99px;border:0;
+    cursor:pointer;background:var(--canvas);color:var(--ink2)}
+.pz[aria-pressed="true"]{background:var(--ink);color:#fff}
+body.shot .presets{display:none}
+@media print{.presets{display:none!important}}
 
 /* capture and print: no controls, no buttons, values as text, stamp shown */
 body.shot .acts,body.shot .hint{display:none}
@@ -101,7 +107,7 @@ body.shot .stamp{display:block}
 
       <div class="f"><label for="srch">Monthly searches in your area</label>
         <div class="inp"><input id="srch" type="number" min="0" step="10" value="1300"></div>
-        <div class="hint">Your scan fills this in.</div></div>
+        <div class="hint">Optional. Your scan fills this in.</div></div>
 
       <div class="sl">
         <div class="row"><label for="marg">Profit margin</label><b id="margv">40%</b></div>
@@ -110,9 +116,16 @@ body.shot .stamp{display:block}
       </div>
 
       <div class="sl">
-        <div class="row"><label for="conv">Searchers who become a job</label><b id="convv">0.5%</b></div>
-        <input id="conv" type="range" min="1" max="60" step="1" value="5">
-        <div class="hint">We default low on purpose.</div>
+        <div class="row"><label for="jobs_in">Jobs a month from this</label><b id="jobsv">3</b></div>
+        <input id="jobs_in" type="range" min="1" max="20" step="1" value="3">
+        <div class="presets" id="presets">
+          <button class="pz" type="button" data-n="1">1</button>
+          <button class="pz" type="button" data-n="3">3</button>
+          <button class="pz" type="button" data-n="5">5</button>
+          <button class="pz" type="button" data-n="10">10</button>
+        </div>
+        <div class="hint">Move it and watch the return. Out of ten interested customers, how many
+          close?</div>
       </div>
     </div>
 
@@ -123,7 +136,7 @@ body.shot .stamp{display:block}
         <div class="say" id="roisay"></div>
         <div class="split">
           <div><div class="v" id="be">2 jobs</div><div class="l">to break even</div></div>
-          <div><div class="v" id="jobs">6.5</div><div class="l">jobs a month</div></div>
+          <div><div class="v" id="jobs">3</div><div class="l">jobs a month</div></div>
         </div>
       </div>
       <p class="maths" id="maths"></p>
@@ -144,7 +157,7 @@ body.shot .stamp{display:block}
 (function(){
   var $ = function(id){ return document.getElementById(id); };
   var f = function(n){ return n.toLocaleString('en-US'); };
-  var ids = ['inv','job','srch','conv','marg'];
+  var ids = ['inv','job','srch','jobs_in','marg'];
 
   // A closer can send a prefilled link: /roi/?inv=2900&job=6000&srch=480&marg=35&conv=5
   var qs = new URLSearchParams(location.search);
@@ -155,31 +168,47 @@ body.shot .stamp{display:block}
     var inv  = Math.max(0, +$('inv').value || 0);
     var job  = Math.max(0, +$('job').value || 0);
     var srch = Math.max(0, +$('srch').value || 0);
-    var rate = (+$('conv').value || 0) / 10;
+    var jobs = Math.max(0, +$('jobs_in').value || 0);
     var marg = (+$('marg').value || 0) / 100;
-    $('convv').textContent = rate.toFixed(1) + '%';
+    $('jobsv').textContent = f(jobs);
     $('margv').textContent = Math.round(marg * 100) + '%';
+    var pz = document.querySelectorAll('.pz');
+    for (var i = 0; i < pz.length; i++) {
+      pz[i].setAttribute('aria-pressed', (+pz[i].getAttribute('data-n') === jobs) ? 'true' : 'false');
+    }
 
     var perJob = job * marg;                       // profit per customer, not revenue
     var be = perJob > 0 ? Math.ceil(inv / perJob) : 0;
     $('be').textContent = be === 1 ? '1 job' : f(be) + ' jobs';
 
-    var jobs = srch * rate / 100;
     var prof = jobs * perJob;
     var net  = prof - inv;
-    var shown = jobs >= 10 ? f(Math.round(jobs)) : jobs.toFixed(1);
-    $('jobs').textContent = shown;
+    $('jobs').textContent = f(jobs);
     $('roi').textContent = inv > 0 ? (net >= 0 ? '+' : '') + f(Math.round(net / inv * 100)) + '%' : 'n/a';
     $('roisay').innerHTML = perJob > 0
       ? '<b>$' + f(Math.round(prof)) + '</b> profit a month against <b>$' + f(inv) +
         '</b> invested, at <b>$' + f(Math.round(perJob)) + '</b> profit per customer. ' +
         'An illustration on your numbers, not a forecast.'
       : 'Add an average job size.';
-    $('maths').innerHTML = '<b>' + f(srch) + '</b> searches &times; <b>' + rate.toFixed(1) +
-      '%</b> = <b>' + shown + '</b> jobs &rarr; <b>$' + f(Math.round(prof)) + '</b> profit &minus; <b>$' +
-      f(inv) + '</b> = <b>' + (net < 0 ? '&minus;$' : '$') + f(Math.abs(Math.round(net))) + '</b> a month';
+    var line = '<b>' + f(jobs) + '</b> job' + (jobs === 1 ? '' : 's') + ' &times; <b>$' + f(job) +
+      '</b> at <b>' + Math.round(marg * 100) + '%</b> = <b>$' + f(Math.round(prof)) +
+      '</b> profit &minus; <b>$' + f(inv) + '</b> = <b>' + (net < 0 ? '&minus;$' : '$') +
+      f(Math.abs(Math.round(net))) + '</b> a month';
+    // If they gave a search volume, derive the rate instead of assuming one. The number they have
+    // to believe is then their own close rate, not a multiplier we picked.
+    if (srch > 0) {
+      line += '<br>That is <b>' + (jobs / srch * 100).toFixed(1) + '%</b> of <b>' + f(srch) +
+        '</b> searches a month.';
+    }
+    $('maths').innerHTML = line;
   }
   ids.forEach(function(id){ $(id).addEventListener('input', calc); });
+  Array.prototype.forEach.call(document.querySelectorAll('.pz'), function(b){
+    b.addEventListener('click', function(){
+      $('jobs_in').value = b.getAttribute('data-n');
+      calc();
+    });
+  });
   calc();
 
   // ?shot=1 renders the export view directly, controls hidden and the stamp on. Useful as a
