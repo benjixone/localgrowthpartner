@@ -148,7 +148,8 @@ body.shot .stamp{display:block}
 
   // A closer can send a prefilled link: /roi/?inv=2900&job=6000&srch=480&marg=35&conv=5
   var qs = new URLSearchParams(location.search);
-  ids.forEach(function(id){ if (qs.has(id)) $(id).value = qs.get(id); });
+  ids.concat(['who']).forEach(function(id){ if (qs.has(id)) $(id).value = qs.get(id); });
+  if (qs.has('who')) { var w = $('who'); w.style.borderBottomColor = 'transparent'; }
 
   function calc(){
     var inv  = Math.max(0, +$('inv').value || 0);
