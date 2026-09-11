@@ -92,12 +92,12 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:24px;heigh
 
     <div>
       <div class="hero">
-        <div class="k">You break even at</div>
-        <div class="big" id="be">2 jobs</div>
-        <div class="say" id="besay"></div>
+        <div class="k">Return on the investment</div>
+        <div class="big" id="roi">+442%</div>
+        <div class="say" id="roisay"></div>
         <div class="split">
+          <div><div class="v" id="be">2 jobs</div><div class="l">to break even</div></div>
           <div><div class="v" id="jobs">6.5</div><div class="l">jobs a month</div></div>
-          <div><div class="v" id="roi">+442%</div><div class="l">return, on profit</div></div>
         </div>
       </div>
       <p class="maths" id="maths"></p>
@@ -131,9 +131,6 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:24px;heigh
     var perJob = job * marg;                       // profit per customer, not revenue
     var be = perJob > 0 ? Math.ceil(inv / perJob) : 0;
     $('be').textContent = be === 1 ? '1 job' : f(be) + ' jobs';
-    $('besay').innerHTML = perJob > 0
-      ? '<b>$' + f(Math.round(perJob)) + '</b> profit per customer.'
-      : 'Add an average job size.';
 
     var jobs = srch * rate / 100;
     var prof = jobs * perJob;
@@ -141,6 +138,11 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:24px;heigh
     var shown = jobs >= 10 ? f(Math.round(jobs)) : jobs.toFixed(1);
     $('jobs').textContent = shown;
     $('roi').textContent = inv > 0 ? (net >= 0 ? '+' : '') + f(Math.round(net / inv * 100)) + '%' : 'n/a';
+    $('roisay').innerHTML = perJob > 0
+      ? '<b>$' + f(Math.round(prof)) + '</b> profit a month against <b>$' + f(inv) +
+        '</b> invested, at <b>$' + f(Math.round(perJob)) + '</b> profit per customer. ' +
+        'An illustration on your numbers, not a forecast.'
+      : 'Add an average job size.';
     $('maths').innerHTML = '<b>' + f(srch) + '</b> searches &times; <b>' + rate.toFixed(1) +
       '%</b> = <b>' + shown + '</b> jobs &rarr; <b>$' + f(Math.round(prof)) + '</b> profit &minus; <b>$' +
       f(inv) + '</b> = <b>' + (net < 0 ? '&minus;$' : '$') + f(Math.abs(Math.round(net))) + '</b> a month';
