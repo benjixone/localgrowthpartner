@@ -199,10 +199,17 @@ body.shot .stamp{display:block}
     var btn = $('png'); var was = btn.textContent; btn.textContent = 'Rendering...';
     var go = function(){
       document.body.classList.add('shot');
+      // Force a desktop shaped render whatever the device: an exported sheet that goes to a
+      // client should not be phone shaped, and without an explicit width html2canvas can
+      // measure the wrapper as a few pixels wide.
       html2canvas(document.querySelector('.wrap'), {scale:2, backgroundColor:'#ffffff',
-        useCORS:true, logging:false}).then(function(canvas){
+        useCORS:true, logging:false, windowWidth:1120, width:1000,
+        onclone:function(doc){ var w = doc.querySelector('.wrap');
+          if (w) { w.style.width='1000px'; w.style.maxWidth='1000px'; } }
+      }).then(function(canvas){
         document.body.classList.remove('shot');
         btn.textContent = was;
+        if (canvas.width < 300) { alert('Image export came out wrong on this screen. Use Save as PDF.'); return; }
         var a = document.createElement('a');
         a.download = slug() + '.png';
         a.href = canvas.toDataURL('image/png');
