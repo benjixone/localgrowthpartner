@@ -639,7 +639,7 @@ y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);})(window, documen
     var fbclid=new URLSearchParams(location.search).get('fbclid');
     if(!lead.fbc && fbclid) lead.fbc='fb.1.'+Date.now()+'.'+fbclid;
     lead.src=location.origin+location.pathname;
-    try{ var _q=new URLSearchParams(location.search); lead.closer=(_q.get('closer')||_q.get('utm_source')||localStorage.getItem('lgp_closer')||'').toLowerCase().replace(/[^a-z]/g,''); if(lead.closer) localStorage.setItem('lgp_closer',lead.closer); }catch(e){}
+    try{ var _q=new URLSearchParams(location.search); lead.closer=(_q.get('closer')||localStorage.getItem('lgp_closer')||'').toLowerCase().replace(/[^a-z]/g,''); if(!/^(ben|jeff|kevin)$/.test(lead.closer)) lead.closer=''; if(lead.closer) localStorage.setItem('lgp_closer',lead.closer); else localStorage.removeItem('lgp_closer'); }catch(e){}
     try { localStorage.removeItem('lgp_lead_fired'); } catch(e) {}
     try { localStorage.setItem('lgp_lead', JSON.stringify(lead)); } catch(e) {}
     /* store full details as Brevo contact attributes (client-side identify) */
@@ -717,7 +717,7 @@ y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);})(window, documen
 </script>
 <script>
 (function(){
-  try{ var q=new URLSearchParams(location.search); var c=(q.get('closer')||q.get('utm_source')||'').toLowerCase().replace(/[^a-z]/g,''); if(c) localStorage.setItem('lgp_closer',c); }catch(e){}
+  try{ var q=new URLSearchParams(location.search); var c=(q.get('closer')||'').toLowerCase().replace(/[^a-z]/g,''); if(/^(ben|jeff|kevin)$/.test(c)) localStorage.setItem('lgp_closer',c); }catch(e){}
   var v=document.getElementById('vsl'); if(!v) return; var mx=0;
   v.addEventListener('timeupdate',function(){ if(v.currentTime>mx){ mx=v.currentTime; if(Math.floor(mx)%5===0){ try{ localStorage.setItem('lgp_vsl_t',String(Math.floor(mx))); localStorage.setItem('lgp_vsl_d',String(Math.floor(v.duration||0))); }catch(e){} } } });
   v.addEventListener('ended',function(){ try{ localStorage.setItem('lgp_vsl_t',String(Math.floor(v.duration||999))); }catch(e){} });
