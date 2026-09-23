@@ -569,6 +569,10 @@ y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);})(window, documen
        +'<p>Ranking a profile that customers rate below that only sends more people to a bad first impression, and the guarantee would be a lie. Fix the rating first: reply to every negative review, then ask your happiest customers for reviews.</p>'
        +(reviewLink?'<a class="rl" href="'+reviewLink+'" target="_blank" rel="noopener">Your review link: '+esc(reviewLink)+'</a>':'')
        +'<p>Come back at 3.8 and we run your scan.</p>';
+    } else if(reason==='trade'){
+      h='<h3>'+name+' is not the kind of business this works for, and we would rather say so now.</h3>'
+       +'<p>Our system is built for businesses where one new customer is worth thousands: roofers, med spas, contractors, law firms, clinics, home services. For a shop, restaurant or store, a higher spot on the map does not pay back what we charge, and the guarantee would be a promise we cannot keep.</p>'
+       +'<p>Free thing you can do this week: reply to every review on your profile and add 10 new photos. That alone moves a retail listing.</p>';
     } else {
       h='<h3>Google lists '+name+' as closed.</h3><p>If that is wrong, fix it on your profile first (Google Business Profile, then Info, then mark it open), then come back and we run your scan.</p>';
     }
@@ -587,10 +591,15 @@ y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);})(window, documen
     try { if(window.clarity) clarity('set','disqualified',reason); } catch(e){}
     try { exitBox.scrollIntoView({behavior:'smooth', block:'center'}); } catch(e){}
   }
+  /* 2026-09-23: retail, food and a few others cannot pay for the service (a florist, a jeweler and a
+     mall came through the form in one week). Google's own primaryType decides, so no new question. */
+  var LOW_TICKET=['florist','jewelry_store','shopping_mall','church','place_of_worship','hindu_temple','mosque','synagogue','school','primary_school','secondary_school','university','library','museum','park','movie_theater','night_club','bar','pub','restaurant','cafe','coffee_shop','bakery','fast_food_restaurant','meal_takeaway','meal_delivery','pizza_restaurant','ice_cream_shop','grocery_store','supermarket','convenience_store','liquor_store','gas_station','parking','atm','bank','post_office','city_hall','courthouse','police','fire_station','hospital','pharmacy','drugstore','clothing_store','shoe_store','book_store','pet_store','toy_store','gift_shop','electronics_store','cell_phone_store','department_store','discount_store','furniture_store','home_goods_store','hardware_store','sporting_goods_store','bicycle_store','video_game_store','market','seafood_market','farm','zoo','aquarium','amusement_park','stadium','tourist_attraction','lodging','hostel','campground','rv_park','laundry','dry_cleaner','car_wash','car_rental','transit_station','bus_station','train_station','airport','food_court','food_store','wholesaler','warehouse_store'];
+  function lowTicket(t){ t=String(t||'').toLowerCase(); if(!t) return false; return LOW_TICKET.indexOf(t)>=0 || /_store$|_shop$|_market$|restaurant$/.test(t); }
   function gateOk(){
     if(!PL.on) return true;
     if(!PL.sel){ acHint.classList.add('on'); bizEl.focus(); var q=bizEl.value.trim(); if(q.length>=2) acSearch(q); return false; }
     if(PL.sel.status && PL.sel.status!=='OPERATIONAL'){ showExit('closed'); return false; }
+    if(lowTicket(PL.sel.type)){ showExit('trade'); return false; }
     if(PL.sel.reviews!==null && PL.sel.reviews<10){ showExit('reviews'); return false; }
     if(PL.sel.reviews!==null && PL.sel.rating!==null && PL.sel.rating<3.8){ showExit('rating'); return false; }
     return true;
