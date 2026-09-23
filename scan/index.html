@@ -662,15 +662,7 @@ y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);})(window, documen
           CATEGORY:lead.category||'', ADDRESS:lead.address||'', PLACE_ID:lead.place_id||'' }, lead.rating!=='' ? {RATING:lead.rating, REVIEWS:lead.reviews} : {}));
       }
     } catch(e) {}
-    /* instant lead alert to Ben (fire and forget) */
-    try {
-      fetch('https://formsubmit.co/ajax/ben@goldenpartners.co', {
-        method:'POST', headers:{'Content-Type':'application/json'},
-        body: JSON.stringify({ _subject:'SCAN LEAD: '+lead.business+' ('+lead.city+')'+(lead.reviews!==''?' | '+lead.rating+' stars, '+lead.reviews+' reviews':(PL.on?' | reviews unknown':'')),
-          business:lead.business, city:lead.city, trade:lead.trade, name:lead.name, phone:lead.phone, email:lead.email, gmb_link:lead.gmb||'not provided',
-          rating:lead.rating, reviews:lead.reviews, category:lead.category, address:lead.address, place_id:lead.place_id })
-      });
-    } catch(e) {}
+    /* FormSubmit email alert removed 2026-09-23 (audit item 11): Slack, the Desk and the text carry the lead. */
     /* capture the full lead into our own endpoint, so the detail survives ad blockers */
     try {
       fetch(LGP_CAPTURE_URL, { method:'POST', mode:'no-cors', keepalive:true,
